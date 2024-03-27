@@ -3,13 +3,12 @@ import "./App.css";
 import Calendar from "./Calendar.js";
 import Statics from "./Statics.js";
 import List from "./List.js";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 
 function App() {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
-  const [currentPage, setCurrentPage] = useState("calendar");
 
   const handlePrevBtn = () => {
     if (month === 0) {
@@ -25,44 +24,34 @@ function App() {
     } else setMonth(month + 1);
   };
 
-  const handlePageBtn = (e) => {
-    setCurrentPage(e.target.dataset.value);
-  };
-
   return (
     <BrowserRouter>
       <div className="layout">
         <div className="page-btns">
-          <Link
+          <NavLink
             to="/calendar"
-            className={`page-btn ${
-              currentPage === "calendar" ? "current-page" : ""
-            }`}
-            data-value="calendar"
-            onClick={handlePageBtn}
+            className={({ isActive }) =>
+              "page-btn " + (isActive ? "current-page" : "")
+            }
           >
             달력
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/statics"
-            className={`page-btn ${
-              currentPage === "statics" ? "current-page" : ""
-            }`}
-            data-value="statics"
-            onClick={handlePageBtn}
+            className={({ isActive }) =>
+              "page-btn " + (isActive ? "current-page" : "")
+            }
           >
             통계
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/list"
-            className={`page-btn ${
-              currentPage === "list" ? "current-page" : ""
-            }`}
-            data-value="list"
-            onClick={handlePageBtn}
+            className={({ isActive }) =>
+              "page-btn " + (isActive ? "current-page" : "")
+            }
           >
             리스트
-          </Link>
+          </NavLink>
         </div>
         <div className="calendar-header">
           <div className="btn" onClick={handlePrevBtn}>
@@ -78,7 +67,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Calendar year={year} month={month} />} />
           <Route
-            path="/calendar"
+            path="/calendar/*"
             element={<Calendar year={year} month={month} />}
           />
           <Route

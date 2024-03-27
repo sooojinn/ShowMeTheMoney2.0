@@ -1,6 +1,8 @@
 import "./Calendar.css";
+import Write from "./Write.js";
 import { useState, useEffect } from "react";
 import { getTransaction } from "../api.js";
+import { Routes, Route, Link } from "react-router-dom";
 
 function Transaction({ year, month, date }) {
   const [data, setData] = useState([]);
@@ -80,8 +82,13 @@ function Calendar({ year, month }) {
         <div>일</div>
       </div>
       <div className="calendar">{renderCalendar()}</div>
-      <div className="write-btn">+ 새로운 거래 추가하기</div>
+      <Link to="/write" className="write-btn">
+        + 새로운 거래 추가하기
+      </Link>
       <Transaction year={year} month={month} date={date} />
+      <Routes>
+        <Route path="/write" element={<Write year={year} month={month} />} />
+      </Routes>
     </>
   );
 }
