@@ -1,32 +1,8 @@
 import "./Calendar.css";
+import Write from "./Write.js";
 import { useState, useEffect } from "react";
 import { getTransaction } from "../api.js";
-
-function CalendarHeader({ year, month, setYear, setMonth }) {
-  const handlePrevBtn = () => {
-    if (month === 0) {
-      setYear(year - 1);
-      setMonth(11);
-    } else setMonth(month - 1);
-  };
-
-  const handleNextBtn = () => {
-    if (month === 11) {
-      setYear(year + 1);
-      setMonth(0);
-    } else setMonth(month + 1);
-  };
-
-  return (
-    <div className="calendar-header">
-      <button onClick={handlePrevBtn}>이전</button>
-      <h2>
-        {year}년 {month + 1}월
-      </h2>
-      <button onClick={handleNextBtn}>다음</button>
-    </div>
-  );
-}
+import { Routes, Route, Link } from "react-router-dom";
 
 function Transaction({ year, month, date }) {
   const [data, setData] = useState([]);
@@ -63,18 +39,16 @@ function Transaction({ year, month, date }) {
   );
 }
 
-function Calendar() {
+function Calendar({ year, month }) {
   const today = new Date();
-  const [year, setYear] = useState(today.getFullYear());
-  const [month, setMonth] = useState(today.getMonth());
   const [date, setDate] = useState(today.getDate());
 
   const firstDayOfMonth = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const startDayOfWeek = firstDayOfMonth.getDay();
 
-  const selectDate = (date) => {
-    setDate(date);
+  const selectDate = (i) => {
+    setDate(i);
   };
 
   const renderCalendar = () => {
@@ -91,23 +65,13 @@ function Calendar() {
       );
     }
 
-    return <div className="calendar">{calendarDate}</div>;
+    return calendarDate;
   };
-
-  useEffect(() => {
-    renderCalendar();
-  }, [year, month]);
 
   console.log("render");
 
   return (
     <>
-      <CalendarHeader
-        year={year}
-        month={month}
-        setYear={setYear}
-        setMonth={setMonth}
-      />
       <div className="calendar day">
         <div>월</div>
         <div>화</div>
@@ -117,9 +81,14 @@ function Calendar() {
         <div>토</div>
         <div>일</div>
       </div>
-      {renderCalendar()}
-      <div className="write-btn">+ 새로운 거래 추가하기</div>
+      <div className="calendar">{renderCalendar()}</div>
+      <Link to="/write" className="write-btn">
+        + 새로운 거래 추가하기
+      </Link>
       <Transaction year={year} month={month} date={date} />
+      <Routes>
+        <Route path="/write" element={<Write year={year} month={month} />} />
+      </Routes>
     </>
   );
 }

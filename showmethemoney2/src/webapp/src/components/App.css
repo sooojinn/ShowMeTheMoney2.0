@@ -55,22 +55,22 @@ body {
   margin-top: 20px;
 }
 
-.calendar-page {
-  background-color: #f3cdcc;
-}
-
 .page-btn {
   display: flex;
   justify-content: center;
   align-items: center;
 
   font-size: 15.5px;
-
+  color: black;
   width: 50px;
   height: 25px;
   border: 1px solid #f3cdcc;
-
+  text-decoration: none;
   cursor: pointer;
+}
+
+.current-page {
+  background-color: #f3cdcc;
 }
 
 .btn {
