@@ -3,34 +3,36 @@ import { useState, useEffect } from "react";
 import { getTransaction } from "../api.js";
 import { Link, useOutletContext } from "react-router-dom";
 
-function Transaction({ year, month, date }) {
-  const [data, setData] = useState([]);
+function Transactions({ year, month, date }) {
+  const [transactions, setTransactions] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const result = await getTransaction(year, month + 1, date);
-      setData(result);
+      setTransactions(result);
     };
     fetchData();
   }, [year, month, date]);
 
-  if (data.length === 0) {
+  if (transactions.length === 0) {
     return null;
   }
-
-  const moneyClassNames = `money ${
-    data.division === "expense" ? "expense" : "income"
-  }`;
 
   return (
     <>
       <div className="transactions">
-        {data.map((data, i) => (
+        {transactions.map((transaction, i) => (
           <div className="transaction" key={i}>
             <div>
-              <div className="category">{data.category}</div>
-              <div className="memo">{data.memo}</div>
+              <div className="category">{transaction.category}</div>
+              <div className="memo">{transaction.memo}</div>
             </div>
-            <div className={moneyClassNames}>{data.money}</div>
+            <div
+              className={`money ${
+                transaction.division === "expense" ? "expense" : "income"
+              }`}
+            >
+              {transaction.money}
+            </div>
           </div>
         ))}
       </div>
@@ -59,9 +61,28 @@ function Calendar() {
     }
 
     for (let i = 1; i <= daysInMonth; i++) {
+      let dailyTotalIncome = false;
+      let dailyTotalExpense = false;
+
+      const datas = getTransaction(year, month + 1, i);
+      datas.forEach((data) => {
+        if (data.division === "income") {
+          dailyTotalIncome += +data.money;
+        } else {
+          dailyTotalExpense.toString();
+          dailyTotalExpense += +data.money;
+        }
+      });
+
       calendarDate.push(
         <div className="date" onClick={() => selectDate(i)}>
           {i}
+          {dailyTotalIncome && (
+            <div className="income daily-total">+{dailyTotalIncome}</div>
+          )}
+          {dailyTotalExpense && (
+            <div className="expense daily-total">-{dailyTotalExpense}</div>
+          )}
         </div>
       );
     }
@@ -86,7 +107,7 @@ function Calendar() {
       <Link to="/write" className="write-btn">
         + 새로운 거래 추가하기
       </Link>
-      <Transaction year={year} month={month} date={date} />
+      <Transactions year={year} month={month} date={date} />
     </>
   );
 }
