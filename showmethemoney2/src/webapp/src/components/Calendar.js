@@ -1,8 +1,7 @@
 import "./Calendar.css";
-import Write from "./Write.js";
 import { useState, useEffect } from "react";
 import { getTransaction } from "../api.js";
-import { Routes, Route, Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 
 function Transaction({ year, month, date }) {
   const [data, setData] = useState([]);
@@ -25,8 +24,8 @@ function Transaction({ year, month, date }) {
   return (
     <>
       <div className="transactions">
-        {data.map((data) => (
-          <div className="transaction">
+        {data.map((data, i) => (
+          <div className="transaction" key={i}>
             <div>
               <div className="category">{data.category}</div>
               <div className="memo">{data.memo}</div>
@@ -39,7 +38,9 @@ function Transaction({ year, month, date }) {
   );
 }
 
-function Calendar({ year, month }) {
+function Calendar() {
+  const { year, month } = useOutletContext();
+
   const today = new Date();
   const [date, setDate] = useState(today.getDate());
 
@@ -86,9 +87,6 @@ function Calendar({ year, month }) {
         + 새로운 거래 추가하기
       </Link>
       <Transaction year={year} month={month} date={date} />
-      <Routes>
-        <Route path="/write" element={<Write year={year} month={month} />} />
-      </Routes>
     </>
   );
 }
