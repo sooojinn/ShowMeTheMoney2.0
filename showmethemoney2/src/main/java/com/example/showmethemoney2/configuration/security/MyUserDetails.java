@@ -1,4 +1,4 @@
-package com.example.showmethemoney2.configuration;
+package com.example.showmethemoney2.configuration.security;
 
 import com.example.showmethemoney2.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
