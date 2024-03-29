@@ -1,50 +1,56 @@
 import "./Calendar.css";
 import Transactions from "./Transactions.js";
-import { useState, useEffect, useRef } from "react";
-import { getTransactions } from "../api.js";
+import { useState, useEffect } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 
 function Calendar() {
-  const { year, month } = useOutletContext();
-  const transactionsOfToday = getTransactions(
-    year,
-    month + 1,
-    new Date().getDate()
-  );
-  const [transactions, setTransactions] = useState(transactionsOfToday);
-  const [selectedDate, setSelectedDate] = useState();
+  const { year, month, datas } = useOutletContext();
+
+  const getDailyData = (date) => {
+    return datas.filter((data) => data.date === `${year}-${month + 1}-${date}`);
+  };
 
   const firstDayOfMonth = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const startDayOfWeek = firstDayOfMonth.getDay();
+  const currentMonth = new Date().getMonth();
+  const currentDate = new Date().getDate();
+
+  const transactionsOfToday = getDailyData(currentDate);
+  const [transactions, setTransactions] = useState(transactionsOfToday);
+  const [selectedDate, setSelectedDate] = useState();
 
   const handleDateClick = (i) => {
     setSelectedDate(i);
-    setTransactions(getTransactions(year, month + 1, i));
+    setTransactions(getDailyData(i));
   };
 
   useEffect(() => {
-    if (month === new Date().getMonth()) setSelectedDate(new Date().getDate());
-    else setSelectedDate();
-    setTransactions([]);
+    if (month === currentMonth) {
+      setSelectedDate(currentDate);
+      setTransactions(getDailyData(currentDate));
+    } else {
+      setSelectedDate();
+      setTransactions([]);
+    }
   }, [month]);
 
   const renderCalendar = () => {
     const calendarDate = [];
     for (let i = 0; i < startDayOfWeek; i++) {
-      calendarDate.push(<div className="empty"></div>);
+      calendarDate.push(<div className="empty" key={"empty" + i}></div>);
     }
 
     for (let i = 1; i <= daysInMonth; i++) {
       let dailyTotalIncome = false;
       let dailyTotalExpense = false;
 
-      const datas = getTransactions(year, month + 1, i);
-      datas.forEach((data) => {
+      const dailyData = getDailyData(i);
+
+      dailyData.forEach((data) => {
         if (data.division === "income") {
           dailyTotalIncome += +data.money;
         } else {
-          dailyTotalExpense.toString();
           dailyTotalExpense += +data.money;
         }
       });
@@ -53,6 +59,7 @@ function Calendar() {
         <div
           className={"date " + (i === selectedDate ? "selected-date" : "")}
           onClick={() => handleDateClick(i)}
+          key={i}
         >
           {i}
           {dailyTotalIncome && (

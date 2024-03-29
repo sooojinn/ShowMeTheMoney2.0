@@ -23,9 +23,9 @@ const { transactions } = mock;
 //   allowance: "용돈",
 // };
 
-export function getTransactions(year, month, selectedDate) {
-  const datas = transactions.filter(
-    (transaction) => transaction.date === `${year}-${month}-${selectedDate}`
+export function getTransactions(year, month) {
+  const datas = transactions.filter((transaction) =>
+    transaction.date.includes(`${year}-${month}`)
   );
 
   // if (datas.length > 0) {

@@ -6,25 +6,23 @@ function Transactions({ transactions }) {
   }
 
   return (
-    <>
-      <div className="transactions" key={transactions.id}>
-        {transactions.map((transaction, i) => (
-          <div className="transaction" key={i}>
-            <div>
-              <div className="category">{transaction.category}</div>
-              <div className="memo">{transaction.memo}</div>
-            </div>
-            <div
-              className={`money ${
-                transaction.division === "expense" ? "expense" : "income"
-              }`}
-            >
-              {[+transaction.money].toLocaleString()}원
-            </div>
+    <div className="transactions">
+      {transactions.map((transaction, i) => (
+        <div className="transaction" key={transaction.id}>
+          <div>
+            <div className="category">{transaction.category}</div>
+            <div className="memo">{transaction.memo}</div>
           </div>
-        ))}
-      </div>
-    </>
+          <div
+            className={`money ${
+              transaction.division === "expense" ? "expense" : "income"
+            }`}
+          >
+            {[+transaction.money].toLocaleString()}원
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }
 
