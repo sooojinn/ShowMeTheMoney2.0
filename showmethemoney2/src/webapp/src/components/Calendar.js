@@ -1,61 +1,38 @@
 import "./Calendar.css";
 import { useState, useEffect } from "react";
 import { getTransaction } from "../api.js";
+import { Link, useOutletContext } from "react-router-dom";
 
-function CalendarHeader({ year, month, setYear, setMonth }) {
-  const handlePrevBtn = () => {
-    if (month === 0) {
-      setYear(year - 1);
-      setMonth(11);
-    } else setMonth(month - 1);
-  };
-
-  const handleNextBtn = () => {
-    if (month === 11) {
-      setYear(year + 1);
-      setMonth(0);
-    } else setMonth(month + 1);
-  };
-
-  return (
-    <div className="calendar-header">
-      <button onClick={handlePrevBtn}>이전</button>
-      <h2>
-        {year}년 {month + 1}월
-      </h2>
-      <button onClick={handleNextBtn}>다음</button>
-    </div>
-  );
-}
-
-function Transaction({ year, month, date }) {
-  const [data, setData] = useState([]);
+function Transactions({ year, month, date }) {
+  const [transactions, setTransactions] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const result = await getTransaction(year, month + 1, date);
-      setData(result);
+      setTransactions(result);
     };
     fetchData();
   }, [year, month, date]);
 
-  if (data.length === 0) {
+  if (transactions.length === 0) {
     return null;
   }
-
-  const moneyClassNames = `money ${
-    data.division === "expense" ? "expense" : "income"
-  }`;
 
   return (
     <>
       <div className="transactions">
-        {data.map((data) => (
-          <div className="transaction">
+        {transactions.map((transaction, i) => (
+          <div className="transaction" key={i}>
             <div>
-              <div className="category">{data.category}</div>
-              <div className="memo">{data.memo}</div>
+              <div className="category">{transaction.category}</div>
+              <div className="memo">{transaction.memo}</div>
             </div>
-            <div className={moneyClassNames}>{data.money}</div>
+            <div
+              className={`money ${
+                transaction.division === "expense" ? "expense" : "income"
+              }`}
+            >
+              {transaction.money}
+            </div>
           </div>
         ))}
       </div>
@@ -64,17 +41,17 @@ function Transaction({ year, month, date }) {
 }
 
 function Calendar() {
+  const { year, month } = useOutletContext();
+
   const today = new Date();
-  const [year, setYear] = useState(today.getFullYear());
-  const [month, setMonth] = useState(today.getMonth());
   const [date, setDate] = useState(today.getDate());
 
   const firstDayOfMonth = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const startDayOfWeek = firstDayOfMonth.getDay();
 
-  const selectDate = (date) => {
-    setDate(date);
+  const selectDate = (i) => {
+    setDate(i);
   };
 
   const renderCalendar = () => {
@@ -84,30 +61,39 @@ function Calendar() {
     }
 
     for (let i = 1; i <= daysInMonth; i++) {
+      let dailyTotalIncome = false;
+      let dailyTotalExpense = false;
+
+      const datas = getTransaction(year, month + 1, i);
+      datas.forEach((data) => {
+        if (data.division === "income") {
+          dailyTotalIncome += +data.money;
+        } else {
+          dailyTotalExpense.toString();
+          dailyTotalExpense += +data.money;
+        }
+      });
+
       calendarDate.push(
         <div className="date" onClick={() => selectDate(i)}>
           {i}
+          {dailyTotalIncome && (
+            <div className="income daily-total">+{dailyTotalIncome}</div>
+          )}
+          {dailyTotalExpense && (
+            <div className="expense daily-total">-{dailyTotalExpense}</div>
+          )}
         </div>
       );
     }
 
-    return <div className="calendar">{calendarDate}</div>;
+    return calendarDate;
   };
-
-  useEffect(() => {
-    renderCalendar();
-  }, [year, month]);
 
   console.log("render");
 
   return (
     <>
-      <CalendarHeader
-        year={year}
-        month={month}
-        setYear={setYear}
-        setMonth={setMonth}
-      />
       <div className="calendar day">
         <div>월</div>
         <div>화</div>
@@ -117,9 +103,11 @@ function Calendar() {
         <div>토</div>
         <div>일</div>
       </div>
-      {renderCalendar()}
-      <div className="write-btn">+ 새로운 거래 추가하기</div>
-      <Transaction year={year} month={month} date={date} />
+      <div className="calendar">{renderCalendar()}</div>
+      <Link to="/write" className="write-btn">
+        + 새로운 거래 추가하기
+      </Link>
+      <Transactions year={year} month={month} date={date} />
     </>
   );
 }
