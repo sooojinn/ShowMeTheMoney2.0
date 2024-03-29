@@ -1,58 +1,33 @@
 import "./Calendar.css";
-import { useState, useEffect } from "react";
-import { getTransaction } from "../api.js";
+import Transactions from "./Transactions.js";
+import { useState, useEffect, useRef } from "react";
+import { getTransactions } from "../api.js";
 import { Link, useOutletContext } from "react-router-dom";
-
-function Transactions({ year, month, date }) {
-  const [transactions, setTransactions] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await getTransaction(year, month + 1, date);
-      setTransactions(result);
-    };
-    fetchData();
-  }, [year, month, date]);
-
-  if (transactions.length === 0) {
-    return null;
-  }
-
-  return (
-    <>
-      <div className="transactions">
-        {transactions.map((transaction, i) => (
-          <div className="transaction" key={i}>
-            <div>
-              <div className="category">{transaction.category}</div>
-              <div className="memo">{transaction.memo}</div>
-            </div>
-            <div
-              className={`money ${
-                transaction.division === "expense" ? "expense" : "income"
-              }`}
-            >
-              {transaction.money}
-            </div>
-          </div>
-        ))}
-      </div>
-    </>
-  );
-}
 
 function Calendar() {
   const { year, month } = useOutletContext();
-
-  const today = new Date();
-  const [date, setDate] = useState(today.getDate());
+  const transactionsOfToday = getTransactions(
+    year,
+    month + 1,
+    new Date().getDate()
+  );
+  const [transactions, setTransactions] = useState(transactionsOfToday);
+  const [selectedDate, setSelectedDate] = useState();
 
   const firstDayOfMonth = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const startDayOfWeek = firstDayOfMonth.getDay();
 
-  const selectDate = (i) => {
-    setDate(i);
+  const handleDateClick = (i) => {
+    setSelectedDate(i);
+    setTransactions(getTransactions(year, month + 1, i));
   };
+
+  useEffect(() => {
+    if (month === new Date().getMonth()) setSelectedDate(new Date().getDate());
+    else setSelectedDate();
+    setTransactions([]);
+  }, [month]);
 
   const renderCalendar = () => {
     const calendarDate = [];
@@ -64,7 +39,7 @@ function Calendar() {
       let dailyTotalIncome = false;
       let dailyTotalExpense = false;
 
-      const datas = getTransaction(year, month + 1, i);
+      const datas = getTransactions(year, month + 1, i);
       datas.forEach((data) => {
         if (data.division === "income") {
           dailyTotalIncome += +data.money;
@@ -75,13 +50,20 @@ function Calendar() {
       });
 
       calendarDate.push(
-        <div className="date" onClick={() => selectDate(i)}>
+        <div
+          className={"date " + (i === selectedDate ? "selected-date" : "")}
+          onClick={() => handleDateClick(i)}
+        >
           {i}
           {dailyTotalIncome && (
-            <div className="income daily-total">+{dailyTotalIncome}</div>
+            <div className="income daily-total">
+              +{dailyTotalIncome.toLocaleString()}
+            </div>
           )}
           {dailyTotalExpense && (
-            <div className="expense daily-total">-{dailyTotalExpense}</div>
+            <div className="expense daily-total">
+              -{dailyTotalExpense.toLocaleString()}
+            </div>
           )}
         </div>
       );
@@ -107,7 +89,7 @@ function Calendar() {
       <Link to="/write" className="write-btn">
         + 새로운 거래 추가하기
       </Link>
-      <Transactions year={year} month={month} date={date} />
+      <Transactions transactions={transactions} />
     </>
   );
 }
