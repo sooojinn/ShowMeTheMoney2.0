@@ -1,8 +1,10 @@
 import "./Join.css";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 function JoinForm() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -46,7 +48,28 @@ function JoinForm() {
   }, [watch("password"), watch("passwordCheck")]);
 
   const onSubmit = (data) => {
-    console.log(data);
+    const postData = async (data) => {
+      try {
+        const res = await fetch(
+          "https://2a6fece9-32ad-4426-a0fb-d9ddbd129199.mock.pstmn.io/joinProc",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        const status = await res.status;
+        if (status === 200) {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("회원가입 요청 중 오류가 발생했습니다.");
+      }
+    };
+    postData(data);
   };
 
   return (

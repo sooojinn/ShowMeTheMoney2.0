@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./components/App.js";
 import Home from "./components/Home.js";
-import JoinForm from "./components/Join.js";
+import Join from "./components/Join.js";
+import Login from "./components/Login.js";
 import Accountbook from "./components/Accountbook.js";
 import Calendar from "./components/Calendar.js";
 import Statics from "./components/Statics.js";
@@ -15,7 +16,8 @@ function Main() {
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
-          <Route path="join" element={<JoinForm />} />
+          <Route path="join" element={<Join />} />
+          <Route path="login" element={<Login />} />
           <Route path="accountbook" element={<Accountbook />}>
             <Route path="calendar" element={<Calendar />} />
             <Route path="statics" element={<Statics />} />
