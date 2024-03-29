@@ -43,6 +43,10 @@
   border: 1px solid #bebfc0;
 }
 
+.daily-total {
+  font-size: 14px;
+}
+
 .write-btn {
   display: flex;
   justify-content: center;
