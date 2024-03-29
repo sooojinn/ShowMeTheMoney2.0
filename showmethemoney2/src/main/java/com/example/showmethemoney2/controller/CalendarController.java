@@ -4,6 +4,7 @@ import com.example.showmethemoney2.dao.CalendarDTO;
 import com.example.showmethemoney2.entity.Calendar;
 import com.example.showmethemoney2.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -19,11 +20,31 @@ import java.util.Map;
 @RestController
 public class CalendarController {
     private final CalendarService calendarService;
+    private final StringRedisTemplate stringRedisTemplate;
     @Autowired
-    public CalendarController(CalendarService calendarService) {
+    public CalendarController(CalendarService calendarService, StringRedisTemplate stringRedisTemplate) {
         this.calendarService = calendarService;
+        this.stringRedisTemplate=stringRedisTemplate;
     }
 
+    //Redis 서버에서 username 전달
+    @GetMapping("/username")
+    public ResponseEntity<String> ServeUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+
+        //레디스에서 현재 사용자 이름을 확인
+        String redisUserStatus = stringRedisTemplate.opsForValue().get("currentUser:"+currentUsername);
+
+        if (redisUserStatus != null) {
+            // Redis에 사용자 이름이 존재하면 해당 이름을 반환
+            String jsonData = "{\"username\": \"" + currentUsername + "\"}";
+            return ResponseEntity.ok().body(jsonData);
+        } else {
+            // Redis에 사용자 이름이 존재하지 않으면 에러 메시지 반환
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found in Redis.");
+        }
+    }
     //저장
     @PostMapping("/users/{username}/transactions")
     public ResponseEntity<String> saveCalendar (@RequestBody CalendarDTO calendardto,

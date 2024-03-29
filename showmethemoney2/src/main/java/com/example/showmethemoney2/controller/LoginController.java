@@ -1,6 +1,7 @@
 package com.example.showmethemoney2.controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -49,13 +50,6 @@ public class LoginController {
     }
 
 
-    @GetMapping("/username")
-    public ResponseEntity<String> ServeUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
 
-        String jsonData = "{\"username\": \"" + currentUsername + "\"}";
-        return ResponseEntity.ok().body(jsonData);
-    }
 }
 
