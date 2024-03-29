@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getTransactions } from "../api";
 import "./Accountbook.css";
 import { NavLink, Outlet } from "react-router-dom";
 
@@ -6,6 +7,8 @@ function Accountbook() {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
+
+  const datas = getTransactions(year, month + 1);
 
   const handlePrevBtn = () => {
     if (month === 0) {
@@ -24,6 +27,8 @@ function Accountbook() {
   const pageBtnStyle = ({ isActive }) => {
     return "page-btn " + (isActive ? "current-page" : "");
   };
+
+  console.log("Accountbook이 렌더링되었습니다.");
 
   return (
     <div>
@@ -49,7 +54,7 @@ function Accountbook() {
           ▶
         </div>
       </div>
-      <Outlet context={{ year: year, month: month }} />
+      <Outlet context={{ year: year, month: month, datas: datas }} />
     </div>
   );
 }

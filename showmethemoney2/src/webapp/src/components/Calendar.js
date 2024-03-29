@@ -1,87 +1,76 @@
 import "./Calendar.css";
+import Transactions from "./Transactions.js";
 import { useState, useEffect } from "react";
-import { getTransaction } from "../api.js";
 import { Link, useOutletContext } from "react-router-dom";
 
-function Transactions({ year, month, date }) {
-  const [transactions, setTransactions] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await getTransaction(year, month + 1, date);
-      setTransactions(result);
-    };
-    fetchData();
-  }, [year, month, date]);
-
-  if (transactions.length === 0) {
-    return null;
-  }
-
-  return (
-    <>
-      <div className="transactions">
-        {transactions.map((transaction, i) => (
-          <div className="transaction" key={i}>
-            <div>
-              <div className="category">{transaction.category}</div>
-              <div className="memo">{transaction.memo}</div>
-            </div>
-            <div
-              className={`money ${
-                transaction.division === "expense" ? "expense" : "income"
-              }`}
-            >
-              {transaction.money}
-            </div>
-          </div>
-        ))}
-      </div>
-    </>
-  );
-}
-
 function Calendar() {
-  const { year, month } = useOutletContext();
+  const { year, month, datas } = useOutletContext();
 
-  const today = new Date();
-  const [date, setDate] = useState(today.getDate());
+  const getDailyData = (date) => {
+    return datas.filter((data) => data.date === `${year}-${month + 1}-${date}`);
+  };
 
   const firstDayOfMonth = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const startDayOfWeek = firstDayOfMonth.getDay();
+  const currentMonth = new Date().getMonth();
+  const currentDate = new Date().getDate();
 
-  const selectDate = (i) => {
-    setDate(i);
+  const transactionsOfToday = getDailyData(currentDate);
+  const [transactions, setTransactions] = useState(transactionsOfToday);
+  const [selectedDate, setSelectedDate] = useState();
+
+  const handleDateClick = (i) => {
+    setSelectedDate(i);
+    setTransactions(getDailyData(i));
   };
+
+  useEffect(() => {
+    if (month === currentMonth) {
+      setSelectedDate(currentDate);
+      setTransactions(getDailyData(currentDate));
+    } else {
+      setSelectedDate();
+      setTransactions([]);
+    }
+  }, [month]);
 
   const renderCalendar = () => {
     const calendarDate = [];
     for (let i = 0; i < startDayOfWeek; i++) {
-      calendarDate.push(<div className="empty"></div>);
+      calendarDate.push(<div className="empty" key={"empty" + i}></div>);
     }
 
     for (let i = 1; i <= daysInMonth; i++) {
       let dailyTotalIncome = false;
       let dailyTotalExpense = false;
 
-      const datas = getTransaction(year, month + 1, i);
-      datas.forEach((data) => {
+      const dailyData = getDailyData(i);
+
+      dailyData.forEach((data) => {
         if (data.division === "income") {
           dailyTotalIncome += +data.money;
         } else {
-          dailyTotalExpense.toString();
           dailyTotalExpense += +data.money;
         }
       });
 
       calendarDate.push(
-        <div className="date" onClick={() => selectDate(i)}>
+        <div
+          className={"date " + (i === selectedDate ? "selected-date" : "")}
+          onClick={() => handleDateClick(i)}
+          key={i}
+        >
           {i}
           {dailyTotalIncome && (
-            <div className="income daily-total">+{dailyTotalIncome}</div>
+            <div className="income daily-total">
+              +{dailyTotalIncome.toLocaleString()}
+            </div>
           )}
           {dailyTotalExpense && (
-            <div className="expense daily-total">-{dailyTotalExpense}</div>
+            <div className="expense daily-total">
+              -{dailyTotalExpense.toLocaleString()}
+            </div>
           )}
         </div>
       );
@@ -107,7 +96,7 @@ function Calendar() {
       <Link to="/write" className="write-btn">
         + 새로운 거래 추가하기
       </Link>
-      <Transactions year={year} month={month} date={date} />
+      <Transactions transactions={transactions} />
     </>
   );
 }
