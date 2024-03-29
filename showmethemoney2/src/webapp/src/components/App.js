@@ -1,10 +1,10 @@
 import "./App.css";
-import Calendar from "./Calendar.js";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
     <div className="layout">
-      <Calendar />
+      <Outlet />
     </div>
   );
 }

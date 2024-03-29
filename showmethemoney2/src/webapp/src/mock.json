@@ -1,0 +1,39 @@
+{
+  "transactions": [
+    {
+      "division": "expense",
+      "money": "2000",
+      "date": "2024-3-28",
+      "category": "food",
+      "memo": "과자"
+    },
+    {
+      "division": "expense",
+      "money": "13000",
+      "date": "2024-3-28",
+      "category": "food",
+      "memo": "배민"
+    },
+    {
+      "division": "expense",
+      "money": "59000",
+      "date": "2024-3-27",
+      "category": "shopping",
+      "memo": "자켓"
+    },
+    {
+      "division": "income",
+      "money": "20000",
+      "date": "2024-3-25",
+      "category": "additional",
+      "memo": "당근마켓"
+    },
+    {
+      "division": "expense",
+      "money": "6500",
+      "date": "2024-3-25",
+      "category": "cafe",
+      "memo": "스벅"
+    }
+  ]
+}
