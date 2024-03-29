@@ -1,3 +1,4 @@
+
 package com.example.showmethemoney2.configuration.cache;
 
 import com.example.showmethemoney2.configuration.security.MyUserDetails;
@@ -29,3 +30,4 @@ public class AuthenticationSuccessListener implements ApplicationListener<Authen
         stringRedisTemplate.opsForValue().set("currentUser:"+username,"true");
     }
 }
+

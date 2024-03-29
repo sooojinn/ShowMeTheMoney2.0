@@ -1,3 +1,4 @@
+
 package com.example.showmethemoney2.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,4 +25,6 @@ public class Calendar {
     private String memo;
 
 }
+
+
 
