@@ -483,3 +483,6 @@ G.idea/sonarlint/issuestore/1/3/13f81ae3ee0892405f74c0a9522bdaad718363ba,b/f/bf
 Q.idea/sonarlint/securityhotspotstore/5/0/50334e2f00be21f7a795794d318b6bae150f4d8c,a/3/a3a72a8e476849b5dd62147364e7f8d8523cac98
 Å
 Q.idea/sonarlint/securityhotspotstore/6/3/63227c79e721fd4b2698e4f47f0db0d9031398bc,a/b/ab6766bfcf46c34add1bbfc2d07d4f7066c86301
+:
+
+.gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
