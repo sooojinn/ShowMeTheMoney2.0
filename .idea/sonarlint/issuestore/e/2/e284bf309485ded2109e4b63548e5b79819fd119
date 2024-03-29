@@ -1,0 +1,5 @@
+
+…
+java:S6813"BRemove this field injection and use constructor injection instead.(κζΔή8£όορη1J$29e03fdd-8f38-4559-9d8d-c5614f760dc9
+l	java:S106"+Replace this use of System.out by a logger.(“£8©όορη1J$dc6c1fd9-7a4a-4af9-8cfc-f90f50c91521
+	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‹ψ¬8¬όορη1J$602a167c-b464-4b09-b97e-3e491ad961ff
