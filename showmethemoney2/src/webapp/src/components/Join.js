@@ -1,19 +1,17 @@
 import "./Join.css";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 function JoinForm() {
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    watch,
-    setError,
-    clearErrors,
     getValues,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting, isSubmitted },
   } = useForm({ mode: "onChange" });
+
+  const navigate = useNavigate();
 
   const usernameArr = ["aaa", "123", "soojin00"];
 
@@ -33,33 +31,33 @@ function JoinForm() {
 
   //   return result === 'true' ? false : true
 
-  useEffect(() => {
-    if (
-      watch("password") !== watch("passwordCheck") &&
-      watch("passwordCheck")
-    ) {
-      setError("passwordCheck", {
-        type: "password-mismatch",
-        message: "비밀번호가 일치하지 않습니다",
-      });
-    } else {
-      clearErrors("passwordCheck");
-    }
-  }, [watch("password"), watch("passwordCheck")]);
+  console.log("render");
+  console.log(isSubmitting);
+
+  // useEffect(() => {
+  //   if (
+  //     watch("password") !== watch("passwordCheck") &&
+  //     watch("passwordCheck")
+  //   ) {
+  //     setError("passwordCheck", {
+  //       type: "password-mismatch",
+  //       message: "비밀번호가 일치하지 않습니다",
+  //     });
+  //   } else {
+  //     clearErrors("passwordCheck");
+  //   }
+  // }, [watch("password"), watch("passwordCheck")]);
 
   const onSubmit = (data) => {
     const postData = async (data) => {
       try {
-        const res = await fetch(
-          "https://2a6fece9-32ad-4426-a0fb-d9ddbd129199.mock.pstmn.io/joinProc",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
+        const res = await fetch("/joinProc", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
         const status = await res.status;
         if (status === 200) {
           navigate("/login");
@@ -74,12 +72,7 @@ function JoinForm() {
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        action="/joinProc"
-        method="post"
-        name="joinForm"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} name="joinForm">
         <div className="title-div">
           <p className="title">회원가입</p>
           <p className="title-info">
@@ -150,7 +143,7 @@ function JoinForm() {
               validate: {
                 matchPassword: (value) => {
                   const { password } = getValues();
-                  return password === value || "비밀번호가 일치하지 않습니다";
+                  return password === value || "비밀번호가 일치하지 않습니다.";
                 },
               },
             })}
@@ -159,9 +152,16 @@ function JoinForm() {
             <div className="err message">{errors.passwordCheck.message}</div>
           )}
         </div>
-        <button className="submit-btn" value="join">
+        <button
+          disabled={!isValid || isSubmitting || isSubmitted}
+          className="submit-btn"
+          value="join"
+        >
           가입하기
         </button>
+        <Link to="/login" className="login-link">
+          로그인하기
+        </Link>
       </form>
     </>
   );
