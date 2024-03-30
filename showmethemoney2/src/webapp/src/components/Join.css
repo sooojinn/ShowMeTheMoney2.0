@@ -93,10 +93,14 @@ input:focus {
   cursor: pointer;
 }
 
-.login-page_btn {
+.submit-btn:disabled {
+  color: black;
+}
+
+.login-link {
   display: block;
   width: 100px;
-  margin: 0 auto;
+  margin: 20px auto;
   text-align: center;
   color: #1e1e1e;
   font-size: 15px;
