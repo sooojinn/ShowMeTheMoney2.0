@@ -1,5 +1,6 @@
 package com.example.showmethemoney2.service;
 
+import com.example.showmethemoney2.dto.CustomOAuth2User;
 import com.example.showmethemoney2.dto.Google2Response;
 import com.example.showmethemoney2.dto.Naver2Response;
 import com.example.showmethemoney2.dto.OAuth2Response;
@@ -31,5 +32,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
             return null;
         }
+
+        String role = "ROLE_USER";
+
+        return new CustomOAuth2User(oAuth2Response, role);
     }
 }
