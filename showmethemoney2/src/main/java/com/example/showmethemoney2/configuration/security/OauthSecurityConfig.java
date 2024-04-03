@@ -25,6 +25,6 @@ public class OauthSecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/", "/oauth2/**", "/login/**").permitAll()
                         .anyRequest().authenticated());
-        return http.build();
+        return http.build(); //커밋커밋
     }
 }
