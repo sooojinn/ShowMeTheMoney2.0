@@ -1,8 +1,9 @@
 import "./Join.css";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { postJoinForm } from "../api";
+import { isUnique } from "../api";
 import Spinner from "../Spinner.gif";
 import Loading from "./Loading.js";
 
@@ -15,13 +16,6 @@ function JoinForm() {
   } = useForm({ mode: "onChange" });
 
   const [postSuccess, setPostSuccess] = useState(false);
-  const navigate = useNavigate();
-
-  const usernameArr = ["aaa", "123", "soojin00"];
-
-  const isUnique = (value) => {
-    return !usernameArr.includes(value);
-  };
 
   // useEffect(() => {
   //   if (
