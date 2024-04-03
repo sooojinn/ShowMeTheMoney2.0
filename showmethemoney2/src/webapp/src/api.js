@@ -42,3 +42,44 @@ export function getTransactions(year, month) {
 //   );
 //   return res.json();
 // }
+
+export async function isUnique(value) {
+  const res = await fetch("/join/username/duplication", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username: value }),
+  });
+  const result = await res.text();
+
+  return result === "true" ? false : true;
+}
+
+export async function postJoinForm(data) {
+  const res = await fetch(
+    "https://2a6fece9-32ad-4426-a0fb-d9ddbd129199.mock.pstmn.io/joinProc",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+  return res.status;
+}
+
+export async function postLoginForm(data) {
+  const res = await fetch(
+    "https://2a6fece9-32ad-4426-a0fb-d9ddbd129199.mock.pstmn.io/loginProc",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+  return res.status;
+}
