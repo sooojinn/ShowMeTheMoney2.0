@@ -1,5 +1,6 @@
-package com.example.showmethemoney2.configuration;
+package com.example.showmethemoney2.configuration.security;
 
+import com.example.showmethemoney2.configuration.security.MyFailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
