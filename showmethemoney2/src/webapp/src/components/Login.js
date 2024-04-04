@@ -17,8 +17,8 @@ function LoginForm() {
         navigate("/accountbook/calendar");
       }
     } catch (error) {
-      console.error("Error:", error);
       alert("회원가입 요청 중 에러가 발생했습니다.");
+      window.location.reload();
       return;
     }
   };
