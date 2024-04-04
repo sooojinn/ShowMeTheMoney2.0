@@ -38,8 +38,8 @@ function JoinForm() {
         setPostSuccess(true);
       }
     } catch (error) {
-      console.error("Error:", error);
       alert("회원가입 요청 중 에러가 발생했습니다.");
+      window.location.reload();
       return;
     }
   };
@@ -48,7 +48,7 @@ function JoinForm() {
 
   return (
     <>
-      {!isSubmitted && (
+      {!postSuccess && (
         <form onSubmit={handleSubmit(onSubmit)} name="joinForm">
           <div className="title-div">
             <p className="title">회원가입</p>
