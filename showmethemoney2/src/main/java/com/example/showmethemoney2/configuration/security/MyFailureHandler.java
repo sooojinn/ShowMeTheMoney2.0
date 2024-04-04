@@ -1,4 +1,4 @@
-package com.example.showmethemoney2.configuration;
+package com.example.showmethemoney2.configuration.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

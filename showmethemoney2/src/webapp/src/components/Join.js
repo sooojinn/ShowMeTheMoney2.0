@@ -15,6 +15,7 @@ function JoinForm() {
     formState: { errors, isValid, isSubmitting, isSubmitted },
   } = useForm({ mode: "onChange" });
 
+
   const [postSuccess, setPostSuccess] = useState(false);
 
   // useEffect(() => {
