@@ -23,18 +23,13 @@ public class MainController {
         return "write";
     }
 
-    @GetMapping("/statics/users/{username}")
-    public String staticsPage(@PathVariable String username) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-        if (!username.equals(currentUsername)) {
-            return "redirect:/error";
-        }
+    @GetMapping("/statics/users")
+    public String staticsPage() {
         return "statics";
     }
 
     //수정작업을 수행하게 될 페이지로 리턴
-    @GetMapping("/users/{username}/modify/transactions/{calid}")
+    @GetMapping("/users/modify/transactions/{calid}")
     public String modifyPage() {
 
         return "modify";
