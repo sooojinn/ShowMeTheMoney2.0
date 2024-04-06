@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getTransactions } from "../api";
 import "./Accountbook.css";
 import { NavLink, Outlet } from "react-router-dom";
@@ -7,8 +7,16 @@ function Accountbook() {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
+  const [datas, setDatas] = useState([]);
 
-  const datas = getTransactions(year, month + 1);
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedData = await getTransactions(year, month + 1);
+      setDatas(fetchedData);
+    };
+
+    fetchData();
+  }, []);
 
   const handlePrevBtn = () => {
     if (month === 0) {
