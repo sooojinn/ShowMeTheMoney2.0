@@ -1,9 +1,11 @@
 package com.example.showmethemoney2.configuration.security;
 
-import com.example.showmethemoney2.configuration.security.MyFailureHandler;
+
+import com.example.showmethemoney2.service.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +14,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+
     //접근 권한 설정
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -26,6 +30,16 @@ public class SecurityConfig {
                 .loginProcessingUrl("/loginProc")
                 .failureHandler(new MyFailureHandler())
                 .permitAll());
+
+        /*
+        http.oauth2Login(oauth2 -> oauth2
+                .loginPage("/login")
+                        .userInfoEndpoint()
+                                .userService(CustomOAuth2UserService));
+
+
+         */
+
         http.logout(logout -> logout.logoutUrl("/logout")
                 .logoutSuccessUrl("/"));
         http.csrf((x) -> x.disable());
@@ -36,5 +50,6 @@ public class SecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
 
