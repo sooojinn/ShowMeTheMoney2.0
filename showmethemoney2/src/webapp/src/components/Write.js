@@ -1,17 +1,40 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import "./Write.css";
 import { useForm } from "react-hook-form";
+import { postTransaction } from "../api";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Write() {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
-  const onSubmit = (data) => {
-    data["money"] = removeComma(money);
-    console.log(data);
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+  const year = searchParams.get("year");
+  const month = searchParams.get("month");
+  const date = searchParams.get("date");
+
+  const offset = new Date(year, month, date).getTimezoneOffset() * 60000;
+  const dateOffset = new Date(new Date(year, month, date).getTime() - offset);
+  const defaultDate = dateOffset.toISOString().slice(0, 10);
+
+  const onSubmit = async (data) => {
+    data["money"] = +removeComma(money);
+    if (!data.money) alert("금액을 입력해주세요.");
+    else if (!data.date) alert("날짜를 선택해주세요.");
+    else if (!data.category) alert("카테고리를 선택해주세요.");
+    else {
+      try {
+        const status = await postTransaction(data);
+        if (status === 200) {
+          navigate("/accountbook/calendar");
+        }
+      } catch (error) {
+        alert("에러가 발생했습니다.");
+        window.location.reload();
+        return;
+      }
+    }
   };
 
   const [division, setDivision] = useState("expense");
@@ -101,7 +124,13 @@ export default function Write() {
       </div>
       <div className="input-group">
         날짜
-        <input id="date" type="date" name="date" {...register("date")} />
+        <input
+          id="date"
+          type="date"
+          name="date"
+          defaultValue={defaultDate}
+          {...register("date")}
+        />
       </div>
       <div className="input-group">
         카테고리
