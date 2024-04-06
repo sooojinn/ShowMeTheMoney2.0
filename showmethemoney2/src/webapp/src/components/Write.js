@@ -6,13 +6,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Write() {
   const { register, handleSubmit } = useForm();
+  const [division, setDivision] = useState("expense");
+  const [money, setMoney] = useState("0");
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const searchParams = new URLSearchParams(location.search);
-  const year = searchParams.get("year");
-  const month = searchParams.get("month");
-  const date = searchParams.get("date");
+  const location = useLocation();
+  const {
+    year = new Date().getFullYear(),
+    month = new Date().getMonth(),
+    selectedDate: date = new Date().getDate(),
+  } = location.state;
 
   const offset = new Date(year, month, date).getTimezoneOffset() * 60000;
   const dateOffset = new Date(new Date(year, month, date).getTime() - offset);
@@ -36,9 +39,6 @@ export default function Write() {
       }
     }
   };
-
-  const [division, setDivision] = useState("expense");
-  const [money, setMoney] = useState("0");
 
   const handleDivisionClick = (e) => {
     setDivision(e.target.value);
