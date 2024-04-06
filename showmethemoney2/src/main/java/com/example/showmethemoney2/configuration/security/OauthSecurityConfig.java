@@ -1,3 +1,4 @@
+/*
 package com.example.showmethemoney2.configuration.security;
 
 import org.springframework.context.annotation.Bean;
@@ -6,6 +7,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+
 
 @Configuration
 @EnableWebSecurity
@@ -25,6 +27,7 @@ public class OauthSecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/", "/oauth2/**", "/login/**").permitAll()
                         .anyRequest().authenticated());
-        return http.build(); //커밋커밋
+        return http.build();
     }
 }
+*/
