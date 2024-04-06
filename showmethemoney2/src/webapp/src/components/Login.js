@@ -17,14 +17,14 @@ function LoginForm() {
         navigate("/accountbook/calendar");
       }
     } catch (error) {
-      console.error("Error:", error);
       alert("회원가입 요청 중 에러가 발생했습니다.");
+      window.location.reload();
       return;
     }
   };
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} name="loginForm">
+      <form onSubmit={handleSubmit(onSubmit)} className="form" name="loginForm">
         <div className="title-div">
           <p className="title">로그인</p>
           <p className="title-info">서비스 이용을 위해 로그인이 필요합니다.</p>
