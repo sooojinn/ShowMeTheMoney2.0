@@ -4,6 +4,8 @@ import com.example.showmethemoney2.dao.CalendarDTO;
 import com.example.showmethemoney2.entity.Calendar;
 import com.example.showmethemoney2.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ScanOptions;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -12,9 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class CalendarController {
@@ -50,7 +50,7 @@ public class CalendarController {
     @GetMapping("/users/{username}/transactions/{calid}")
     public ResponseEntity<CalendarDTO> viewCalendar(@PathVariable("username") String username,
                                                     @PathVariable("calid") int calid) {
-        Calendar calendar = calendarService.viewCal(calid, username);
+        Calendar calendar = calendarService.viewCal(calid);
         CalendarDTO dto = calendarService.toDTO(calendar);
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }

@@ -1,6 +1,7 @@
 package com.example.showmethemoney2.controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -28,7 +29,7 @@ public class LoginController {
     }
 
     @GetMapping("/calendar")
-    public ResponseEntity<Void> UserName(Principal principal) {
+    public ResponseEntity<Void> userName(Principal principal) {
         String username = principal.getName();
         String redirectUrl = "/calendar/users/" + username;
         return ResponseEntity.status(HttpStatus.FOUND)
@@ -37,25 +38,13 @@ public class LoginController {
                 .build();
     }
 
-    @GetMapping("/calendar/users/{username}")
-    public String mainPage(@PathVariable String username) {
-        //url 보안검증방식과 세션 관리 방식 중 url 보안검증 채택
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-        if (!username.equals(currentUsername)) {
-            return "redirect:/error";
-        }
+    @GetMapping("/calendar/users")
+    public String mainPage() {
+
         return "calendar";
     }
 
 
-    @GetMapping("/username")
-    public ResponseEntity<String> ServeUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
 
-        String jsonData = "{\"username\": \"" + currentUsername + "\"}";
-        return ResponseEntity.ok().body(jsonData);
-    }
 }
 
