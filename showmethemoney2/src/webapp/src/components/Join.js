@@ -15,7 +15,6 @@ function JoinForm() {
     formState: { errors, isValid, isSubmitting, isSubmitted },
   } = useForm({ mode: "onChange" });
 
-
   const [postSuccess, setPostSuccess] = useState(false);
 
   // useEffect(() => {
@@ -50,7 +49,11 @@ function JoinForm() {
   return (
     <>
       {!postSuccess && (
-        <form onSubmit={handleSubmit(onSubmit)} name="joinForm">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="form"
+          name="joinForm"
+        >
           <div className="title-div">
             <p className="title">회원가입</p>
             <p className="title-info">
@@ -132,7 +135,10 @@ function JoinForm() {
               <div className="err-message">{errors.passwordCheck.message}</div>
             )}
           </div>
-          <button disabled={!isValid || isSubmitting} value="join">
+          <button
+            disabled={!isValid || isSubmitting || isSubmitted}
+            value="join"
+          >
             {isSubmitting ? (
               <img src={Spinner} className="spinner" alt="로딩중..." />
             ) : (

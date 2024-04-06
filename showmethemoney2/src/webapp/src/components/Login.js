@@ -24,7 +24,7 @@ function LoginForm() {
   };
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} name="loginForm">
+      <form onSubmit={handleSubmit(onSubmit)} className="form" name="loginForm">
         <div className="title-div">
           <p className="title">로그인</p>
           <p className="title-info">서비스 이용을 위해 로그인이 필요합니다.</p>
