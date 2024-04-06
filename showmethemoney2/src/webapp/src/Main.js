@@ -8,6 +8,7 @@ import Calendar from "./components/Calendar.js";
 import Statics from "./components/Statics.js";
 import List from "./components/List.js";
 import Write from "./components/Write.js";
+import Modify from "./components/Modify.js";
 import NotFound from "./components/NotFound.js";
 
 function Main() {
@@ -24,6 +25,7 @@ function Main() {
             <Route path="list" element={<List />} />
           </Route>
           <Route path="write" element={<Write />} />
+          <Route path="modify" element={<Modify />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
