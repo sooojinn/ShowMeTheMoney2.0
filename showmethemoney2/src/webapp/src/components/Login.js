@@ -54,7 +54,7 @@ function LoginForm() {
           {isSubmitting || isSubmitted ? (
             <img src={Spinner} className="spinner" alt="로딩중..." />
           ) : (
-            <p>가입하기</p>
+            <p>로그인하기</p>
           )}
         </button>
         <Link to="/join" className="link">

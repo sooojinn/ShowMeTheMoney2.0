@@ -7,8 +7,7 @@ export async function getTransactions(year, month) {
   //   transaction.date.includes(`${year}-${month}`)
   // );
 
-  const res = await fetch(`/transactions?date=${year}-${month}`);
-
+  const res = await fetch(`/transactions?year=${year}&month=${month}`);
   const datas = await res.json();
 
   const categoryList = {
@@ -89,6 +88,30 @@ export async function postTransaction(data) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
+  });
+  return res.status;
+}
+
+export async function getTransaction(id) {
+  const res = await fetch(`/transactions/${id}`);
+  const result = await res.json();
+  return result;
+}
+
+export async function putTransaction(id, data) {
+  const res = await fetch(`/transactions/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return res.status;
+}
+
+export async function deleteTransaction(id, data) {
+  const res = await fetch(`/transactions/${id}`, {
+    method: "DELETE",
   });
   return res.status;
 }
