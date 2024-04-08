@@ -17,7 +17,7 @@ import java.security.Principal;
 @Controller
 public class LoginController {
 
-
+/*
     @GetMapping("/login")
     public String loginPage(Model model, HttpSession session) {
         String errorMessage = (String)session.getAttribute("errorMessage");
@@ -28,6 +28,8 @@ public class LoginController {
         return "login";
     }
 
+ */
+
     @GetMapping("/calendar")
     public ResponseEntity<Void> userName(Principal principal) {
         String username = principal.getName();
@@ -37,13 +39,15 @@ public class LoginController {
                         .path(redirectUrl).build().toUri())
                 .build();
     }
-
+/*
     @GetMapping("/calendar/users")
     public String mainPage() {
 
         return "calendar";
     }
 
+
+ */
 
 
 }
