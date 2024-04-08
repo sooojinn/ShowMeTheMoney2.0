@@ -95,12 +95,11 @@ function Calendar() {
       <div className="calendar">{renderCalendar()}</div>
       <Link
         to="/write"
-        state={{ year: year, month: month, selectedDate: selectedDate }}
+        state={{ dateString: `${year}-${month + 1}-${selectedDate}` }}
         className="write-btn"
       >
         + 새로운 거래 추가하기
       </Link>
-
       <Transactions transactions={transactions} />
     </>
   );

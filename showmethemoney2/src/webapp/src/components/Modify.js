@@ -1,25 +1,31 @@
 import { useLocation } from "react-router-dom";
 import { getTransaction } from "../api";
+import { putTransaction } from "../api";
 import { useEffect, useState } from "react";
+import WriteForm from "./WriteForm";
 
 export default function Modify() {
   const location = useLocation();
   const { id } = location.state;
-  const [data, setData] = useState();
+  const [defaultValues, setDefaultValues] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const fetchedData = await getTransaction(id);
-        setData(fetchedData);
+        setDefaultValues({
+          ...fetchedData,
+        });
       } catch (error) {
-        console.error("Error fetching data:", error);
+        alert("데이터를 불러오는 중 에러가 발생했습니다.");
       }
     };
     fetchData();
   }, [id]);
 
-  console.log(data);
+  console.log(defaultValues);
 
-  return <div>수정페이지입니다.</div>;
+  return defaultValues ? (
+    <WriteForm request={putTransaction} defaultValues={defaultValues} />
+  ) : null;
 }
