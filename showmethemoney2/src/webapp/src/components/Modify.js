@@ -1,13 +1,18 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getTransaction } from "../api";
 import { putTransaction } from "../api";
+import { deleteTransaction } from "../api";
 import { useEffect, useState } from "react";
 import WriteForm from "./WriteForm";
+import "./Modify.css";
+import Spinner from "../Spinner.gif";
 
 export default function Modify() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { id } = location.state;
   const [defaultValues, setDefaultValues] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,6 +21,7 @@ export default function Modify() {
         setDefaultValues({
           ...fetchedData,
         });
+        setIsLoading(false);
       } catch (error) {
         alert("데이터를 불러오는 중 에러가 발생했습니다.");
       }
@@ -23,9 +29,32 @@ export default function Modify() {
     fetchData();
   }, [id]);
 
-  console.log(defaultValues);
+  const handleDeleteClick = async () => {
+    try {
+      const status = await deleteTransaction(id);
+      if (status === 200) {
+        alert("삭제되었습니다.");
+        navigate(-1);
+      }
+    } catch (error) {
+      alert("에러가 발생했습니다.");
+      window.location.reload();
+      return;
+    }
+  };
 
-  return defaultValues ? (
-    <WriteForm request={putTransaction} defaultValues={defaultValues} />
-  ) : null;
+  console.log(defaultValues);
+  console.log(isLoading);
+
+  return isLoading ? (
+    <>
+      <p>잠시만 기다려주세요...</p>
+      <img src={Spinner} alt="로딩중..." />
+    </>
+  ) : (
+    <>
+      <div className="delete-btn" onClick={handleDeleteClick}></div>
+      <WriteForm request={putTransaction} defaultValues={defaultValues} />
+    </>
+  );
 }

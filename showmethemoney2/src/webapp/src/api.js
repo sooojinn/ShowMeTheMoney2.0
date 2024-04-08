@@ -7,10 +7,7 @@ export async function getTransactions(year, month) {
   //   transaction.date.includes(`${year}-${month}`)
   // );
 
-  const res = await fetch(
-    `https://2a6fece9-32ad-4426-a0fb-d9ddbd129199.mock.pstmn.io/transactions?date=${year}-${month}`
-  );
-
+  const res = await fetch(`/transactions?year=${year}&month=${month}`);
   const datas = await res.json();
 
   const categoryList = {
@@ -43,85 +40,78 @@ export async function getTransactions(year, month) {
   });
 }
 
-// export async function isUnique(value) {
-//   const res = await fetch("/join/username/duplication", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({ username: value }),
-//   });
-//   const result = await res.text();
+export async function isUnique(value) {
+  const res = await fetch("/join/username/duplication", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username: value }),
+  });
+  const result = await res.text();
 
-//   return result === "true" ? false : true;
-// }
-
-const usernameArr = ["aaaaa", "12345", "soojin00"];
-
-export function isUnique(value) {
-  return !usernameArr.includes(value);
+  return result === "true" ? false : true;
 }
 
+// const usernameArr = ["aaaaa", "12345", "soojin00"];
+
+// export function isUnique(value) {
+//   return !usernameArr.includes(value);
+// }
+
 export async function postJoinForm(data) {
-  const res = await fetch(
-    "https://2a6fece9-32ad-4426-a0fb-d9ddbd129199.mock.pstmn.io/joinProc",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }
-  );
+  const res = await fetch("/joinProc", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
   return res.status;
 }
 
 export async function postLoginForm(data) {
-  const res = await fetch(
-    "https://2a6fece9-32ad-4426-a0fb-d9ddbd129199.mock.pstmn.io/loginProc",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }
-  );
+  const res = await fetch("/loginProc", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
   return res.status;
 }
 
 export async function postTransaction(data) {
-  const res = await fetch(
-    "https://2a6fece9-32ad-4426-a0fb-d9ddbd129199.mock.pstmn.io/transactions",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }
-  );
+  const res = await fetch("/transactions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
   return res.status;
 }
 
 export async function getTransaction(id) {
-  const res = await fetch(
-    `https://2a6fece9-32ad-4426-a0fb-d9ddbd129199.mock.pstmn.io/transactions/${id}`
-  );
+  const res = await fetch(`/transactions/${id}`);
   const result = await res.json();
   return result;
 }
 
 export async function putTransaction(id, data) {
-  const res = await fetch(
-    `https://2a6fece9-32ad-4426-a0fb-d9ddbd129199.mock.pstmn.io/transactions/${id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }
-  );
+  const res = await fetch(`/transactions/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return res.status;
+}
+
+export async function deleteTransaction(id, data) {
+  const res = await fetch(`/transactions/${id}`, {
+    method: "DELETE",
+  });
   return res.status;
 }

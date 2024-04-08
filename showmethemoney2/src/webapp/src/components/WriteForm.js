@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Write.css";
+import "./WriteForm.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -24,8 +24,8 @@ export default function WriteForm({ request, defaultValues }) {
     defaultValues: {
       division: defaultValues.division,
       date: defaultDate(defaultValues.date),
-      category: defaultValues?.category,
-      memo: defaultValues?.memo,
+      category: defaultValues.category,
+      memo: defaultValues.memo,
     },
   });
 
@@ -70,79 +70,88 @@ export default function WriteForm({ request, defaultValues }) {
     setMoney(removeComma(money));
   };
 
+  const handleUturnClick = () => {
+    navigate(-1);
+  };
+
   console.log("render");
 
   return (
-    <form className="write-form" onSubmit={handleSubmit(onSubmit)}>
-      <div className="input-group">
-        분류
-        <div id="division">
-          <label
-            htmlFor="expense"
-            className={division === "expense" ? "checked-division" : ""}
-          >
-            <input
-              type="radio"
-              name="division"
-              value="expense"
-              id="expense"
-              {...register("division")}
-            />
-            지출
-          </label>
-          <label
-            htmlFor="income"
-            className={division === "income" ? "checked-division" : ""}
-          >
-            <input
-              type="radio"
-              name="division"
-              value="income"
-              id="income"
-              {...register("division")}
-            />
-            수입
-          </label>
-        </div>
+    <>
+      <div className="uturn-btn" onClick={handleUturnClick}>
+        ✕
       </div>
-      <div className="input-group">
-        금액
-        <div className="money-div">
+      <form className="write-form" onSubmit={handleSubmit(onSubmit)}>
+        <div className="input-group">
+          분류
+          <div id="division">
+            <label
+              htmlFor="expense"
+              className={division === "expense" ? "checked-division" : ""}
+            >
+              <input
+                type="radio"
+                name="division"
+                value="expense"
+                id="expense"
+                {...register("division")}
+              />
+              지출
+            </label>
+            <label
+              htmlFor="income"
+              className={division === "income" ? "checked-division" : ""}
+            >
+              <input
+                type="radio"
+                name="division"
+                value="income"
+                id="income"
+                {...register("division")}
+              />
+              수입
+            </label>
+          </div>
+        </div>
+        <div className="input-group">
+          금액
+          <div className="money-div">
+            <input
+              id="money"
+              type="text"
+              name="money"
+              autoComplete="off"
+              onChange={handleMoney}
+              onBlur={handleMoneyBlur}
+              onFocus={handleMoneyFocusIn}
+              value={money}
+            />
+            <p>원</p>
+          </div>
+        </div>
+        <div className="input-group">
+          날짜
+          <input id="date" type="date" name="date" {...register("date")} />
+        </div>
+        <div className="input-group">
+          카테고리
+          <select id="category" name="category" {...register("category")}>
+            {division === "expense" ? <ExpenseCategory /> : <IncomeCategory />}
+          </select>
+        </div>
+        <div className="input-group">
+          내용
           <input
-            id="money"
-            type="text"
-            name="money"
+            id="memo"
+            name="memo"
             autoComplete="off"
-            onChange={handleMoney}
-            onBlur={handleMoneyBlur}
-            onFocus={handleMoneyFocusIn}
-            value={money}
+            placeholder="내용을 입력하세요."
+            {...register("memo")}
           />
-          <p>원</p>
         </div>
-      </div>
-      <div className="input-group">
-        날짜
-        <input id="date" type="date" name="date" {...register("date")} />
-      </div>
-      <div className="input-group">
-        카테고리
-        <select id="category" name="category" {...register("category")}>
-          {division === "expense" ? <ExpenseCategory /> : <IncomeCategory />}
-        </select>
-      </div>
-      <div className="input-group">
-        내용
-        <input
-          id="memo"
-          name="memo"
-          autoComplete="off"
-          placeholder="내용을 입력하세요."
-          {...register("memo")}
-        />
-      </div>
-      <button type="submit">저장</button>
-    </form>
+        <button type="submit">저장</button>
+      </form>
+    </>
   );
 }
 
