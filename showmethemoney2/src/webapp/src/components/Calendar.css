@@ -35,21 +35,27 @@
 
 .date {
   cursor: pointer;
-  padding: 3px;
   overflow: hidden;
 }
 
-.date:hover {
-  border: 1px solid #bebfc0;
+.selected-date {
+  background-color: var(--maincolor);
+  border-radius: 50%;
 }
 
-.selected-date {
-  background-color: #bebfc0;
+.date-num {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 22px;
+  height: 22px;
+  margin-bottom: 3px;
 }
 
 .daily-total {
   font-size: 14px;
   margin: 0;
+  padding-left: 3px;
 }
 
 .write-btn {

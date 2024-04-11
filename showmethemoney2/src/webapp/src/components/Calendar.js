@@ -56,12 +56,14 @@ function Calendar() {
       });
 
       calendarDate.push(
-        <div
-          className={"date " + (i === selectedDate ? "selected-date" : "")}
-          onClick={() => handleDateClick(i)}
-          key={i}
-        >
-          {i}
+        <div className="date" onClick={() => handleDateClick(i)} key={i}>
+          <p
+            className={
+              "date-num" + (i === selectedDate ? " selected-date" : "")
+            }
+          >
+            {i}
+          </p>
           {dailyTotalIncome && (
             <div className="income daily-total">
               +{dailyTotalIncome.toLocaleString()}

@@ -67,10 +67,6 @@
   color: var(--expensecolor);
 }
 
-.selected-date {
-  background-color: #e6e6e6;
-}
-
 .daily-expense {
   font-size: 15px;
   color: var(--expensecolor);
