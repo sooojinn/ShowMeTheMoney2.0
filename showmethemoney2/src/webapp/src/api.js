@@ -105,3 +105,11 @@ export async function deleteTransaction(id) {
   });
   return res.status;
 }
+
+export async function getMonthlyTotal(year, month) {
+  const res = await fetch(
+    baseUrl + `/statics/total?year=${year}&month=${month}`
+  );
+  const result = await res.json();
+  return result;
+}

@@ -6,6 +6,18 @@
   color: #5fbb82;
 }
 
+.monthly-total {
+  margin: 10px 0;
+}
+
+.monthly-total > div {
+  margin-bottom: 5px;
+}
+
+.monthly {
+  margin-left: 5px;
+}
+
 .calendar-header {
   display: flex;
   justify-content: center;

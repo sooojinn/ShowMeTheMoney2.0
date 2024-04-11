@@ -2,6 +2,7 @@ import "./Calendar.css";
 import Transactions from "./Transactions.js";
 import { useState, useEffect } from "react";
 import { Link, useOutletContext } from "react-router-dom";
+import { getMonthlyTotal } from "../api";
 
 function Calendar() {
   const { year, month, datas } = useOutletContext();
@@ -15,6 +16,10 @@ function Calendar() {
   const startDayOfWeek = firstDayOfMonth.getDay();
   const currentMonth = new Date().getMonth();
   const currentDate = new Date().getDate();
+
+  const [monthlyIncome, setMonthlyIncome] = useState(0);
+  const [monthlyExpense, setMonthlyExpense] = useState(0);
+  const monthlyTotal = monthlyIncome - monthlyExpense;
 
   const transactionsOfToday = getDailyData(currentDate);
   const [transactions, setTransactions] = useState(transactionsOfToday);
@@ -33,6 +38,16 @@ function Calendar() {
       setSelectedDate();
       setTransactions([]);
     }
+    const fetchData = async () => {
+      try {
+        const nextMonthlyData = await getMonthlyTotal(year, month + 1);
+        setMonthlyIncome(+nextMonthlyData["income-total"]);
+        setMonthlyExpense(+nextMonthlyData["expense-total"]);
+      } catch {
+        alert("데이터를 불러오는 데 실패했습니다.");
+      }
+    };
+    fetchData();
   }, [month]);
 
   const renderCalendar = () => {
@@ -85,6 +100,31 @@ function Calendar() {
 
   return (
     <>
+      <div className="monthly-total">
+        <div>
+          수입
+          <span className="monthly income">
+            +{monthlyIncome.toLocaleString()}원
+          </span>
+        </div>
+        <div>
+          지출
+          <span className="monthly expense">
+            -{monthlyExpense.toLocaleString()}원
+          </span>
+        </div>
+        <div>
+          합계
+          <span className="monthly total">
+            <span>
+              {monthlyTotal >= 0
+                ? "+" + monthlyTotal.toLocaleString()
+                : monthlyTotal.toLocaleString()}
+            </span>
+            원
+          </span>
+        </div>
+      </div>
       <div className="calendar day">
         <div>월</div>
         <div>화</div>
