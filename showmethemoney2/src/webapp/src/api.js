@@ -1,13 +1,9 @@
-// import mock from "./mock.json";
-
-// const { transactions } = mock;
+const baseUrl = "https://9150bd67-8495-4aba-82e6-568e786619e6.mock.pstmn.io";
 
 export async function getTransactions(year, month) {
-  // const datas = transactions.filter((transaction) =>
-  //   transaction.date.includes(`${year}-${month}`)
-  // );
-
-  const res = await fetch(`/transactions?year=${year}&month=${month}`);
+  const res = await fetch(
+    baseUrl + `/transactions?year=${year}&month=${month}`
+  );
   const datas = await res.json();
 
   const categoryList = {
@@ -41,7 +37,7 @@ export async function getTransactions(year, month) {
 }
 
 export async function isUnique(value) {
-  const res = await fetch("/join/username/duplication", {
+  const res = await fetch(baseUrl + "/join/username/duplication", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -53,14 +49,8 @@ export async function isUnique(value) {
   return result === "true" ? false : true;
 }
 
-// const usernameArr = ["aaaaa", "12345", "soojin00"];
-
-// export function isUnique(value) {
-//   return !usernameArr.includes(value);
-// }
-
 export async function postJoinForm(data) {
-  const res = await fetch("/joinProc", {
+  const res = await fetch(baseUrl + "/joinProc", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -71,7 +61,7 @@ export async function postJoinForm(data) {
 }
 
 export async function postLoginForm(data) {
-  const res = await fetch("/loginProc", {
+  const res = await fetch(baseUrl + "/loginProc", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -82,7 +72,7 @@ export async function postLoginForm(data) {
 }
 
 export async function postTransaction(data) {
-  const res = await fetch("/transactions", {
+  const res = await fetch(baseUrl + "/transactions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -93,13 +83,13 @@ export async function postTransaction(data) {
 }
 
 export async function getTransaction(id) {
-  const res = await fetch(`/transactions/${id}`);
+  const res = await fetch(baseUrl + `/transactions/${id}`);
   const result = await res.json();
   return result;
 }
 
 export async function putTransaction(id, data) {
-  const res = await fetch(`/transactions/${id}`, {
+  const res = await fetch(baseUrl + `/transactions/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -109,8 +99,8 @@ export async function putTransaction(id, data) {
   return res.status;
 }
 
-export async function deleteTransaction(id, data) {
-  const res = await fetch(`/transactions/${id}`, {
+export async function deleteTransaction(id) {
+  const res = await fetch(baseUrl + `/transactions/${id}`, {
     method: "DELETE",
   });
   return res.status;
