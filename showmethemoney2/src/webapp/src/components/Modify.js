@@ -35,9 +35,11 @@ export default function Modify() {
       if (status === 200) {
         alert("삭제되었습니다.");
         navigate(-1);
+      } else {
+        throw new Error("오류가 발생했습니다.");
       }
     } catch (error) {
-      alert("에러가 발생했습니다.");
+      alert(error.message);
       window.location.reload();
       return;
     }

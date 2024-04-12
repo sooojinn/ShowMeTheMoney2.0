@@ -36,9 +36,11 @@ function JoinForm() {
       const status = await postJoinForm(data);
       if (status === 200) {
         setPostSuccess(true);
+      } else {
+        throw new Error("에러가 발생했습니다.");
       }
     } catch (error) {
-      alert("회원가입 요청 중 에러가 발생했습니다.");
+      alert(error.message);
       window.location.reload();
       return;
     }
