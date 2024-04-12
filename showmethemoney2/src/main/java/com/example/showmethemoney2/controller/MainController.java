@@ -8,10 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class MainController {
-    @GetMapping("/")
-    public String homePage() {
-        return "home";
-    }
 
     @GetMapping("/error")
     public String errorPage() {

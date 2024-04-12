@@ -15,14 +15,12 @@ public class JoinController {
     @Autowired
     private JoinService joinService;
 
-    @GetMapping("/join")
-    public String joinPage() {return "join";}
 
     @PostMapping("/joinProc")
-    public String joinProcess(JoinDTO joinDTO) {
+    public ResponseEntity<Void> joinProcess(JoinDTO joinDTO) {
         System.out.println(joinDTO.getUsername());
         joinService.joinProcess(joinDTO);
-        return "redirect:/login";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     //중복 회원인지 아닌지 보내줌
