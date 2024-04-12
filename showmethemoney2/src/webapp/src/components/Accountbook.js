@@ -2,21 +2,28 @@ import { useState, useEffect } from "react";
 import { getTransactions } from "../api";
 import "./Accountbook.css";
 import { NavLink, Outlet } from "react-router-dom";
+import { getMonthlyTotal } from "../api";
 import Spinner from "../Spinner2.gif";
 
 function Accountbook() {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
-  const [datas, setDatas] = useState([]);
+  const [monthlyTransactions, setMonthlyTransactions] = useState([]);
+  const [monthlyData, setMonthlyData] = useState({
+    "income-total": 0,
+    "expense-total": 0,
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const nextDatas = await getTransactions(year, month + 1);
-        setDatas(nextDatas);
+        const nextMonthlyTransactions = await getTransactions(year, month + 1);
+        const nextMonthlyData = await getMonthlyTotal(year, month + 1);
+        setMonthlyTransactions(nextMonthlyTransactions);
+        setMonthlyData(nextMonthlyData);
       } catch {
         alert("데이터를 불러오는 데 실패했습니다.");
       } finally {
@@ -66,7 +73,11 @@ function Accountbook() {
         <NavLink to="list" className={pageBtnStyle}>
           리스트
         </NavLink>
+        <NavLink to="budget" className={pageBtnStyle}>
+          예산
+        </NavLink>
       </div>
+
       <div className="calendar-header">
         <div className="btn" onClick={handlePrevBtn}>
           ◀
@@ -78,7 +89,15 @@ function Accountbook() {
           ▶
         </div>
       </div>
-      <Outlet context={{ year: year, month: month, datas: datas }} />
+
+      <Outlet
+        context={{
+          year: year,
+          month: month,
+          monthlyData: monthlyData,
+          monthlyTransactions: monthlyTransactions,
+        }}
+      />
       {isLoading && (
         <div className="overlay">
           <img src={Spinner} style={style} alt="로딩중..." />

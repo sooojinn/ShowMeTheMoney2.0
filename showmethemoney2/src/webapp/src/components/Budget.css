@@ -1,0 +1,24 @@
+.budget-form {
+  font-size: 21px;
+  width: fit-content;
+  margin: 50px auto;
+}
+
+.budget-input {
+  width: 200px;
+  height: 40px;
+  margin-top: 10px;
+  padding: 3px;
+  font-size: 25px;
+  border: 2px solid var(--maincolor);
+  border-width: 0 0 2px;
+  background-color: transparent;
+}
+
+.budget-form button {
+  width: 40px;
+  height: 35px;
+  margin-left: 10px;
+  font-family: inherit;
+  font-size: 17px;
+}
