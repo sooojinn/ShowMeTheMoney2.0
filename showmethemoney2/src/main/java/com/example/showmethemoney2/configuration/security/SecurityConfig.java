@@ -28,17 +28,14 @@ public class SecurityConfig {
         http.formLogin(auth -> auth.loginPage("/login")
                 .defaultSuccessUrl("/calendar")
                 .loginProcessingUrl("/loginProc")
-                .failureHandler(new MyFailureHandler())
                 .permitAll());
 
-        /*
-        http.oauth2Login(oauth2 -> oauth2
-                .loginPage("/login")
-                        .userInfoEndpoint()
-                                .userService(CustomOAuth2UserService));
+
+        http.oauth2Login(oauth2 -> oauth2.loginPage("/oauth2login")
+                .defaultSuccessUrl("/calendar")
+                .permitAll());
 
 
-         */
 
         http.logout(logout -> logout.logoutUrl("/logout")
                 .logoutSuccessUrl("/"));
