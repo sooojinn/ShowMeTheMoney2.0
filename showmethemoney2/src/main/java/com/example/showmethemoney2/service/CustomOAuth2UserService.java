@@ -1,9 +1,10 @@
 package com.example.showmethemoney2.service;
 
-import com.example.showmethemoney2.dao.dto.CustomOAuth2User;
-import com.example.showmethemoney2.dao.dto.Google2Response;
-import com.example.showmethemoney2.dao.dto.Naver2Response;
-import com.example.showmethemoney2.dao.dto.OAuth2Response;
+
+import com.example.showmethemoney2.dao.oauth2dto.CustomOAuth2User;
+import com.example.showmethemoney2.dao.oauth2dto.GoogleResponse;
+import com.example.showmethemoney2.dao.oauth2dto.NaverResponse;
+import com.example.showmethemoney2.dao.oauth2dto.OAuth2Response;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -24,10 +25,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2Response oAuth2Response = null;
         if (registrationId.equals("naver")) {
 
-            oAuth2Response = new Naver2Response(oAuth2User.getAttributes());
+            oAuth2Response = new NaverResponse(oAuth2User.getAttributes());
         } else if (registrationId.equals("google")) {
 
-            oAuth2Response = new Google2Response(oAuth2User.getAttributes());
+            oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
         } else {
 
             return null;
