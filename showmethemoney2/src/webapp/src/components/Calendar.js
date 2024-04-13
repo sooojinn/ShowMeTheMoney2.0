@@ -94,10 +94,8 @@ function Calendar() {
       </div>
       <div className="calendar">{renderCalendar()}</div>
       <Link
-        to={{
-          pathname: "/write",
-          search: `year=${year}&month=${month}&date=${selectedDate}`,
-        }}
+        to="/write"
+        state={{ dateString: `${year}-${month + 1}-${selectedDate}` }}
         className="write-btn"
       >
         + 새로운 거래 추가하기

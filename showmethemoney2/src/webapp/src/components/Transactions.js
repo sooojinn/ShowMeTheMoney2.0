@@ -1,22 +1,26 @@
+import { Link, useNavigate } from "react-router-dom";
 import "./Transactions.css";
 
 function Transactions({ transactions }) {
+  const navigate = useNavigate();
+
+  const handleClick = (id) => {
+    navigate("/modify", { state: { id: id } });
+  };
+
   if (transactions.length === 0) {
     return null;
   }
-
-  const handleClick = (e) => {
-    console.log(e.currentTarget.dataset.id);
-  };
 
   return (
     <div className="transactions">
       {transactions.map((transaction, i) => (
         <div
           className="transaction"
-          onClick={handleClick}
           key={transaction.id}
-          data-id={transaction.id}
+          onClick={() => {
+            handleClick(transaction.id);
+          }}
         >
           <div>
             <div className="category">{transaction.category}</div>
