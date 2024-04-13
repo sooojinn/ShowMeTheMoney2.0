@@ -12,9 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class CalendarController {
@@ -50,7 +48,7 @@ public class CalendarController {
     @GetMapping("/users/{username}/transactions/{calid}")
     public ResponseEntity<CalendarDTO> viewCalendar(@PathVariable("username") String username,
                                                     @PathVariable("calid") int calid) {
-        Calendar calendar = calendarService.viewCal(calid, username);
+        Calendar calendar = calendarService.viewCal(calid);
         CalendarDTO dto = calendarService.toDTO(calendar);
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }

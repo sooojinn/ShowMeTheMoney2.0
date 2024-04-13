@@ -1,9 +1,9 @@
 package com.example.showmethemoney2.service;
 
-import com.example.showmethemoney2.dto.CustomOAuth2User;
-import com.example.showmethemoney2.dto.Google2Response;
-import com.example.showmethemoney2.dto.Naver2Response;
-import com.example.showmethemoney2.dto.OAuth2Response;
+import com.example.showmethemoney2.dao.dto.CustomOAuth2User;
+import com.example.showmethemoney2.dao.dto.Google2Response;
+import com.example.showmethemoney2.dao.dto.Naver2Response;
+import com.example.showmethemoney2.dao.dto.OAuth2Response;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;

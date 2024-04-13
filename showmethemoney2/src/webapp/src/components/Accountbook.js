@@ -1,11 +1,41 @@
-import { useState } from "react";
-import "./Accountbook.css";
+import { useState, useEffect } from "react";
+import { getTransactions } from "../api";
 import { NavLink, Outlet } from "react-router-dom";
+import { getMonthlyTotal } from "../api";
+import { getBudget } from "../api.js";
+import Spinner from "../Spinner2.gif";
+import "./Accountbook.css";
 
 function Accountbook() {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
+  const [monthlyTransactions, setMonthlyTransactions] = useState([]);
+  const [monthlyData, setMonthlyData] = useState({
+    "income-total": 0,
+    "expense-total": 0,
+  });
+  const [budget, setBudget] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const nextMonthlyTransactions = await getTransactions(year, month + 1);
+        const nextMonthlyData = await getMonthlyTotal(year, month + 1);
+        const nextBudget = await getBudget(year, month + 1);
+        setMonthlyTransactions(nextMonthlyTransactions);
+        setMonthlyData(nextMonthlyData);
+        setBudget(nextBudget);
+      } catch {
+        alert("데이터를 불러오는 데 실패했습니다.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [month]);
 
   const handlePrevBtn = () => {
     if (month === 0) {
@@ -25,6 +55,16 @@ function Accountbook() {
     return "page-btn " + (isActive ? "current-page" : "");
   };
 
+  const style = {
+    width: "80px",
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    transform: "translate(-50%, -50%)",
+  };
+
+  console.log("Accountbook이 렌더링되었습니다.");
+
   return (
     <div>
       <div className="page-btns">
@@ -36,6 +76,9 @@ function Accountbook() {
         </NavLink>
         <NavLink to="list" className={pageBtnStyle}>
           리스트
+        </NavLink>
+        <NavLink to="budget" className={pageBtnStyle}>
+          예산
         </NavLink>
       </div>
       <div className="calendar-header">
@@ -49,7 +92,20 @@ function Accountbook() {
           ▶
         </div>
       </div>
-      <Outlet context={{ year: year, month: month }} />
+      <Outlet
+        context={{
+          year: year,
+          month: month,
+          monthlyData: monthlyData,
+          monthlyTransactions: monthlyTransactions,
+          budget: budget,
+        }}
+      />
+      {isLoading && (
+        <div className="overlay">
+          <img src={Spinner} style={style} alt="로딩중..." />
+        </div>
+      )}
     </div>
   );
 }

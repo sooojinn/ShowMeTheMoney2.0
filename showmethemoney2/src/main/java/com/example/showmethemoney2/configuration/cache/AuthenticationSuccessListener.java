@@ -27,7 +27,7 @@ public class AuthenticationSuccessListener implements ApplicationListener<Authen
             username = oAuth2User.getAttribute("username");
         }
         else throw new IllegalStateException("유효하지 않은 principal로 접근 중입니다.");
-        stringRedisTemplate.opsForValue().set("currentUser:"+username,"true");
+        stringRedisTemplate.opsForValue().set("currentUser"+username,"true");
     }
 }
 

@@ -1,5 +1,17 @@
-function Write() {
-  return <h3>작성 페이지입니다.</h3>;
-}
+import { useLocation } from "react-router-dom";
+import { postTransaction } from "../api";
+import WriteForm from "./WriteForm";
 
-export default Write;
+export default function Write() {
+  const location = useLocation();
+  const { dateString } = location.state;
+  const defaultValues = {
+    division: "expense",
+    money: "0",
+    date: dateString,
+    category: "",
+    memo: "",
+  };
+
+  return <WriteForm request={postTransaction} defaultValues={defaultValues} />;
+}

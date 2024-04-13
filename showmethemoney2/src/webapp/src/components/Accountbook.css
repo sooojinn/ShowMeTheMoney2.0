@@ -32,53 +32,30 @@
   color: black;
   width: 50px;
   height: 25px;
-  border: 1px solid #f3cdcc;
+  border: 1px solid var(--maincolor);
   text-decoration: none;
   cursor: pointer;
 }
 
 .current-page {
-  background-color: #f3cdcc;
+  background-color: var(--maincolor);
 }
 
 .btn {
   cursor: pointer;
 }
 
-.sum-div {
-  margin: 10px 0;
-}
-
-.sum-div > div {
-  margin-bottom: 5px;
-}
-
-.income,
-.expense,
-.total {
-  margin-left: 10px;
-}
-
-.income {
-  color: var(--incomecolor);
-}
-
-.expense {
-  color: var(--expensecolor);
-}
-
-.selected-date {
-  background-color: #e6e6e6;
-}
-
-.daily-expense {
-  font-size: 15px;
-  color: var(--expensecolor);
-  padding-left: 2px;
-}
-
-.daily-income {
-  font-size: 15px;
-  color: var(--incomecolor);
-  padding-left: 2px;
+.overlay {
+  position: fixed; /* 화면 전체를 덮도록 설정합니다 */
+  top: 0; /* 화면 상단에 위치합니다 */
+  left: 0; /* 화면 왼쪽에 위치합니다 */
+  width: 100%; /* 화면 전체 너비를 차지합니다 */
+  height: 100%; /* 화면 전체 높이를 차지합니다 */
+  background-color: rgba(
+    250,
+    250,
+    250,
+    0.3
+  ); /* 검은색 반투명 배경을 설정합니다 */
+  z-index: 999; /* 다른 요소들보다 위에 표시됩니다 */
 }
