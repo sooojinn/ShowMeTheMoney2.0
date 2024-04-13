@@ -16,6 +16,7 @@ function LoginForm() {
       if (status === 200) {
         navigate("/accountbook/calendar");
       }
+      else console.log("로그인 실패");
     } catch (error) {
       alert("회원가입 요청 중 에러가 발생했습니다.");
       window.location.reload();
