@@ -7,6 +7,7 @@ import Accountbook from "./components/Accountbook.js";
 import Calendar from "./components/Calendar.js";
 import Statics from "./components/Statics.js";
 import List from "./components/List.js";
+import Budget from "./components/Budget.js";
 import Write from "./components/Write.js";
 import Modify from "./components/Modify.js";
 import NotFound from "./components/NotFound.js";
@@ -23,6 +24,7 @@ function Main() {
             <Route path="calendar" element={<Calendar />} />
             <Route path="statics" element={<Statics />} />
             <Route path="list" element={<List />} />
+            <Route path="budget" element={<Budget />} />
           </Route>
           <Route path="write" element={<Write />} />
           <Route path="modify" element={<Modify />} />

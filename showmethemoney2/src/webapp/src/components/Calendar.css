@@ -6,6 +6,18 @@
   color: #5fbb82;
 }
 
+.monthly-total {
+  margin: 10px 0;
+}
+
+.monthly-total > div {
+  margin-bottom: 5px;
+}
+
+.monthly {
+  margin-left: 5px;
+}
+
 .calendar-header {
   display: flex;
   justify-content: center;
@@ -35,21 +47,27 @@
 
 .date {
   cursor: pointer;
-  padding: 3px;
   overflow: hidden;
 }
 
-.date:hover {
-  border: 1px solid #bebfc0;
+.selected-date {
+  background-color: var(--maincolor);
+  border-radius: 50%;
 }
 
-.selected-date {
-  background-color: #bebfc0;
+.date-num {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 22px;
+  height: 22px;
+  margin-bottom: 3px;
 }
 
 .daily-total {
   font-size: 14px;
   margin: 0;
+  padding-left: 3px;
 }
 
 .write-btn {
