@@ -1,13 +1,9 @@
-// import mock from "./mock.json";
+const baseUrl = "localhost:8080";
 
-// const { transactions } = mock;
-const baseUrl = "http://localhost:8080";
 export async function getTransactions(year, month) {
-  // const datas = transactions.filter((transaction) =>
-  //   transaction.date.includes(`${year}-${month}`)
-  // );
-
-  const res = await fetch(baseUrl + `/transactions?date=${year}-${month}`);
+  const res = await fetch(
+    baseUrl + `/transactions?year=${year}&month=${month}`
+  );
 
   const datas = await res.json();
 
@@ -42,7 +38,7 @@ export async function getTransactions(year, month) {
 }
 
 export async function isUnique(value) {
-  const res = await fetch(baseUrl+"/join/username/duplication", {
+  const res = await fetch(baseUrl + "/join/username/duplication", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -54,14 +50,8 @@ export async function isUnique(value) {
   return result === "true" ? false : true;
 }
 
-// const usernameArr = ["aaaaa", "12345", "soojin00"];
-
-// export function isUnique(value) {
-//   return !usernameArr.includes(value);
-// }
-
 export async function postJoinForm(data) {
-  const res = await fetch(baseUrl+"/joinProc", {
+  const res = await fetch(baseUrl + "/joinProc", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -76,7 +66,7 @@ export async function postLoginForm(data) {
   for (const key in data) {
     formData.append(key, data[key]);
   }
-  const res = await fetch(baseUrl+"/loginProc", {
+  const res = await fetch(baseUrl + "/loginProc", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -87,7 +77,7 @@ export async function postLoginForm(data) {
 }
 
 export async function postTransaction(data) {
-  const res = await fetch(baseUrl+"/transactions", {
+  const res = await fetch(baseUrl + "/transactions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -98,13 +88,13 @@ export async function postTransaction(data) {
 }
 
 export async function getTransaction(id) {
-  const res = await fetch(`/transactions/${id}`);
+  const res = await fetch(baseUrl + `/transactions/${id}`);
   const result = await res.json();
   return result;
 }
 
 export async function putTransaction(id, data) {
-  const res = await fetch(`/transactions/${id}`, {
+  const res = await fetch(baseUrl + `/transactions/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -114,9 +104,34 @@ export async function putTransaction(id, data) {
   return res.status;
 }
 
-export async function deleteTransaction(id, data) {
-  const res = await fetch(`/transactions/${id}`, {
+export async function deleteTransaction(id) {
+  const res = await fetch(baseUrl + `/transactions/${id}`, {
     method: "DELETE",
   });
   return res.status;
+}
+
+export async function getMonthlyTotal(year, month) {
+  const res = await fetch(
+    baseUrl + `/statics/total?year=${year}&month=${month}`
+  );
+  const result = await res.json();
+  return result;
+}
+
+export async function postBudget(data) {
+  const res = await fetch(baseUrl + `/budget`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return res.status;
+}
+
+export async function getBudget(year, month) {
+  const res = await fetch(baseUrl + `/budget?year=${year}&month=${month}`);
+  const result = await res.json();
+  return result;
 }

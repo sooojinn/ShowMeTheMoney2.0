@@ -20,7 +20,12 @@ export default function WriteForm({ request, defaultValues }) {
     return money.replaceAll(",", "");
   };
 
-  const { register, handleSubmit, watch } = useForm({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { isSubmitting },
+  } = useForm({
     defaultValues: {
       division: defaultValues.division,
       date: defaultDate(defaultValues.date),
@@ -35,7 +40,7 @@ export default function WriteForm({ request, defaultValues }) {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    data["money"] = +removeComma(money);
+    data["money"] = removeComma(money);
     if (!data.money) alert("금액을 입력해주세요.");
     else if (!data.date) alert("날짜를 선택해주세요.");
     else if (!data.category) alert("카테고리를 선택해주세요.");
@@ -45,9 +50,11 @@ export default function WriteForm({ request, defaultValues }) {
         if (status === 200) {
           navigate("/accountbook/calendar");
           console.log(data);
+        } else {
+          throw new Error("에러가 발생했습니다.");
         }
       } catch (error) {
-        alert("에러가 발생했습니다.");
+        alert(error.message);
         window.location.reload();
         return;
       }
@@ -149,7 +156,9 @@ export default function WriteForm({ request, defaultValues }) {
             {...register("memo")}
           />
         </div>
-        <button type="submit">저장</button>
+        <button type="submit" disabled={isSubmitting}>
+          저장
+        </button>
       </form>
     </>
   );
