@@ -19,13 +19,12 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+        String reactUrl="http://localhost:3000";
+
         http.formLogin(auth -> auth
+                .loginPage(reactUrl+"/login")
                 .loginProcessingUrl("/loginProc")
-                .permitAll()
                 .failureHandler(new MyFailureHandler()));
-
-
-       // http.formLogin(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/","/login/**", "/loginProc", "/join/**", "/joinProc").permitAll()//모든 사용자에게 오픈
@@ -34,7 +33,6 @@ public class SecurityConfig{
                 .anyRequest().authenticated());
 
         http.sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
-
 
         http.logout(logout -> logout.logoutUrl("/logout")
                 .logoutSuccessUrl("/"));
@@ -46,8 +44,5 @@ public class SecurityConfig{
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
-
 }
 
