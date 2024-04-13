@@ -1,19 +1,20 @@
 package com.example.showmethemoney2.configuration.security;
 
 
-import com.example.showmethemoney2.service.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig{
 
 
     //접근 권한 설정
@@ -26,16 +27,20 @@ public class SecurityConfig {
                 .anyRequest().authenticated());
 
         http.formLogin(auth -> auth.loginPage("/login")
-                .defaultSuccessUrl("/calendar")
+                        .defaultSuccessUrl("/calendar")
                 .loginProcessingUrl("/loginProc")
-                .permitAll());
+                .failureHandler(new MyFailureHandler())
+                .permitAll())
+                .cors(cors->cors.configurationSource(corsConfigurationSource()));
+
+        /*
+        http.oauth2Login(oauth2 -> oauth2
+                .loginPage("/login")
+                        .userInfoEndpoint()
+                                .userService(CustomOAuth2UserService));
 
 
-        http.oauth2Login(oauth2 -> oauth2.loginPage("/oauth2login")
-                .defaultSuccessUrl("/calendar")
-                .permitAll());
-
-
+         */
 
         http.logout(logout -> logout.logoutUrl("/logout")
                 .logoutSuccessUrl("/"));
@@ -46,6 +51,19 @@ public class SecurityConfig {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("*"); // 모든 오리진 허용
+        configuration.addAllowedMethod("*"); // 모든 메서드 허용
+        configuration.addAllowedHeader("*"); // 모든 헤더 허용
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 
 }
