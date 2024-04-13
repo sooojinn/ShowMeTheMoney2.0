@@ -1,13 +1,14 @@
 // import mock from "./mock.json";
 
 // const { transactions } = mock;
-
+const baseUrl = "http://localhost:8080";
 export async function getTransactions(year, month) {
   // const datas = transactions.filter((transaction) =>
   //   transaction.date.includes(`${year}-${month}`)
   // );
 
-  const res = await fetch(`/transactions?year=${year}&month=${month}`);
+  const res = await fetch(baseUrl + `/transactions?date=${year}-${month}`);
+
   const datas = await res.json();
 
   const categoryList = {
@@ -41,7 +42,7 @@ export async function getTransactions(year, month) {
 }
 
 export async function isUnique(value) {
-  const res = await fetch("/join/username/duplication", {
+  const res = await fetch(baseUrl+"/join/username/duplication", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -60,7 +61,7 @@ export async function isUnique(value) {
 // }
 
 export async function postJoinForm(data) {
-  const res = await fetch("/joinProc", {
+  const res = await fetch(baseUrl+"/joinProc", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -71,18 +72,22 @@ export async function postJoinForm(data) {
 }
 
 export async function postLoginForm(data) {
-  const res = await fetch("/loginProc", {
+  const formData = new URLSearchParams();
+  for (const key in data) {
+    formData.append(key, data[key]);
+  }
+  const res = await fetch(baseUrl+"/loginProc", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: JSON.stringify(data),
+    body: formData,
   });
   return res.status;
 }
 
 export async function postTransaction(data) {
-  const res = await fetch("/transactions", {
+  const res = await fetch(baseUrl+"/transactions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

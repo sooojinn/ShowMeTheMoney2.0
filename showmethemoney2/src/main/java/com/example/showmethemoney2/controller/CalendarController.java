@@ -4,8 +4,6 @@ import com.example.showmethemoney2.dao.CalendarDTO;
 import com.example.showmethemoney2.entity.Calendar;
 import com.example.showmethemoney2.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ScanOptions;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;

@@ -17,7 +17,7 @@ public class JoinController {
 
 
     @PostMapping("/joinProc")
-    public ResponseEntity<Void> joinProcess(JoinDTO joinDTO) {
+    public ResponseEntity<Void> joinProcess(@RequestBody JoinDTO joinDTO) {
         System.out.println(joinDTO.getUsername());
         joinService.joinProcess(joinDTO);
         return new ResponseEntity<>(HttpStatus.OK);
