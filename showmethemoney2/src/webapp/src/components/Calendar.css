@@ -8,14 +8,16 @@
 
 .monthly-total {
   margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
 }
 
-.monthly-total > div {
+.monthly-total div {
   margin-bottom: 5px;
 }
 
 .monthly {
-  margin-left: 5px;
+  margin-left: 7px;
 }
 
 .calendar-header {

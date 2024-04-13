@@ -7,9 +7,15 @@ import Spinner from "../Spinner2.gif";
 import "./Accountbook.css";
 
 function Accountbook() {
+  const storedYear = sessionStorage.getItem("year");
+  const storedMonth = sessionStorage.getItem("month");
   const today = new Date();
-  const [year, setYear] = useState(today.getFullYear());
-  const [month, setMonth] = useState(today.getMonth());
+  const [year, setYear] = useState(
+    storedYear ? +storedYear : today.getFullYear()
+  );
+  const [month, setMonth] = useState(
+    storedMonth ? +storedMonth : today.getMonth()
+  );
   const [monthlyTransactions, setMonthlyTransactions] = useState([]);
   const [monthlyData, setMonthlyData] = useState({
     "income-total": 0,
@@ -35,6 +41,9 @@ function Accountbook() {
       }
     };
     fetchData();
+
+    sessionStorage.setItem("year", year);
+    sessionStorage.setItem("month", month);
   }, [month]);
 
   const handlePrevBtn = () => {
@@ -59,7 +68,7 @@ function Accountbook() {
     width: "80px",
     position: "absolute",
     left: "50%",
-    top: "50%",
+    top: "40%",
     transform: "translate(-50%, -50%)",
   };
 

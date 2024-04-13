@@ -46,16 +46,11 @@
 }
 
 .overlay {
-  position: fixed; /* 화면 전체를 덮도록 설정합니다 */
-  top: 0; /* 화면 상단에 위치합니다 */
-  left: 0; /* 화면 왼쪽에 위치합니다 */
-  width: 100%; /* 화면 전체 너비를 차지합니다 */
-  height: 100%; /* 화면 전체 높이를 차지합니다 */
-  background-color: rgba(
-    250,
-    250,
-    250,
-    0.3
-  ); /* 검은색 반투명 배경을 설정합니다 */
-  z-index: 999; /* 다른 요소들보다 위에 표시됩니다 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(250, 250, 250, 0.3);
+  z-index: 999;
 }

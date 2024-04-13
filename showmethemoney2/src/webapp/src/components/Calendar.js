@@ -93,16 +93,18 @@ function Calendar() {
     <>
       <div className="monthly-total">
         <div>
-          수입
-          <span className="monthly income">
-            +{monthlyIncome.toLocaleString()}원
-          </span>
-        </div>
-        <div>
-          지출
-          <span className="monthly expense">
-            -{monthlyExpense.toLocaleString()}원
-          </span>
+          <div>
+            수입
+            <span className="monthly income">
+              +{monthlyIncome.toLocaleString()}원
+            </span>
+          </div>
+          <div>
+            지출
+            <span className="monthly expense">
+              -{monthlyExpense.toLocaleString()}원
+            </span>
+          </div>
         </div>
         <div>
           합계
