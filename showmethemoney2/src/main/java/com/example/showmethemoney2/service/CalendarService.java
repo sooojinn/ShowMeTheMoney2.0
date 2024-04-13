@@ -1,13 +1,14 @@
 package com.example.showmethemoney2.service;
 
-import com.example.showmethemoney2.entity.Calendar;
 import com.example.showmethemoney2.dao.CalendarDTO;
 import com.example.showmethemoney2.dao.CalendarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
+import com.example.showmethemoney2.entity.Calendar;
 
 @Service
 @Transactional
@@ -39,7 +40,8 @@ public class CalendarService {
     }
 
     // #READ 내역 조회
-    public Calendar viewCal(int calid, String username) {
+    @Cacheable("calendar")
+    public Calendar viewCal(int calid) {
         return calendarRepository.findById(calid)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 내역을 찾을 수 없습니다. :" + calid));
     }
@@ -97,6 +99,7 @@ public class CalendarService {
     }
 
     //월별 총수입 or 총지출
+    @Cacheable("monthlyTotal")
     public int[] monthlyTotal(String username, int year, int month) {
         List<Calendar> calendars = calendarRepository.MonthlyCal(username,year,month);
         //total[0] = incometotal, total[1]=expensetotal
@@ -110,6 +113,7 @@ public class CalendarService {
     }
 
     //각각의 카테고리당 월별 지출/수입 합계
+    @Cacheable("categoryMonthlyTotal")
     public Map<String,Number> categoryMonthlyTotal(String username, int year, int month, String division) {
 
         //{food, income,3만} , {cafe, income, 2만} ...

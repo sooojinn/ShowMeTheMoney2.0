@@ -4,6 +4,7 @@ export async function getTransactions(year, month) {
   const res = await fetch(
     baseUrl + `/transactions?year=${year}&month=${month}`
   );
+
   const datas = await res.json();
 
   const categoryList = {
@@ -61,12 +62,16 @@ export async function postJoinForm(data) {
 }
 
 export async function postLoginForm(data) {
+  const formData = new URLSearchParams();
+  for (const key in data) {
+    formData.append(key, data[key]);
+  }
   const res = await fetch(baseUrl + "/loginProc", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: JSON.stringify(data),
+    body: formData,
   });
   return res.status;
 }

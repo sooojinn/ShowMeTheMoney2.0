@@ -118,7 +118,7 @@ function JoinForm() {
             <input
               id="passwordCheck"
               type="password"
-              name="passwordcheck"
+              name="passwordCheck"
               className={errors.passwordCheck ? "err-input" : ""}
               placeholder="비밀번호를 입력하세요."
               {...register("passwordCheck", {
