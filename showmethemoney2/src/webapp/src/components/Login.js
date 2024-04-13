@@ -18,7 +18,6 @@ function LoginForm() {
       } else {
         throw new Error("에러가 발생했습니다.");
       }
-      else console.log("로그인 실패");
     } catch (error) {
       alert(error.message);
       window.location.reload();
