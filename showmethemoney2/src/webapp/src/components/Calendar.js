@@ -1,14 +1,18 @@
 import "./Calendar.css";
 import Transactions from "./Transactions.js";
 import { useState, useEffect } from "react";
-import { Link, useOutletContext } from "react-router-dom";
-import { getMonthlyTotal } from "../api";
+import { Link, useLocation, useOutletContext } from "react-router-dom";
 
 function Calendar() {
-  const { year, month, datas } = useOutletContext();
+  const { year, month, monthlyData, monthlyTransactions } = useOutletContext();
+  const monthlyIncome = +monthlyData["income-total"];
+  const monthlyExpense = +monthlyData["expense-total"];
+  const monthlyTotal = monthlyIncome - monthlyExpense;
 
-  const getDailyData = (date) => {
-    return datas.filter((data) => data.date === `${year}-${month + 1}-${date}`);
+  const getDailyTransactions = (date) => {
+    return monthlyTransactions.filter(
+      (data) => data.date === `${year}-${month + 1}-${date}`
+    );
   };
 
   const firstDayOfMonth = new Date(year, month, 1);
@@ -17,37 +21,24 @@ function Calendar() {
   const currentMonth = new Date().getMonth();
   const currentDate = new Date().getDate();
 
-  const [monthlyIncome, setMonthlyIncome] = useState(0);
-  const [monthlyExpense, setMonthlyExpense] = useState(0);
-  const monthlyTotal = monthlyIncome - monthlyExpense;
-
-  const transactionsOfToday = getDailyData(currentDate);
-  const [transactions, setTransactions] = useState(transactionsOfToday);
+  const transactionsOfToday = getDailyTransactions(currentDate);
+  const [dailyTransactions, setDailyTransactions] =
+    useState(transactionsOfToday);
   const [selectedDate, setSelectedDate] = useState();
 
   const handleDateClick = (i) => {
     setSelectedDate(i);
-    setTransactions(getDailyData(i));
+    setDailyTransactions(getDailyTransactions(i));
   };
 
   useEffect(() => {
     if (month === currentMonth) {
       setSelectedDate(currentDate);
-      setTransactions(getDailyData(currentDate));
+      setDailyTransactions(getDailyTransactions(currentDate));
     } else {
       setSelectedDate();
-      setTransactions([]);
+      setDailyTransactions([]);
     }
-    const fetchData = async () => {
-      try {
-        const nextMonthlyData = await getMonthlyTotal(year, month + 1);
-        setMonthlyIncome(+nextMonthlyData["income-total"]);
-        setMonthlyExpense(+nextMonthlyData["expense-total"]);
-      } catch {
-        alert("데이터를 불러오는 데 실패했습니다.");
-      }
-    };
-    fetchData();
   }, [month]);
 
   const renderCalendar = () => {
@@ -60,7 +51,7 @@ function Calendar() {
       let dailyTotalIncome = false;
       let dailyTotalExpense = false;
 
-      const dailyData = getDailyData(i);
+      const dailyData = getDailyTransactions(i);
 
       dailyData.forEach((data) => {
         if (data.division === "income") {
@@ -142,7 +133,7 @@ function Calendar() {
       >
         + 새로운 거래 추가하기
       </Link>
-      <Transactions transactions={transactions} />
+      <Transactions transactions={dailyTransactions} />
     </>
   );
 }

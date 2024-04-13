@@ -22,3 +22,79 @@
   font-family: inherit;
   font-size: 17px;
 }
+
+.budget-div {
+  margin: 20px 20px;
+  font-size: 22px;
+}
+
+.budget {
+  font-size: 27px;
+  margin-top: 5px;
+}
+
+.progress-container {
+  width: 100%;
+  height: 25px;
+  margin: 35px 0 10px 0;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--maincolor);
+  border-radius: 5px;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 5px;
+}
+
+.progress {
+  font-size: 14px;
+}
+
+.budget-div > p {
+  display: flex;
+  justify-content: space-between;
+  font-size: 19px;
+  margin-bottom: 2px;
+}
+
+.recommended-line {
+  border-right: 1px dashed black;
+  height: 35px;
+  position: relative;
+  left: 0;
+  top: -35px;
+}
+
+.recommended-badge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 18px;
+  background-color: #d1d1d2;
+  color: #fff;
+  border-radius: 10px;
+  font-size: 13px;
+  position: absolute;
+  top: -18px;
+  right: -15px;
+}
+
+.modify-btn {
+  font-size: 17px;
+  background-color: var(--maincolor);
+  width: 70px;
+  height: 23px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 7px auto;
+  cursor: pointer;
+}

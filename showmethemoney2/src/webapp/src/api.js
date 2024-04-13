@@ -1,4 +1,4 @@
-const baseUrl = "https://9150bd67-8495-4aba-82e6-568e786619e6.mock.pstmn.io";
+const baseUrl = "localhost:8080";
 
 export async function getTransactions(year, month) {
   const res = await fetch(
@@ -110,6 +110,23 @@ export async function getMonthlyTotal(year, month) {
   const res = await fetch(
     baseUrl + `/statics/total?year=${year}&month=${month}`
   );
+  const result = await res.json();
+  return result;
+}
+
+export async function postBudget(data) {
+  const res = await fetch(baseUrl + `/budget`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return res.status;
+}
+
+export async function getBudget(year, month) {
+  const res = await fetch(baseUrl + `/budget?year=${year}&month=${month}`);
   const result = await res.json();
   return result;
 }

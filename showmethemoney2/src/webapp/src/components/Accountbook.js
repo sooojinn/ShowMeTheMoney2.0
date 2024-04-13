@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { getTransactions } from "../api";
-import "./Accountbook.css";
 import { NavLink, Outlet } from "react-router-dom";
 import { getMonthlyTotal } from "../api";
+import { getBudget } from "../api.js";
 import Spinner from "../Spinner2.gif";
+import "./Accountbook.css";
 
 function Accountbook() {
   const today = new Date();
@@ -14,6 +15,7 @@ function Accountbook() {
     "income-total": 0,
     "expense-total": 0,
   });
+  const [budget, setBudget] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -22,8 +24,10 @@ function Accountbook() {
       try {
         const nextMonthlyTransactions = await getTransactions(year, month + 1);
         const nextMonthlyData = await getMonthlyTotal(year, month + 1);
+        const nextBudget = await getBudget(year, month + 1);
         setMonthlyTransactions(nextMonthlyTransactions);
         setMonthlyData(nextMonthlyData);
+        setBudget(nextBudget);
       } catch {
         alert("데이터를 불러오는 데 실패했습니다.");
       } finally {
@@ -77,7 +81,6 @@ function Accountbook() {
           예산
         </NavLink>
       </div>
-
       <div className="calendar-header">
         <div className="btn" onClick={handlePrevBtn}>
           ◀
@@ -89,13 +92,13 @@ function Accountbook() {
           ▶
         </div>
       </div>
-
       <Outlet
         context={{
           year: year,
           month: month,
           monthlyData: monthlyData,
           monthlyTransactions: monthlyTransactions,
+          budget: budget,
         }}
       />
       {isLoading && (

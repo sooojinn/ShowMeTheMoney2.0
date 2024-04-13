@@ -3,17 +3,19 @@ import Transactions from "./Transactions.js";
 import "./List.css";
 
 function List() {
-  const { year, month, datas } = useOutletContext();
+  const { year, month, monthlyTransactions } = useOutletContext();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  const getDailyData = (date) => {
-    return datas.filter((data) => data.date === `${year}-${month + 1}-${date}`);
+  const getDailyTransactions = (date) => {
+    return monthlyTransactions.filter(
+      (data) => data.date === `${year}-${month + 1}-${date}`
+    );
   };
 
   const renderList = () => {
     const list = [];
     for (let i = 0; i < daysInMonth; i++) {
-      const transactions = getDailyData(i);
+      const transactions = getDailyTransactions(i);
       const show = transactions.length !== 0;
       list.unshift(
         <div key={i}>
