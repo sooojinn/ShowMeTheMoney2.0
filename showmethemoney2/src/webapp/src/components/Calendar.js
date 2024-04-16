@@ -1,7 +1,7 @@
 import "./Calendar.css";
 import Transactions from "./Transactions.js";
 import { useState, useEffect } from "react";
-import { Link, useLocation, useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 
 function Calendar() {
   const { year, month, monthlyData, monthlyTransactions } = useOutletContext();

@@ -90,11 +90,11 @@
   font-size: 17px;
   background-color: var(--maincolor);
   width: 70px;
-  height: 23px;
-  border-radius: 10px;
+  height: 25px;
+  border-radius: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 7px auto;
+  margin: 10px auto;
   cursor: pointer;
 }

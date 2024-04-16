@@ -101,15 +101,17 @@ function Accountbook() {
           ▶
         </div>
       </div>
-      <Outlet
-        context={{
-          year: year,
-          month: month,
-          monthlyData: monthlyData,
-          monthlyTransactions: monthlyTransactions,
-          budget: budget,
-        }}
-      />
+      {isLoading || (
+        <Outlet
+          context={{
+            year: year,
+            month: month,
+            monthlyData: monthlyData,
+            monthlyTransactions: monthlyTransactions,
+            budget: budget,
+          }}
+        />
+      )}
       {isLoading && (
         <div className="overlay">
           <img src={Spinner} style={style} alt="로딩중..." />
