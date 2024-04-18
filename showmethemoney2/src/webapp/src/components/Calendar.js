@@ -58,9 +58,10 @@ function CalendarDates({
 }
 
 function Calendar() {
-  const { year, month, monthlyData, monthlyTransactions } = useOutletContext();
-  const monthlyIncome = +monthlyData["income-total"];
-  const monthlyExpense = +monthlyData["expense-total"];
+  const { year, month, monthlyTotals, monthlyTransactions } =
+    useOutletContext();
+  const monthlyIncome = +monthlyTotals["income-total"];
+  const monthlyExpense = +monthlyTotals["expense-total"];
   const monthlyTotal = monthlyIncome - monthlyExpense;
 
   const getDailyTransactions = (date) => {

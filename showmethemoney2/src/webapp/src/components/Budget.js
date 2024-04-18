@@ -6,8 +6,8 @@ import BudgetForm from "./BudgetForm.js";
 export default function Budget() {
   const [showBudgetForm, setShowBudgetForm] = useState(false);
 
-  const { year, month, monthlyData, budget } = useOutletContext();
-  const remainingBudget = budget - monthlyData["expense-total"];
+  const { year, month, monthlyTotals, budget } = useOutletContext();
+  const remainingBudget = budget - monthlyTotals["expense-total"];
   const isOver = remainingBudget < 0;
   const progress = isOver ? 100 : Math.floor((remainingBudget / budget) * 100);
 

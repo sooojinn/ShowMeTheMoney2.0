@@ -3,6 +3,7 @@ import { getTransactions } from "../api";
 import { NavLink, Outlet } from "react-router-dom";
 import { getMonthlyTotal } from "../api";
 import { getBudget } from "../api.js";
+import { getCategoryTotal } from "../api";
 import Spinner from "../Spinner2.gif";
 import "./Accountbook.css";
 
@@ -17,10 +18,11 @@ function Accountbook() {
     storedMonth ? +storedMonth : today.getMonth()
   );
   const [monthlyTransactions, setMonthlyTransactions] = useState([]);
-  const [monthlyData, setMonthlyData] = useState({
+  const [monthlyTotals, setMonthlyTotals] = useState({
     "income-total": 0,
     "expense-total": 0,
   });
+  const [categoryTotal, setCategoryTotal] = useState({});
   const [budget, setBudget] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,10 +31,16 @@ function Accountbook() {
       setIsLoading(true);
       try {
         const nextMonthlyTransactions = await getTransactions(year, month + 1);
-        const nextMonthlyData = await getMonthlyTotal(year, month + 1);
+        const nextMonthlyTotals = await getMonthlyTotal(year, month + 1);
+        const nextCategoryTotal = await getCategoryTotal(
+          "expense",
+          year,
+          month
+        );
         const nextBudget = await getBudget(year, month + 1);
         setMonthlyTransactions(nextMonthlyTransactions);
-        setMonthlyData(nextMonthlyData);
+        setMonthlyTotals(nextMonthlyTotals);
+        setCategoryTotal(nextCategoryTotal);
         setBudget(nextBudget);
       } catch {
         alert("데이터를 불러오는 데 실패했습니다.");
@@ -106,8 +114,9 @@ function Accountbook() {
           context={{
             year: year,
             month: month,
-            monthlyData: monthlyData,
+            monthlyTotals: monthlyTotals,
             monthlyTransactions: monthlyTransactions,
+            categoryTotal: categoryTotal,
             budget: budget,
           }}
         />
