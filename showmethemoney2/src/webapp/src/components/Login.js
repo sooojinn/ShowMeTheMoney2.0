@@ -2,6 +2,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { postLoginForm } from "../api";
 import Spinner from "../Spinner.gif";
+import naverIcon from "../icon_naver.png";
+import googleIcon from "../icon_google.png";
+import {
+  Line,
+  SocialLoginBtn,
+  SocialLoginBtns,
+  SocialLoginInfo,
+} from "./Join.js";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -62,6 +70,12 @@ function LoginForm() {
         <Link to="/join" className="link">
           회원가입하기
         </Link>
+        <Line>or</Line>
+        <SocialLoginInfo>SNS로 로그인</SocialLoginInfo>
+        <SocialLoginBtns>
+          <SocialLoginBtn image={googleIcon}></SocialLoginBtn>
+          <SocialLoginBtn image={naverIcon}></SocialLoginBtn>
+        </SocialLoginBtns>
       </form>
     </>
   );

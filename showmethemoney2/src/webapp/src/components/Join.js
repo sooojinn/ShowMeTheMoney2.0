@@ -1,35 +1,41 @@
 import "./Join.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { postJoinForm } from "../api";
 import { isUnique } from "../api";
 import Spinner from "../Spinner.gif";
 import Loading from "./Loading.js";
+import styled from "styled-components";
+import naverIcon from "../icon_naver.png";
+import googleIcon from "../icon_google.png";
 
 function JoinForm() {
   const {
     register,
     handleSubmit,
     getValues,
+    watch,
+    setError,
+    clearErrors,
     formState: { errors, isValid, isSubmitting, isSubmitted },
   } = useForm({ mode: "onChange" });
 
   const [postSuccess, setPostSuccess] = useState(false);
 
-  // useEffect(() => {
-  //   if (
-  //     watch("password") !== watch("passwordCheck") &&
-  //     watch("passwordCheck")
-  //   ) {
-  //     setError("passwordCheck", {
-  //       type: "password-mismatch",
-  //       message: "비밀번호가 일치하지 않습니다",
-  //     });
-  //   } else {
-  //     clearErrors("passwordCheck");
-  //   }
-  // }, [watch("password"), watch("passwordCheck")]);
+  useEffect(() => {
+    if (
+      watch("password") !== watch("passwordCheck") &&
+      watch("passwordCheck")
+    ) {
+      setError("passwordCheck", {
+        type: "password-mismatch",
+        message: "비밀번호가 일치하지 않습니다",
+      });
+    } else {
+      clearErrors("passwordCheck");
+    }
+  }, [watch("password"), watch("passwordCheck")]);
 
   const onSubmit = async (data) => {
     try {
@@ -150,11 +156,63 @@ function JoinForm() {
           <Link to="/login" className="link">
             로그인하기
           </Link>
+          <Line>or</Line>
+          <SocialLoginInfo>SNS로 회원가입</SocialLoginInfo>
+          <SocialLoginBtns>
+            <SocialLoginBtn image={googleIcon}></SocialLoginBtn>
+            <SocialLoginBtn image={naverIcon}></SocialLoginBtn>
+          </SocialLoginBtns>
         </form>
       )}
       {isSubmitted && postSuccess && <Loading />}
     </>
   );
 }
+
+export const Line = styled.p`
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 18px;
+  margin: 8px 0px;
+  font-size: 16px;
+
+  &::before,
+  &:after {
+    content: "";
+    flex-grow: 1;
+    background: rgba(0, 0, 0, 0.35);
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+    margin: 0px 5px;
+  }
+`;
+
+export const SocialLoginInfo = styled.p`
+  color: rgba(0, 0, 0, 0.45);
+  text-align: center;
+  font-size: 15px;
+  margin: 15px 0;
+`;
+
+export const SocialLoginBtns = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-top: 10px;
+`;
+
+export const SocialLoginBtn = styled.button`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-size: cover;
+  background-image: url(${(props) => props.image});
+  background-repeat: no-repeat;
+  background-position: center center;
+`;
 
 export default JoinForm;

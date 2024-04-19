@@ -1,4 +1,4 @@
-const baseUrl = "https://localhost:3000";
+const baseUrl = "https://localhost:8080";
 
 const categoryList = {
   food: "식비",
@@ -136,19 +136,27 @@ export async function getBudget(year, month) {
   return result;
 }
 
-export async function getCategoryTotal(division, year, month) {
+export async function getCategoryTotal(year, month) {
   const res = await fetch(
-    baseUrl + `/statics/category/${division}?year=${year}&month=${month}`
+    baseUrl + `/statics/category?year=${year}&month=${month}`
   );
   const data = await res.json();
+  const expenseCategory = data["expense"];
+  const incomeCategory = data["income"];
 
-  delete data.year;
-  delete data.month;
-  delete data.total;
-
-  for (const key in data) {
-    data[categoryList[key]] = data[key];
-    delete data[key];
+  for (const key in expenseCategory) {
+    expenseCategory[categoryList[key]] = expenseCategory[key];
+    delete expenseCategory[key];
   }
-  return data;
+  for (const key in incomeCategory) {
+    incomeCategory[categoryList[key]] = incomeCategory[key];
+    delete incomeCategory[key];
+  }
+
+  const translatedData = {
+    expense: expenseCategory,
+    income: incomeCategory,
+  };
+
+  return translatedData;
 }

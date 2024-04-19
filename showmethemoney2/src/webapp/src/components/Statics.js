@@ -3,8 +3,7 @@ import { Doughnut } from "react-chartjs-2";
 import { useOutletContext } from "react-router-dom";
 import "./Statics.css";
 import styled, { css } from "styled-components";
-import { useEffect, useState } from "react";
-import { getCategoryTotal } from "../api";
+import { useState } from "react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -58,9 +57,7 @@ const IndexColor = styled.div`
   background-color: ${(props) => props.color};
 `;
 
-function DoughnutChart() {
-  const { categoryTotal } = useOutletContext();
-
+function DoughnutChart({ categoryTotal }) {
   const Data = {
     labels: [...Object.keys(categoryTotal)],
     datasets: [
@@ -99,33 +96,19 @@ function DoughnutChart() {
 }
 
 function Statics() {
-  const {
-    year,
-    month,
-    monthlyTotals,
-    categoryTotal: expenseCategory,
-  } = useOutletContext();
+  const { monthlyTotals, categoryTotal: allCategoryTotal } = useOutletContext();
   const [division, setDivision] = useState("expense");
-  const [categoryTotal, setCategoryTotal] = useState(expenseCategory);
+  const [categoryTotal, setCategoryTotal] = useState(
+    allCategoryTotal["expense"]
+  );
   const expenseTotal = +monthlyTotals["expense-total"];
   const incomeTotal = +monthlyTotals["income-total"];
   const totalAmount = division === "expense" ? expenseTotal : incomeTotal;
 
   const handleDivisionClick = (e) => {
     setDivision(e.target.value);
+    setCategoryTotal(allCategoryTotal[e.target.value]);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const nextCategoryTotal = await getCategoryTotal(division, year, month);
-        setCategoryTotal(nextCategoryTotal);
-      } catch {
-        alert("데이터를 불러오는 데 실패했습니다.");
-      }
-    };
-    fetchData();
-  }, [division]);
 
   const createLegend = () => {
     let legend = [];
@@ -171,7 +154,7 @@ function Statics() {
         />
         <label htmlFor="income">수입 {incomeTotal}원</label>
       </div>
-      <DoughnutChart />
+      {categoryTotal && <DoughnutChart categoryTotal={categoryTotal} />}
       <div className="total-amount_div">
         <div>전체</div>
         <div className="total-amount">{totalAmount.toLocaleString()}원</div>

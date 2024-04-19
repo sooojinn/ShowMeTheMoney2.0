@@ -32,11 +32,7 @@ function Accountbook() {
       try {
         const nextMonthlyTransactions = await getTransactions(year, month + 1);
         const nextMonthlyTotals = await getMonthlyTotal(year, month + 1);
-        const nextCategoryTotal = await getCategoryTotal(
-          "expense",
-          year,
-          month
-        );
+        const nextCategoryTotal = await getCategoryTotal(year, month + 1);
         const nextBudget = await getBudget(year, month + 1);
         setMonthlyTransactions(nextMonthlyTransactions);
         setMonthlyTotals(nextMonthlyTotals);
