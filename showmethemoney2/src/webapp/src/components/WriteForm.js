@@ -2,6 +2,11 @@ import { useState } from "react";
 import "./WriteForm.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
+const DivisionInput = styled.input`
+  display: none;
+`;
 
 export default function WriteForm({ request, defaultValues }) {
   const defaultDate = (dateString) => {
@@ -41,7 +46,7 @@ export default function WriteForm({ request, defaultValues }) {
 
   const onSubmit = async (data) => {
     data["money"] = removeComma(money);
-    if (!data.money) alert("금액을 입력해주세요.");
+    if (!+data.money) alert("금액을 입력해주세요.");
     else if (!data.date) alert("날짜를 선택해주세요.");
     else if (!data.category) alert("카테고리를 선택해주세요.");
     else {
@@ -96,7 +101,7 @@ export default function WriteForm({ request, defaultValues }) {
               htmlFor="expense"
               className={division === "expense" ? "checked-division" : ""}
             >
-              <input
+              <DivisionInput
                 type="radio"
                 name="division"
                 value="expense"
@@ -109,7 +114,7 @@ export default function WriteForm({ request, defaultValues }) {
               htmlFor="income"
               className={division === "income" ? "checked-division" : ""}
             >
-              <input
+              <DivisionInput
                 type="radio"
                 name="division"
                 value="income"

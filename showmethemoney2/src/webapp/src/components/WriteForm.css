@@ -48,10 +48,6 @@
   background-color: transparent;
 }
 
-input[type="radio"] {
-  display: none;
-}
-
 #division > label {
   display: flex;
   justify-content: center;

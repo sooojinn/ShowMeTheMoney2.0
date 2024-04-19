@@ -3,18 +3,26 @@ import { getTransactions } from "../api";
 import { NavLink, Outlet } from "react-router-dom";
 import { getMonthlyTotal } from "../api";
 import { getBudget } from "../api.js";
+import { getCategoryTotal } from "../api";
 import Spinner from "../Spinner2.gif";
 import "./Accountbook.css";
 
 function Accountbook() {
+  const storedYear = sessionStorage.getItem("year");
+  const storedMonth = sessionStorage.getItem("month");
   const today = new Date();
-  const [year, setYear] = useState(today.getFullYear());
-  const [month, setMonth] = useState(today.getMonth());
+  const [year, setYear] = useState(
+    storedYear ? +storedYear : today.getFullYear()
+  );
+  const [month, setMonth] = useState(
+    storedMonth ? +storedMonth : today.getMonth()
+  );
   const [monthlyTransactions, setMonthlyTransactions] = useState([]);
-  const [monthlyData, setMonthlyData] = useState({
+  const [monthlyTotals, setMonthlyTotals] = useState({
     "income-total": 0,
     "expense-total": 0,
   });
+  const [categoryTotal, setCategoryTotal] = useState({});
   const [budget, setBudget] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,10 +31,12 @@ function Accountbook() {
       setIsLoading(true);
       try {
         const nextMonthlyTransactions = await getTransactions(year, month + 1);
-        const nextMonthlyData = await getMonthlyTotal(year, month + 1);
+        const nextMonthlyTotals = await getMonthlyTotal(year, month + 1);
+        const nextCategoryTotal = await getCategoryTotal(year, month + 1);
         const nextBudget = await getBudget(year, month + 1);
         setMonthlyTransactions(nextMonthlyTransactions);
-        setMonthlyData(nextMonthlyData);
+        setMonthlyTotals(nextMonthlyTotals);
+        setCategoryTotal(nextCategoryTotal);
         setBudget(nextBudget);
       } catch {
         alert("데이터를 불러오는 데 실패했습니다.");
@@ -35,6 +45,9 @@ function Accountbook() {
       }
     };
     fetchData();
+
+    sessionStorage.setItem("year", year);
+    sessionStorage.setItem("month", month);
   }, [month]);
 
   const handlePrevBtn = () => {
@@ -59,7 +72,7 @@ function Accountbook() {
     width: "80px",
     position: "absolute",
     left: "50%",
-    top: "50%",
+    top: "40%",
     transform: "translate(-50%, -50%)",
   };
 
@@ -92,15 +105,18 @@ function Accountbook() {
           ▶
         </div>
       </div>
-      <Outlet
-        context={{
-          year: year,
-          month: month,
-          monthlyData: monthlyData,
-          monthlyTransactions: monthlyTransactions,
-          budget: budget,
-        }}
-      />
+      {isLoading || (
+        <Outlet
+          context={{
+            year: year,
+            month: month,
+            monthlyTotals: monthlyTotals,
+            monthlyTransactions: monthlyTransactions,
+            categoryTotal: categoryTotal,
+            budget: budget,
+          }}
+        />
+      )}
       {isLoading && (
         <div className="overlay">
           <img src={Spinner} style={style} alt="로딩중..." />
