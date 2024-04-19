@@ -1,3 +1,4 @@
+
 const baseUrl = "https://localhost:8080";
 
 const categoryList = {
@@ -20,6 +21,8 @@ const categoryList = {
   additional: "부수입",
   allowance: "용돈",
 };
+
+
 
 export async function getTransactions(year, month) {
   const res = await fetch(
@@ -71,7 +74,7 @@ export async function postLoginForm(data) {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: formData,
+    body: formData
   });
   return res.status;
 }
