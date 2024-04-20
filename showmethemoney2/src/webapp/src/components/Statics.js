@@ -144,7 +144,7 @@ function Statics() {
           defaultChecked
           onClick={handleDivisionClick}
         />
-        <label htmlFor="expense">지출 {expenseTotal}원</label>
+        <label htmlFor="expense">지출 {expenseTotal.toLocaleString()}원</label>
         <CheckDivision
           type="radio"
           name="division"
@@ -152,7 +152,7 @@ function Statics() {
           id="income"
           onClick={handleDivisionClick}
         />
-        <label htmlFor="income">수입 {incomeTotal}원</label>
+        <label htmlFor="income">수입 {incomeTotal.toLocaleString()}원</label>
       </div>
       {categoryTotal && <DoughnutChart categoryTotal={categoryTotal} />}
       <div className="total-amount_div">
