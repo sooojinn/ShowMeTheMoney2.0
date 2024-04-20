@@ -57,125 +57,136 @@ function JoinForm() {
   return (
     <>
       {!postSuccess && (
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="form"
-          name="joinForm"
-        >
-          <div className="title-div">
-            <p className="title">회원가입</p>
-            <p className="title-info">
-              지금 가입하고 당신만의 가계부를 만들어보세요!
-            </p>
-          </div>
-          <div className="username input-div">
-            <label htmlFor="username" />
-            아이디
-            <input
-              id="username"
-              type="text"
-              name="username"
-              className={errors.username ? "err-input" : ""}
-              placeholder="아이디를 입력하세요."
-              autoComplete="off"
-              {...register("username", {
-                required: "아이디를 입력하세요.",
-                pattern: {
-                  value: /^[a-zA-Z0-9]{5,20}$/,
-                  message:
-                    "아이디는 5~20자의 영문 대/소문자, 숫자만 사용 가능합니다.",
-                },
-                validate: {
-                  isUnique: (value) =>
-                    isUnique(value) || "이미 사용 중인 아이디입니다.",
-                },
-              })}
-            />
-            {errors.username && (
-              <div className="err-message">{errors.username.message}</div>
-            )}
-          </div>
-          <div className="password input-div">
-            <label htmlFor="password" />
-            비밀번호
-            <input
-              id="password"
-              type="password"
-              name="password"
-              className={errors.password ? "err-input" : ""}
-              placeholder="비밀번호를 입력하세요."
-              {...register("password", {
-                required: "비밀번호를 입력하세요.",
-                pattern: {
-                  value:
-                    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$/,
-                  message:
-                    "비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야합니다.",
-                },
-              })}
-            />
-            {errors.password && (
-              <div className="err-message">{errors.password.message}</div>
-            )}
-          </div>
-          <div className="password-check input-div">
-            <label htmlFor="passwordCheck" />
-            비밀번호 확인
-            <input
-              id="passwordCheck"
-              type="password"
-              name="passwordCheck"
-              className={errors.passwordCheck ? "err-input" : ""}
-              placeholder="비밀번호를 입력하세요."
-              {...register("passwordCheck", {
-                required: "비밀번호를 입력하세요.",
-                validate: {
-                  matchPassword: (value) => {
-                    const { password } = getValues();
-                    return (
-                      password === value || "비밀번호가 일치하지 않습니다."
-                    );
+        <div className="form">
+          <form onSubmit={handleSubmit(onSubmit)} name="joinForm">
+            <div className="title-div">
+              <p className="title">회원가입</p>
+              <p className="title-info">
+                지금 가입하고 당신만의 가계부를 만들어보세요!
+              </p>
+            </div>
+            <div className="username input-div">
+              <label htmlFor="username" />
+              아이디
+              <input
+                id="username"
+                type="text"
+                name="username"
+                className={errors.username ? "err-input" : ""}
+                placeholder="아이디를 입력하세요."
+                autoComplete="off"
+                {...register("username", {
+                  required: "아이디를 입력하세요.",
+                  pattern: {
+                    value: /^[a-zA-Z0-9]{5,20}$/,
+                    message:
+                      "아이디는 5~20자의 영문 대/소문자, 숫자만 사용 가능합니다.",
                   },
-                },
-              })}
-            />
-            {errors.passwordCheck && (
-              <div className="err-message">{errors.passwordCheck.message}</div>
-            )}
-          </div>
-          <button
-            disabled={!isValid || isSubmitting || isSubmitted}
-            value="join"
-          >
-            {isSubmitting ? (
-              <img src={Spinner} className="spinner" alt="로딩중..." />
-            ) : (
-              <p>가입하기</p>
-            )}
-          </button>
+                  validate: {
+                    isUnique: (value) =>
+                      isUnique(value) || "이미 사용 중인 아이디입니다.",
+                  },
+                })}
+              />
+              {errors.username && (
+                <div className="err-message">{errors.username.message}</div>
+              )}
+            </div>
+            <div className="password input-div">
+              <label htmlFor="password" />
+              비밀번호
+              <input
+                id="password"
+                type="password"
+                name="password"
+                className={errors.password ? "err-input" : ""}
+                placeholder="비밀번호를 입력하세요."
+                {...register("password", {
+                  required: "비밀번호를 입력하세요.",
+                  pattern: {
+                    value:
+                      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$/,
+                    message:
+                      "비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야합니다.",
+                  },
+                })}
+              />
+              {errors.password && (
+                <div className="err-message">{errors.password.message}</div>
+              )}
+            </div>
+            <div className="password-check input-div">
+              <label htmlFor="passwordCheck" />
+              비밀번호 확인
+              <input
+                id="passwordCheck"
+                type="password"
+                name="passwordCheck"
+                className={errors.passwordCheck ? "err-input" : ""}
+                placeholder="비밀번호를 입력하세요."
+                {...register("passwordCheck", {
+                  required: "비밀번호를 입력하세요.",
+                  validate: {
+                    matchPassword: (value) => {
+                      const { password } = getValues();
+                      return (
+                        password === value || "비밀번호가 일치하지 않습니다."
+                      );
+                    },
+                  },
+                })}
+              />
+              {errors.passwordCheck && (
+                <div className="err-message">
+                  {errors.passwordCheck.message}
+                </div>
+              )}
+            </div>
+            <button
+              disabled={!isValid || isSubmitting || isSubmitted}
+              value="join"
+            >
+              {isSubmitting ? (
+                <img src={Spinner} className="spinner" alt="로딩중..." />
+              ) : (
+                <p>가입하기</p>
+              )}
+            </button>
+          </form>
           <Link to="/login" className="link">
             로그인하기
           </Link>
           <Line>or</Line>
-          <SocialLoginInfo>SNS로 회원가입</SocialLoginInfo>
+          <SocialLoginInfo>SNS로 시작하기</SocialLoginInfo>
           <SocialLoginBtns>
             <SocialLoginBtn image={googleIcon}></SocialLoginBtn>
-            <SocialLoginBtn image={naverIcon}></SocialLoginBtn>
+            <NaverLogin></NaverLogin>
           </SocialLoginBtns>
-        </form>
+        </div>
       )}
       {isSubmitted && postSuccess && <Loading />}
     </>
   );
 }
 
+export function NaverLogin() {
+  const CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID;
+  const REDIRECT_URI = process.env.REACT_APP_NAVER_REDIRECT_URI;
+  const STATE = "test";
+
+  const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${CLIENT_ID}&state=${STATE}&redirect_uri=${REDIRECT_URI}`;
+
+  const loginNaver = () => {
+    window.location.href = NAVER_AUTH_URL;
+  };
+  return <SocialLoginBtn image={naverIcon} onClick={loginNaver} />;
+}
+
 export const Line = styled.p`
   display: flex;
-  flex-basis: 100%;
   align-items: center;
   color: rgba(0, 0, 0, 0.35);
   font-size: 18px;
-  margin: 8px 0px;
   font-size: 16px;
 
   &::before,
@@ -202,7 +213,6 @@ export const SocialLoginBtns = styled.div`
   justify-content: center;
   align-items: center;
   gap: 30px;
-  margin-top: 10px;
 `;
 
 export const SocialLoginBtn = styled.button`

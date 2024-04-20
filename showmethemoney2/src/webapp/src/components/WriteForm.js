@@ -1,12 +1,7 @@
 import { useState } from "react";
-import "./WriteForm.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-
-const DivisionInput = styled.input`
-  display: none;
-`;
+import styled, { css } from "styled-components";
 
 export default function WriteForm({ request, defaultValues }) {
   const defaultDate = (dateString) => {
@@ -86,22 +81,18 @@ export default function WriteForm({ request, defaultValues }) {
     navigate(-1);
   };
 
-  console.log("render");
-
   return (
     <>
-      <div className="uturn-btn" onClick={handleUturnClick}>
-        ✕
-      </div>
-      <form className="write-form" onSubmit={handleSubmit(onSubmit)}>
-        <div className="input-group">
+      <XBtn onClick={handleUturnClick}>✕</XBtn>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <InputGroup>
           분류
-          <div id="division">
+          <Division>
             <label
               htmlFor="expense"
-              className={division === "expense" ? "checked-division" : ""}
+              className={division === "expense" ? "selected" : ""}
             >
-              <DivisionInput
+              <input
                 type="radio"
                 name="division"
                 value="expense"
@@ -112,9 +103,9 @@ export default function WriteForm({ request, defaultValues }) {
             </label>
             <label
               htmlFor="income"
-              className={division === "income" ? "checked-division" : ""}
+              className={division === "income" ? "selected" : ""}
             >
-              <DivisionInput
+              <input
                 type="radio"
                 name="division"
                 value="income"
@@ -123,12 +114,12 @@ export default function WriteForm({ request, defaultValues }) {
               />
               수입
             </label>
-          </div>
-        </div>
-        <div className="input-group">
+          </Division>
+        </InputGroup>
+        <InputGroup>
           금액
-          <div className="money-div">
-            <input
+          <MoneyDiv>
+            <Input
               id="money"
               type="text"
               name="money"
@@ -139,35 +130,129 @@ export default function WriteForm({ request, defaultValues }) {
               value={money}
             />
             <p>원</p>
-          </div>
-        </div>
-        <div className="input-group">
+          </MoneyDiv>
+        </InputGroup>
+        <InputGroup>
           날짜
-          <input id="date" type="date" name="date" {...register("date")} />
-        </div>
-        <div className="input-group">
+          <Input id="date" type="date" name="date" {...register("date")} />
+        </InputGroup>
+        <InputGroup>
           카테고리
-          <select id="category" name="category" {...register("category")}>
+          <Select id="category" name="category" {...register("category")}>
             {division === "expense" ? <ExpenseCategory /> : <IncomeCategory />}
-          </select>
-        </div>
-        <div className="input-group">
+          </Select>
+        </InputGroup>
+        <InputGroup>
           내용
-          <input
+          <Input
             id="memo"
             name="memo"
             autoComplete="off"
             placeholder="내용을 입력하세요."
             {...register("memo")}
           />
-        </div>
+        </InputGroup>
         <button type="submit" disabled={isSubmitting}>
           저장
         </button>
-      </form>
+      </Form>
     </>
   );
 }
+
+const Form = styled.form`
+  width: 350px;
+  margin: 30px auto 20px;
+  font-size: 20px;
+`;
+
+const XBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 40px;
+  height: 40px;
+  color: black;
+  text-decoration: none;
+  font-size: 30px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e6e6e6;
+  }
+`;
+
+const InputGroup = styled.div`
+  margin: 10px;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & > * {
+    width: 250px;
+    height: 50px;
+    font-size: 18px;
+  }
+`;
+
+const Division = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 250px;
+
+  & > label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+    height: 40px;
+    border: 1.5px solid var(--maincolor);
+    cursor: pointer;
+  }
+
+  & input {
+    display: none;
+  }
+
+  & .selected {
+    background-color: var(--maincolor);
+  }
+`;
+
+const defaultCss = css`
+  height: 30px;
+  padding: 3px;
+  font-family: inherit;
+  border: 2px solid var(--maincolor);
+  border-width: 0 0 2px;
+  background-color: transparent;
+`;
+
+const Input = styled.input`
+  ${defaultCss}
+  ${(props) =>
+    props.name === "money" &&
+    css`
+      flex-shrink: 1;
+      width: 100%;
+      font-size: 25px;
+    `}
+`;
+
+const Select = styled.select`
+  ${defaultCss}
+  &:focus {
+    outline: none;
+  }
+`;
+
+const MoneyDiv = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+`;
 
 function ExpenseCategory() {
   return (

@@ -9,6 +9,7 @@ import {
   SocialLoginBtn,
   SocialLoginBtns,
   SocialLoginInfo,
+  NaverLogin,
 } from "./Join.js";
 
 function LoginForm() {
@@ -33,8 +34,8 @@ function LoginForm() {
     }
   };
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)} className="form" name="loginForm">
+    <div className="form">
+      <form onSubmit={handleSubmit(onSubmit)} name="loginForm">
         <div className="title-div">
           <p className="title">로그인</p>
           <p className="title-info">서비스 이용을 위해 로그인이 필요합니다.</p>
@@ -67,17 +68,17 @@ function LoginForm() {
             <p>로그인하기</p>
           )}
         </button>
-        <Link to="/join" className="link">
-          회원가입하기
-        </Link>
-        <Line>or</Line>
-        <SocialLoginInfo>SNS로 로그인</SocialLoginInfo>
-        <SocialLoginBtns>
-          <SocialLoginBtn image={googleIcon}></SocialLoginBtn>
-          <SocialLoginBtn image={naverIcon}></SocialLoginBtn>
-        </SocialLoginBtns>
       </form>
-    </>
+      <Link to="/join" className="link">
+        회원가입하기
+      </Link>
+      <Line>or</Line>
+      <SocialLoginInfo>SNS로 로그인</SocialLoginInfo>
+      <SocialLoginBtns>
+        <SocialLoginBtn image={googleIcon}></SocialLoginBtn>
+        <NaverLogin></NaverLogin>
+      </SocialLoginBtns>
+    </div>
   );
 }
 
