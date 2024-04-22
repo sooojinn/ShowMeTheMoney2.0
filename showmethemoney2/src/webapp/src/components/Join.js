@@ -7,10 +7,10 @@ import { isUnique } from "../api";
 import Spinner from "../Spinner.gif";
 import Loading from "./Loading.js";
 import styled from "styled-components";
-import naverIcon from "../icon_naver.png";
 import googleIcon from "../icon_google.png";
+import NaverLogin from "./NaverLogin.js";
 
-function JoinForm() {
+export default function JoinForm() {
   const {
     register,
     handleSubmit,
@@ -51,8 +51,6 @@ function JoinForm() {
       return;
     }
   };
-
-  console.log("render");
 
   return (
     <>
@@ -169,19 +167,6 @@ function JoinForm() {
   );
 }
 
-export function NaverLogin() {
-  const CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID;
-  const REDIRECT_URI = process.env.REACT_APP_NAVER_REDIRECT_URI;
-  const STATE = "test";
-
-  const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${CLIENT_ID}&state=${STATE}&redirect_uri=${REDIRECT_URI}`;
-
-  const loginNaver = () => {
-    window.location.href = NAVER_AUTH_URL;
-  };
-  return <SocialLoginBtn image={naverIcon} onClick={loginNaver} />;
-}
-
 export const Line = styled.p`
   display: flex;
   align-items: center;
@@ -224,5 +209,3 @@ export const SocialLoginBtn = styled.button`
   background-repeat: no-repeat;
   background-position: center center;
 `;
-
-export default JoinForm;

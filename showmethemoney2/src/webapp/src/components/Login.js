@@ -2,15 +2,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { postLoginForm } from "../api";
 import Spinner from "../Spinner.gif";
-import naverIcon from "../icon_naver.png";
 import googleIcon from "../icon_google.png";
 import {
   Line,
   SocialLoginBtn,
   SocialLoginBtns,
   SocialLoginInfo,
-  NaverLogin,
 } from "./Join.js";
+import NaverLogin from "./NaverLogin.js";
 
 function LoginForm() {
   const navigate = useNavigate();
