@@ -7,8 +7,8 @@ import { isUnique } from "../api";
 import Spinner from "../Spinner.gif";
 import Loading from "./Loading.js";
 import styled from "styled-components";
-import googleIcon from "../icon_google.png";
 import NaverLogin from "./NaverLogin.js";
+import GoogleLogin from "./GoogleLogin.js";
 
 export default function JoinForm() {
   const {
@@ -157,7 +157,7 @@ export default function JoinForm() {
           <Line>or</Line>
           <SocialLoginInfo>SNS로 시작하기</SocialLoginInfo>
           <SocialLoginBtns>
-            <SocialLoginBtn image={googleIcon}></SocialLoginBtn>
+            <GoogleLogin></GoogleLogin>
             <NaverLogin></NaverLogin>
           </SocialLoginBtns>
         </div>

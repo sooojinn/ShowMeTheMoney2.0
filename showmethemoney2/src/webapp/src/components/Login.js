@@ -2,14 +2,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { postLoginForm } from "../api";
 import Spinner from "../Spinner.gif";
-import googleIcon from "../icon_google.png";
-import {
-  Line,
-  SocialLoginBtn,
-  SocialLoginBtns,
-  SocialLoginInfo,
-} from "./Join.js";
+import { Line, SocialLoginBtns, SocialLoginInfo } from "./Join.js";
 import NaverLogin from "./NaverLogin.js";
+import GoogleLogin from "./GoogleLogin.js";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -74,7 +69,7 @@ function LoginForm() {
       <Line>or</Line>
       <SocialLoginInfo>SNS로 로그인</SocialLoginInfo>
       <SocialLoginBtns>
-        <SocialLoginBtn image={googleIcon}></SocialLoginBtn>
+        <GoogleLogin></GoogleLogin>
         <NaverLogin></NaverLogin>
       </SocialLoginBtns>
     </div>
