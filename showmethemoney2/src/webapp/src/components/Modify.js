@@ -4,8 +4,8 @@ import { putTransaction } from "../api";
 import { deleteTransaction } from "../api";
 import { useEffect, useState } from "react";
 import WriteForm from "./WriteForm";
-import "./Modify.css";
-import Spinner from "../Spinner.gif";
+import SpinnerImg from "../Spinner_button.gif";
+import styled from "styled-components";
 
 export default function Modify() {
   const navigate = useNavigate();
@@ -45,32 +45,47 @@ export default function Modify() {
     }
   };
 
-  const style = {
-    display: "flex",
-    flexDirection: "column",
-    gap: "20px",
-    justifyContnet: "center",
-    alignItems: "center",
-    margin: "100px auto",
-    fontSize: "23px",
-  };
-
-  console.log(defaultValues);
-  console.log(isLoading);
-
   return isLoading ? (
-    <div style={style}>
+    <Loading>
       <p>잠시만 기다려주세요...</p>
-      <img
-        src={Spinner}
-        style={{ width: "25px", height: "25px" }}
-        alt="로딩중..."
-      />
-    </div>
+      <Spinner src={SpinnerImg} alt="로딩중..." />
+    </Loading>
   ) : (
     <>
-      <div className="delete-btn" onClick={handleDeleteClick}></div>
+      <DeleteBtn onClick={handleDeleteClick}></DeleteBtn>
       <WriteForm request={putTransaction} defaultValues={defaultValues} />
     </>
   );
 }
+
+const Loading = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-contnet: center;
+  align-items: center;
+  margin: 100px auto;
+  font-size: 23px;
+`;
+
+const Spinner = styled.img`
+  width: 25px;
+  height: 25px;
+`;
+
+const DeleteBtn = styled.div`
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-image: url("https://cdn-icons-png.flaticon.com/512/3334/3334328.png");
+  background-size: 25px 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e6e6e6;
+  }
+`;

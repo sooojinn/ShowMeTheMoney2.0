@@ -1,12 +1,25 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { postLoginForm } from "../api";
-import Spinner from "../Spinner.gif";
-import { Line, SocialLoginBtns, SocialLoginInfo } from "./Join.js";
+import SpinnerImg from "../Spinner_button.gif";
 import NaverLogin from "./NaverLogin.js";
 import GoogleLogin from "./GoogleLogin.js";
+import { Button } from "./Button.style.js";
+import {
+  Form,
+  TitleDiv,
+  Title,
+  TitleInfo,
+  InputDiv,
+  Input,
+  MovePage,
+  Spinner,
+  Line,
+  SocialLoginBtns,
+  SocialLoginInfo,
+} from "./Join.js";
 
-function LoginForm() {
+export default function LoginForm() {
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -28,52 +41,44 @@ function LoginForm() {
     }
   };
   return (
-    <div className="form">
+    <Form>
       <form onSubmit={handleSubmit(onSubmit)} name="loginForm">
-        <div className="title-div">
-          <p className="title">로그인</p>
-          <p className="title-info">서비스 이용을 위해 로그인이 필요합니다.</p>
-        </div>
-        <div className="username input-div">
-          <label htmlFor="username" />
+        <TitleDiv>
+          <Title>로그인</Title>
+          <TitleInfo>서비스 이용을 위해 로그인이 필요합니다.</TitleInfo>
+        </TitleDiv>
+        <InputDiv>
           아이디
-          <input
-            id="username"
+          <Input
             type="text"
             name="username"
             placeholder="아이디를 입력하세요."
             autoComplete="off"
           />
-        </div>
-        <div className="password input-div">
-          <label htmlFor="password" />
+        </InputDiv>
+        <InputDiv>
           비밀번호
-          <input
-            id="password"
+          <Input
             type="password"
             name="password"
             placeholder="비밀번호를 입력하세요."
           />
-        </div>
-        <button disabled={isSubmitting || isSubmitted} value="login">
+        </InputDiv>
+        <Button disabled={isSubmitting || isSubmitted} value="login">
           {isSubmitting || isSubmitted ? (
-            <img src={Spinner} className="spinner" alt="로딩중..." />
+            <Spinner src={SpinnerImg} alt="로딩중..." />
           ) : (
             <p>로그인하기</p>
           )}
-        </button>
+        </Button>
       </form>
-      <Link to="/join" className="link">
-        회원가입하기
-      </Link>
+      <MovePage to="/join">회원가입하기</MovePage>
       <Line>or</Line>
       <SocialLoginInfo>SNS로 로그인</SocialLoginInfo>
       <SocialLoginBtns>
         <GoogleLogin></GoogleLogin>
         <NaverLogin></NaverLogin>
       </SocialLoginBtns>
-    </div>
+    </Form>
   );
 }
-
-export default LoginForm;

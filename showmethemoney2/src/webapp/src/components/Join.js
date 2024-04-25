@@ -1,14 +1,14 @@
-import "./Join.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { postJoinForm } from "../api";
 import { isUnique } from "../api";
-import Spinner from "../Spinner.gif";
+import SpinnerImg from "../Spinner_button.gif";
 import Loading from "./Loading.js";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import NaverLogin from "./NaverLogin.js";
 import GoogleLogin from "./GoogleLogin.js";
+import { Button } from "./Button.style.js";
 
 export default function JoinForm() {
   const {
@@ -55,22 +55,20 @@ export default function JoinForm() {
   return (
     <>
       {!postSuccess && (
-        <div className="form">
+        <Form>
           <form onSubmit={handleSubmit(onSubmit)} name="joinForm">
-            <div className="title-div">
-              <p className="title">회원가입</p>
-              <p className="title-info">
+            <TitleDiv>
+              <Title>회원가입</Title>
+              <TitleInfo>
                 지금 가입하고 당신만의 가계부를 만들어보세요!
-              </p>
-            </div>
-            <div className="username input-div">
-              <label htmlFor="username" />
+              </TitleInfo>
+            </TitleDiv>
+            <InputDiv>
               아이디
-              <input
-                id="username"
+              <Input
                 type="text"
                 name="username"
-                className={errors.username ? "err-input" : ""}
+                error={errors.username}
                 placeholder="아이디를 입력하세요."
                 autoComplete="off"
                 {...register("username", {
@@ -87,17 +85,15 @@ export default function JoinForm() {
                 })}
               />
               {errors.username && (
-                <div className="err-message">{errors.username.message}</div>
+                <ErrorMessage>{errors.username.message}</ErrorMessage>
               )}
-            </div>
-            <div className="password input-div">
-              <label htmlFor="password" />
+            </InputDiv>
+            <InputDiv>
               비밀번호
-              <input
-                id="password"
+              <Input
                 type="password"
                 name="password"
-                className={errors.password ? "err-input" : ""}
+                error={errors.password}
                 placeholder="비밀번호를 입력하세요."
                 {...register("password", {
                   required: "비밀번호를 입력하세요.",
@@ -110,17 +106,15 @@ export default function JoinForm() {
                 })}
               />
               {errors.password && (
-                <div className="err-message">{errors.password.message}</div>
+                <ErrorMessage>{errors.password.message}</ErrorMessage>
               )}
-            </div>
-            <div className="password-check input-div">
-              <label htmlFor="passwordCheck" />
+            </InputDiv>
+            <InputDiv>
               비밀번호 확인
-              <input
-                id="passwordCheck"
+              <Input
                 type="password"
                 name="passwordCheck"
-                className={errors.passwordCheck ? "err-input" : ""}
+                error={errors.passwordCheck}
                 placeholder="비밀번호를 입력하세요."
                 {...register("passwordCheck", {
                   required: "비밀번호를 입력하세요.",
@@ -135,37 +129,114 @@ export default function JoinForm() {
                 })}
               />
               {errors.passwordCheck && (
-                <div className="err-message">
-                  {errors.passwordCheck.message}
-                </div>
+                <ErrorMessage>{errors.passwordCheck.message}</ErrorMessage>
               )}
-            </div>
-            <button
+            </InputDiv>
+            <Button
               disabled={!isValid || isSubmitting || isSubmitted}
               value="join"
             >
               {isSubmitting ? (
-                <img src={Spinner} className="spinner" alt="로딩중..." />
+                <Spinner src={SpinnerImg} alt="로딩중..." />
               ) : (
                 <p>가입하기</p>
               )}
-            </button>
+            </Button>
           </form>
-          <Link to="/login" className="link">
-            로그인하기
-          </Link>
+          <MovePage to="/login">로그인하기</MovePage>
           <Line>or</Line>
           <SocialLoginInfo>SNS로 시작하기</SocialLoginInfo>
           <SocialLoginBtns>
             <GoogleLogin></GoogleLogin>
             <NaverLogin></NaverLogin>
           </SocialLoginBtns>
-        </div>
+        </Form>
       )}
       {isSubmitted && postSuccess && <Loading />}
     </>
   );
 }
+
+export const Form = styled.div`
+  width: 350px;
+  margin: 70px auto 0;
+  font-family: "Pretendard-Regular";
+  font-size: 16px;
+`;
+
+export const TitleDiv = styled.div`
+  text-align: center;
+  margin-bottom: 40px;
+`;
+
+export const Title = styled.div`
+  font-size: 25px;
+  font-weight: 600;
+`;
+
+export const TitleInfo = styled.div`
+  margin-top: 30px;
+`;
+
+export const InputDiv = styled.div`
+  margin: 10px 0 20px;
+`;
+
+export const Vibration = keyframes`
+  from {
+    transform: rotate(1deg);
+  }
+  to {
+    transform: rotate(-1deg);
+  }
+`;
+
+export const Input = styled.input`
+  width: 100%;
+  height: 40px;
+  background-color: transparent;
+  border: 1px solid #d7d7d7;
+  border-width: 0 0 1px;
+  font-size: 15px;
+
+  &::placeholder {
+    color: #cbcbcb;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  ${(props) =>
+    props.error
+      ? css`
+          border: 1.5px solid #ff3f3f;
+          border-width: 0 0 1px;
+          animation: ${Vibration} 0.1s;
+        `
+      : ""}
+`;
+
+export const ErrorMessage = styled.div`
+  color: #ff3f3f;
+  font-size: 14px;
+  margin-top: 5px;
+`;
+
+export const MovePage = styled(Link)`
+  display: block;
+  width: 100px;
+  margin: 20px auto;
+  text-align: center;
+  font-size: 15px;
+  cursor: pointer;
+  color: #1e1e1e;
+  text-decoration: none;
+`;
+
+export const Spinner = styled.img`
+  width: 20px;
+`;
 
 export const Line = styled.p`
   display: flex;
@@ -204,6 +275,7 @@ export const SocialLoginBtn = styled.button`
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  border: none;
   background-size: cover;
   background-image: url(${(props) => props.image});
   background-repeat: no-repeat;

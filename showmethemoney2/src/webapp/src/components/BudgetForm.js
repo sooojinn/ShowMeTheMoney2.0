@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { postBudget } from "../api.js";
+import styled from "styled-components";
 
 export default function BudgetForm({ year, month }) {
   const [newBudget, setNewBudget] = useState("0");
@@ -38,21 +39,42 @@ export default function BudgetForm({ year, month }) {
     }
   };
   return (
-    <form className="budget-form" onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <div>한 달 예산</div>
       <div>
-        <input
-          className="budget-input"
+        <BudgetInput
           value={newBudget}
           onChange={handleChange}
           onFocus={removeComma}
           onBlur={addComma}
         />
-        원
-        <button type="submit" className="buget-btn">
-          저장
-        </button>
+        원<button type="submit">저장</button>
       </div>
-    </form>
+    </Form>
   );
 }
+
+const Form = styled.form`
+  font-size: 21px;
+  width: fit-content;
+  margin: 50px auto;
+
+  & button {
+    width: 40px;
+    height: 35px;
+    margin-left: 10px;
+    font-family: inherit;
+    font-size: 17px;
+  }
+`;
+
+const BudgetInput = styled.input`
+  width: 200px;
+  height: 40px;
+  margin-top: 10px;
+  padding: 3px;
+  font-size: 25px;
+  border: 2px solid var(--maincolor);
+  border-width: 0 0 2px;
+  background-color: transparent;
+`;
