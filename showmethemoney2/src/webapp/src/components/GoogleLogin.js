@@ -1,5 +1,5 @@
 import { SocialLoginBtn } from "./Join";
-import googleIcon from "../icon_google.png";
+import googleIcon from "../images/icon_google.png";
 
 export default function GoogleLogin() {
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;

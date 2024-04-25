@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { postLoginForm } from "../api";
-import SpinnerImg from "../Spinner_button.gif";
+import SpinnerImg from "../images/Spinner_button.gif";
 import NaverLogin from "./NaverLogin.js";
 import GoogleLogin from "./GoogleLogin.js";
 import { Button } from "./Button.style.js";

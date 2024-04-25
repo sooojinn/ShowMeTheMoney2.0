@@ -1,4 +1,4 @@
-import naverIcon from "../icon_naver.png";
+import naverIcon from "../images/icon_naver.png";
 import { SocialLoginBtn } from "./Join.js";
 
 export default function NaverLogin() {

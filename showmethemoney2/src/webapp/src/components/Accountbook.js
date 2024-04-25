@@ -4,7 +4,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import { getMonthlyTotal } from "../api";
 import { getBudget } from "../api.js";
 import { getCategoryTotal } from "../api";
-import SpinnerImg from "../Spinner_overlay.gif";
+import SpinnerImg from "../images/Spinner_overlay.gif";
 import styled from "styled-components";
 
 export default function Accountbook() {

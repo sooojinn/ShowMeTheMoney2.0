@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { postJoinForm } from "../api";
 import { isUnique } from "../api";
-import SpinnerImg from "../Spinner_button.gif";
+import SpinnerImg from "../images/Spinner_button.gif";
 import Loading from "./Loading.js";
 import styled, { css, keyframes } from "styled-components";
 import NaverLogin from "./NaverLogin.js";

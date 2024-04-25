@@ -60,7 +60,7 @@ const TransactionWrapper = styled.div`
   }
 `;
 
-export const Transaction = styled.div`
+const Transaction = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;

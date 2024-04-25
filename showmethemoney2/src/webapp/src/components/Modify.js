@@ -4,7 +4,7 @@ import { putTransaction } from "../api";
 import { deleteTransaction } from "../api";
 import { useEffect, useState } from "react";
 import WriteForm from "./WriteForm";
-import SpinnerImg from "../Spinner_button.gif";
+import SpinnerImg from "../images/Spinner_button.gif";
 import styled from "styled-components";
 
 export default function Modify() {

@@ -2,7 +2,6 @@ import Transactions from "./Transactions.js";
 import { useState, useEffect } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import styled from "styled-components";
-import { Transaction } from "./Transactions.js";
 
 function CalendarDates({
   year,
