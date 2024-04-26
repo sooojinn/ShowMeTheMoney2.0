@@ -2,14 +2,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getTransaction } from "../api";
 import { putTransaction } from "../api";
 import { deleteTransaction } from "../api";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import WriteForm from "./WriteForm";
 import SpinnerImg from "../images/Spinner_button.gif";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export default function Modify() {
   const navigate = useNavigate();
   const location = useLocation();
+  const deleteRef = useRef();
   const { id } = location.state;
   const [defaultValues, setDefaultValues] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -29,11 +30,22 @@ export default function Modify() {
     fetchData();
   }, [id]);
 
+  const handleBinClick = () => {
+    if (deleteRef.current) {
+      deleteRef.current.style.setProperty("display", "block");
+    }
+  };
+
+  const handleCancleClick = () => {
+    if (deleteRef.current) {
+      deleteRef.current.style.setProperty("display", "none");
+    }
+  };
+
   const handleDeleteClick = async () => {
     try {
       const status = await deleteTransaction(id);
       if (status === 200) {
-        alert("삭제되었습니다.");
         navigate(-1);
       } else {
         throw new Error("오류가 발생했습니다.");
@@ -52,7 +64,12 @@ export default function Modify() {
     </Loading>
   ) : (
     <>
-      <DeleteBtn onClick={handleDeleteClick}></DeleteBtn>
+      <DeleteBtn onClick={handleBinClick}></DeleteBtn>
+      <DeleteMessage ref={deleteRef}>
+        삭제하시겠습니까?
+        <button onClick={handleDeleteClick}>확인</button>
+        <button onClick={handleCancleClick}>취소</button>
+      </DeleteMessage>
       <WriteForm request={putTransaction} defaultValues={defaultValues} />
     </>
   );
@@ -87,5 +104,45 @@ const DeleteBtn = styled.div`
 
   &:hover {
     background-color: #e6e6e6;
+  }
+`;
+
+const slide = keyframes`
+  from {
+    transform: translateY(-10%);
+  }
+  to {
+    transform: translateY(0%);
+
+  }
+`;
+
+const DeleteMessage = styled.div`
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  margin-left: -100px;
+  margin-top: -60px;
+  width: 200px;
+  height: 120px;
+  padding: 30px 30px 0;
+  text-align: center;
+  background-color: #fafaf9;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+  animation: ${slide} 0.3s ease-out;
+
+  & button {
+    display: inline-block;
+    width: 40px;
+    height: 27px;
+    margin: 25px 5px 0;
+    background-color: var(--maincolor);
+    border: none;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 17px;
+    cursor: pointer;
   }
 `;

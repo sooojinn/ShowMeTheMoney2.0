@@ -149,7 +149,8 @@ export default function WriteForm({ request, defaultValues }) {
             id="memo"
             name="memo"
             autoComplete="off"
-            placeholder="내용을 입력하세요."
+            placeholder="20자 이내로 입력하세요."
+            maxlength="20"
             {...register("memo")}
           />
         </InputGroup>
@@ -229,6 +230,7 @@ const defaultCss = css`
   border: 2px solid var(--maincolor);
   border-width: 0 0 2px;
   background-color: transparent;
+  outline: none;
 `;
 
 const Input = styled.input`

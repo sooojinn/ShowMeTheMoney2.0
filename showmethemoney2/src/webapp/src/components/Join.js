@@ -59,33 +59,29 @@ export default function JoinForm() {
           <form onSubmit={handleSubmit(onSubmit)} name="joinForm">
             <TitleDiv>
               <Title>회원가입</Title>
-              <TitleInfo>
-                지금 가입하고 당신만의 가계부를 만들어보세요!
-              </TitleInfo>
             </TitleDiv>
             <InputDiv>
-              아이디
+              이메일
               <Input
                 type="text"
-                name="username"
-                error={errors.username}
-                placeholder="아이디를 입력하세요."
+                name="email"
+                error={errors.email}
+                placeholder="이메일을 입력하세요."
                 autoComplete="off"
-                {...register("username", {
-                  required: "아이디를 입력하세요.",
+                {...register("email", {
+                  required: "이메일을 입력하세요.",
                   pattern: {
-                    value: /^[a-zA-Z0-9]{5,20}$/,
-                    message:
-                      "아이디는 5~20자의 영문 대/소문자, 숫자만 사용 가능합니다.",
+                    value: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                    message: "이메일 형식에 맞지 않습니다.",
                   },
                   validate: {
                     isUnique: (value) =>
-                      isUnique(value) || "이미 사용 중인 아이디입니다.",
+                      isUnique(value) || "이미 가입된 이메일입니다.",
                   },
                 })}
               />
-              {errors.username && (
-                <ErrorMessage>{errors.username.message}</ErrorMessage>
+              {errors.email && (
+                <ErrorMessage>{errors.email.message}</ErrorMessage>
               )}
             </InputDiv>
             <InputDiv>
@@ -143,7 +139,10 @@ export default function JoinForm() {
               )}
             </Button>
           </form>
-          <MovePage to="/login">로그인하기</MovePage>
+          <LinkMessage>
+            이미 회원이신가요?
+            <PageLink to="/login">로그인하기</PageLink>
+          </LinkMessage>
           <Line>or</Line>
           <SocialLoginInfo>SNS로 시작하기</SocialLoginInfo>
           <SocialLoginBtns>
@@ -172,10 +171,6 @@ export const TitleDiv = styled.div`
 export const Title = styled.div`
   font-size: 25px;
   font-weight: 600;
-`;
-
-export const TitleInfo = styled.div`
-  margin-top: 30px;
 `;
 
 export const InputDiv = styled.div`
@@ -223,15 +218,24 @@ export const ErrorMessage = styled.div`
   margin-top: 5px;
 `;
 
-export const MovePage = styled(Link)`
+export const LinkMessage = styled.span`
   display: block;
-  width: 100px;
+  width: 100%;
   margin: 20px auto;
   text-align: center;
-  font-size: 15px;
-  cursor: pointer;
   color: #1e1e1e;
+  font-size: 14px;
+`;
+
+export const PageLink = styled(Link)`
+  margin-left: 10px;
+  color: #1e1e1e;
+  cursor: pointer;
   text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const Spinner = styled.img`
@@ -280,4 +284,5 @@ export const SocialLoginBtn = styled.button`
   background-image: url(${(props) => props.image});
   background-repeat: no-repeat;
   background-position: center center;
+  cursor: pointer;
 `;

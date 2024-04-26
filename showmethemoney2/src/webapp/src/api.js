@@ -158,5 +158,13 @@ export async function getCategoryTotal(year, month) {
     income: incomeCategory,
   };
 
+  for (const key in translatedData) {
+    translatedData[key] = Object.fromEntries(
+      Object.entries(translatedData[key]).sort(([, a], [, b]) =>
+        +a > +b ? -1 : 1
+      )
+    );
+  }
+
   return translatedData;
 }

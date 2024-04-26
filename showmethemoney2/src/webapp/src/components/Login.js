@@ -9,10 +9,10 @@ import {
   Form,
   TitleDiv,
   Title,
-  TitleInfo,
   InputDiv,
   Input,
-  MovePage,
+  LinkMessage,
+  PageLink,
   Spinner,
   Line,
   SocialLoginBtns,
@@ -45,14 +45,13 @@ export default function LoginForm() {
       <form onSubmit={handleSubmit(onSubmit)} name="loginForm">
         <TitleDiv>
           <Title>로그인</Title>
-          <TitleInfo>서비스 이용을 위해 로그인이 필요합니다.</TitleInfo>
         </TitleDiv>
         <InputDiv>
-          아이디
+          이메일
           <Input
             type="text"
-            name="username"
-            placeholder="아이디를 입력하세요."
+            name="email"
+            placeholder="이메일 입력하세요."
             autoComplete="off"
           />
         </InputDiv>
@@ -68,13 +67,16 @@ export default function LoginForm() {
           {isSubmitting || isSubmitted ? (
             <Spinner src={SpinnerImg} alt="로딩중..." />
           ) : (
-            <p>로그인하기</p>
+            <p>로그인 하기</p>
           )}
         </Button>
       </form>
-      <MovePage to="/join">회원가입하기</MovePage>
+      <LinkMessage>
+        아직 회원이 아니신가요?
+        <PageLink to="/join">회원가입하기</PageLink>
+      </LinkMessage>
       <Line>or</Line>
-      <SocialLoginInfo>SNS로 로그인</SocialLoginInfo>
+      <SocialLoginInfo>SNS로 간편 로그인</SocialLoginInfo>
       <SocialLoginBtns>
         <GoogleLogin></GoogleLogin>
         <NaverLogin></NaverLogin>

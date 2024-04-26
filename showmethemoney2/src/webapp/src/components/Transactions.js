@@ -69,9 +69,8 @@ const Transaction = styled.div`
   height: 80px;
   padding: 15px 15px;
   margin-bottom: 5px;
-  border: 1.3px solid #e6e6e6;
+  border: 1.5px solid #e6e6e6;
   border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
   cursor: pointer;
 
   &:hover {

@@ -65,7 +65,11 @@ export default function Statics() {
   const expenseTotal = +monthlyTotals["expense-total"];
   const incomeTotal = +monthlyTotals["income-total"];
   const totalAmount = division === "expense" ? expenseTotal : incomeTotal;
-
+  const isData = totalAmount !== 0;
+  const translate = {
+    expense: "지출",
+    income: "수입",
+  };
   const handleDivisionClick = (e) => {
     setDivision(e.target.value);
     setCategoryTotal(allCategoryTotal[e.target.value]);
@@ -113,12 +117,21 @@ export default function Statics() {
         />
         <Label htmlFor="income">수입 {incomeTotal.toLocaleString()}원</Label>
       </StaticsDivision>
-      {categoryTotal && <DoughnutChart categoryTotal={categoryTotal} />}
-      <TotalAmountDiv>
-        <div>전체</div>
-        <div>{totalAmount.toLocaleString()}원</div>
-      </TotalAmountDiv>
-      <LegendWrapper>{createLegend()}</LegendWrapper>
+      {isData && (
+        <>
+          <DoughnutChart categoryTotal={categoryTotal} />
+          <TotalAmountDiv>
+            <div>전체</div>
+            <div>{totalAmount.toLocaleString()}원</div>
+          </TotalAmountDiv>
+          <LegendWrapper>{createLegend()}</LegendWrapper>
+        </>
+      )}
+      {isData || (
+        <NoDataMessage>
+          {translate[division]} 내역이 존재하지 않습니다.
+        </NoDataMessage>
+      )}
     </>
   );
 }
@@ -224,4 +237,9 @@ const IndexColor = styled.div`
 const Percent = styled.span`
   color: #b6b7bb;
   font-size: 15px;
+`;
+
+const NoDataMessage = styled.p`
+  margin-top: 70px;
+  text-align: center;
 `;
