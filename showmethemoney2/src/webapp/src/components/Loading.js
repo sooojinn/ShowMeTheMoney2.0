@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import "./Loading.css";
 import { useEffect, useState } from "react";
+import styled, { keyframes } from "styled-components";
+import { Button } from "./Button.style";
 
 export default function Loading() {
   const [count, setCount] = useState(3);
@@ -23,17 +24,60 @@ export default function Loading() {
 
   return (
     <div>
-      <p className="success-message">
+      <Message>
         회원가입에 성공했습니다!
         <br />
         로그인 페이지로 이동합니다.
-      </p>
-      <div className="circle">
-        <div className="count">{count}</div>
-      </div>
+      </Message>
+      <Circle>
+        <Count>{count}</Count>
+      </Circle>
       <Link to="/login" className="link">
-        <button>확인</button>
+        <Button>확인</Button>
       </Link>
     </div>
   );
 }
+
+export const Message = styled.p`
+  margin: 150px auto 30px;
+  text-align: center;
+  font-size: 23px;
+  line-height: 150%;
+`;
+
+const rotate = keyframes`
+  from {
+    transform: rotate(45deg);
+  }
+  to {
+    transform: rotate(405deg);
+  }
+`;
+
+const count = keyframes`
+  from {
+    transform: rotate(-45deg);
+  }
+  to {
+    transform: rotate(-405deg);
+  }
+`;
+
+export const Circle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  margin: 20px auto 50px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  border-top: 2px solid #4a4a4a;
+  animation: ${rotate} 1s linear infinite;
+`;
+
+export const Count = styled.div`
+  font-size: 25px;
+  animation: ${count} 1s linear infinite;
+`;

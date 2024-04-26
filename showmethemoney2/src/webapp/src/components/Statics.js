@@ -1,36 +1,10 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { useOutletContext } from "react-router-dom";
-import "./Statics.css";
 import styled, { css } from "styled-components";
 import { useState } from "react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-
-const CheckDivision = styled.input`
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  width: 14px;
-  height: 14px;
-  margin-right: 5px;
-  border: 2px solid #ccc;
-  border-radius: 50%;
-  outline: none;
-  cursor: pointer;
-
-  &:checked {
-    background-color: #ffcdce;
-    border: 3px solid white;
-    box-shadow: 0 0 0 1.6px #ffcdce;
-  }
-
-  ${(props) =>
-    props.value === "income" &&
-    css`
-      margin-left: 30px;
-    `}
-`;
 
 const indexColorList = [
   "#FFA8BE",
@@ -49,13 +23,6 @@ const indexColorList = [
   "#D7CFE2",
   "#DDD7D3",
 ];
-
-const IndexColor = styled.div`
-  width: 8px;
-  height: 8px;
-  border-radius: 4px;
-  background-color: ${(props) => props.color};
-`;
 
 function DoughnutChart({ categoryTotal }) {
   const Data = {
@@ -84,18 +51,12 @@ function DoughnutChart({ categoryTotal }) {
 
   return (
     <div>
-      <Doughnut
-        data={Data}
-        options={Options}
-        width={300}
-        height={300}
-        className="chart"
-      ></Doughnut>
+      <Chart data={Data} options={Options} width={300} height={300}></Chart>
     </div>
   );
 }
 
-function Statics() {
+export default function Statics() {
   const { monthlyTotals, categoryTotal: allCategoryTotal } = useOutletContext();
   const [division, setDivision] = useState("expense");
   const [categoryTotal, setCategoryTotal] = useState(
@@ -115,18 +76,16 @@ function Statics() {
     let i = 0;
     for (const key in categoryTotal) {
       legend.push(
-        <div className="legend-item" key={key}>
-          <div className="left-div">
+        <LegendItem key={key}>
+          <LeftDiv>
             <IndexColor color={indexColorList[i]}></IndexColor>
             <div>{key}</div>
-            <div className="percent">
+            <Percent>
               {Math.round((categoryTotal[key] / totalAmount) * 100)}%
-            </div>
-          </div>
-          <div className="total">
-            {[+categoryTotal[key]].toLocaleString()}원
-          </div>
-        </div>
+            </Percent>
+          </LeftDiv>
+          <div>{[+categoryTotal[key]].toLocaleString()}원</div>
+        </LegendItem>
       );
       i++;
     }
@@ -135,7 +94,7 @@ function Statics() {
 
   return (
     <>
-      <div className="statics-division">
+      <StaticsDivision>
         <CheckDivision
           type="radio"
           name="division"
@@ -144,7 +103,7 @@ function Statics() {
           defaultChecked
           onClick={handleDivisionClick}
         />
-        <label htmlFor="expense">지출 {expenseTotal.toLocaleString()}원</label>
+        <Label htmlFor="expense">지출 {expenseTotal.toLocaleString()}원</Label>
         <CheckDivision
           type="radio"
           name="division"
@@ -152,16 +111,117 @@ function Statics() {
           id="income"
           onClick={handleDivisionClick}
         />
-        <label htmlFor="income">수입 {incomeTotal.toLocaleString()}원</label>
-      </div>
+        <Label htmlFor="income">수입 {incomeTotal.toLocaleString()}원</Label>
+      </StaticsDivision>
       {categoryTotal && <DoughnutChart categoryTotal={categoryTotal} />}
-      <div className="total-amount_div">
+      <TotalAmountDiv>
         <div>전체</div>
-        <div className="total-amount">{totalAmount.toLocaleString()}원</div>
-      </div>
-      <div className="legend">{createLegend()}</div>
+        <div>{totalAmount.toLocaleString()}원</div>
+      </TotalAmountDiv>
+      <LegendWrapper>{createLegend()}</LegendWrapper>
     </>
   );
 }
+const CheckDivision = styled.input`
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
 
-export default Statics;
+  &:checked {
+    background-color: #ffcdce;
+    border: 3px solid white;
+    box-shadow: 0 0 0 1.6px #ffcdce;
+  }
+
+  ${(props) =>
+    props.value === "income" &&
+    css`
+      margin-left: 30px;
+    `}
+`;
+
+const Chart = styled(Doughnut)`
+  margin: 0 auto;
+`;
+
+const StaticsDivision = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+`;
+
+const Label = styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const TotalAmountDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-left: 15px;
+  margin-bottom: 10px;
+  padding: 10px 5px 10px 15px;
+  width: 365px;
+  font-size: 17px;
+  color: #b6b7bb;
+  border-bottom: 0.5px solid #b6b7bb;
+`;
+
+const LegendWrapper = styled.div`
+  height: 430px;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #fafaf9;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #b6b7bb;
+    border-radius: 1.5px;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+`;
+
+const LegendItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 19px;
+`;
+
+const LeftDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+`;
+
+const IndexColor = styled.div`
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: ${(props) => props.color};
+`;
+
+const Percent = styled.span`
+  color: #b6b7bb;
+  font-size: 15px;
+`;

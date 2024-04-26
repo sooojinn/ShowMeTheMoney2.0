@@ -1,7 +1,7 @@
-import "./Calendar.css";
 import Transactions from "./Transactions.js";
 import { useState, useEffect } from "react";
 import { Link, useOutletContext } from "react-router-dom";
+import styled from "styled-components";
 
 function CalendarDates({
   year,
@@ -16,7 +16,7 @@ function CalendarDates({
 
   let calendarDate = [];
   for (let i = 0; i < startDayOfWeek; i++) {
-    calendarDate.push(<div className="empty" key={"empty" + i}></div>);
+    calendarDate.push(<DateItem key={"empty" + i}></DateItem>);
   }
 
   for (let i = 1; i <= daysInMonth; i++) {
@@ -34,30 +34,26 @@ function CalendarDates({
     });
 
     calendarDate.push(
-      <div className="date" onClick={() => handleDateClick(i)} key={i}>
-        <p
-          className={"date-num" + (i === selectedDate ? " selected-date" : "")}
-        >
-          {i}
-        </p>
+      <DateItem onClick={() => handleDateClick(i)} key={i}>
+        <DateNum className={i === selectedDate ? " selected" : ""}>{i}</DateNum>
         {dailyTotalIncome && (
-          <div className="income daily-total">
+          <DailyTotal className="income">
             +{dailyTotalIncome.toLocaleString()}
-          </div>
+          </DailyTotal>
         )}
         {dailyTotalExpense && (
-          <div className="expense daily-total">
+          <DailyTotal className="expense">
             -{dailyTotalExpense.toLocaleString()}
-          </div>
+          </DailyTotal>
         )}
-      </div>
+      </DateItem>
     );
   }
 
-  return <div className="calendar">{calendarDate}</div>;
+  return <CalendarWrapper>{calendarDate}</CalendarWrapper>;
 }
 
-function Calendar() {
+export default function Calendar() {
   const { year, month, monthlyTotals, monthlyTransactions } =
     useOutletContext();
   const monthlyIncome = +monthlyTotals["income-total"];
@@ -93,46 +89,42 @@ function Calendar() {
     }
   }, [month]);
 
-  console.log("render");
-
   return (
     <>
-      <div className="monthly-total">
+      <MonthlyTotalWrapper>
         <div>
-          <div>
+          <MonthlyTotalDiv>
             수입
-            <span className="monthly income">
+            <MonthlyTotal className="income">
               +{monthlyIncome.toLocaleString()}원
-            </span>
-          </div>
-          <div>
+            </MonthlyTotal>
+          </MonthlyTotalDiv>
+          <MonthlyTotalDiv>
             지출
-            <span className="monthly expense">
+            <MonthlyTotal className="expense">
               -{monthlyExpense.toLocaleString()}원
-            </span>
-          </div>
+            </MonthlyTotal>
+          </MonthlyTotalDiv>
         </div>
-        <div>
+        <MonthlyTotalDiv>
           합계
-          <span className="monthly total">
-            <span>
-              {monthlyTotal >= 0
-                ? "+" + monthlyTotal.toLocaleString()
-                : monthlyTotal.toLocaleString()}
-            </span>
+          <MonthlyTotal>
+            {monthlyTotal >= 0
+              ? "+" + monthlyTotal.toLocaleString()
+              : monthlyTotal.toLocaleString()}
             원
-          </span>
-        </div>
-      </div>
-      <div className="calendar day">
-        <div>월</div>
-        <div>화</div>
-        <div>수</div>
-        <div>목</div>
-        <div>금</div>
-        <div>토</div>
-        <div>일</div>
-      </div>
+          </MonthlyTotal>
+        </MonthlyTotalDiv>
+      </MonthlyTotalWrapper>
+      <CalendarWrapper>
+        <Day>월</Day>
+        <Day>화</Day>
+        <Day>수</Day>
+        <Day>목</Day>
+        <Day>금</Day>
+        <Day>토</Day>
+        <Day>일</Day>
+      </CalendarWrapper>
       <CalendarDates
         year={year}
         month={month}
@@ -140,16 +132,91 @@ function Calendar() {
         handleDateClick={handleDateClick}
         selectedDate={selectedDate}
       />
-      <Link
+      <WriteBtn
         to="/write"
-        state={{ dateString: `${year}-${month + 1}-${selectedDate}` }}
-        className="write-btn"
+        state={{
+          dateString: `${year}-${month + 1}-${selectedDate ? selectedDate : 1}`,
+        }}
       >
         + 새로운 거래 추가하기
-      </Link>
+      </WriteBtn>
       <Transactions transactions={dailyTransactions} />
     </>
   );
 }
 
-export default Calendar;
+const MonthlyTotalWrapper = styled.div`
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const MonthlyTotalDiv = styled.div`
+  margin-bottom: 5px;
+`;
+
+const MonthlyTotal = styled.span`
+  margin-left: 7px;
+`;
+
+const CalendarWrapper = styled.div`
+  width: 400px;
+  margin: 10px auto;
+  font-size: 17px;
+
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+`;
+
+const Day = styled.div`
+  margin-top: 10px;
+  text-align: center;
+`;
+
+const DateItem = styled.div`
+  cursor: pointer;
+  overflow: hidden;
+  aspect-ratio: 1;
+`;
+
+const DateNum = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 22px;
+  height: 22px;
+  margin-bottom: 3px;
+
+  &.selected {
+    background-color: var(--maincolor);
+    border-radius: 50%;
+  }
+`;
+
+const DailyTotal = styled.div`
+  font-size: 14px;
+  margin: 0;
+  padding-left: 3px;
+`;
+
+const WriteBtn = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  color: black;
+  text-decoration: none;
+  background-color: white;
+  width: 100%;
+  height: 80px;
+  padding: 15px 15px;
+  margin-bottom: 5px;
+  border: 1.3px solid #e6e6e6;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f0f3f4;
+  }
+`;

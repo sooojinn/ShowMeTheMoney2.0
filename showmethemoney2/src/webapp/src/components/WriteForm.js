@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { Button } from "./Button.style";
 
 export default function WriteForm({ request, defaultValues }) {
   const defaultDate = (dateString) => {
-    const [year, month, date] = dateString.split("-");
+    let [year, month, date] = dateString.split("-");
     const offset = new Date(year, month - 1, date).getTimezoneOffset() * 60000;
     const dateOffset = new Date(
       new Date(year, month - 1, date).getTime() - offset
@@ -152,9 +153,9 @@ export default function WriteForm({ request, defaultValues }) {
             {...register("memo")}
           />
         </InputGroup>
-        <button type="submit" disabled={isSubmitting}>
+        <Button type="submit" disabled={isSubmitting}>
           저장
-        </button>
+        </Button>
       </Form>
     </>
   );
