@@ -5,7 +5,8 @@ import styled from "styled-components";
 export default function List() {
   const { year, month, monthlyTransactions } = useOutletContext();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-
+  const isData = monthlyTransactions.length !== 0;
+  console.log(monthlyTransactions);
   const getDailyTransactions = (date) => {
     return monthlyTransactions.filter(
       (data) => data.date === `${year}-${month + 1}-${date}`
@@ -34,7 +35,10 @@ export default function List() {
 
   return (
     <>
-      <ListWrapper>{renderList()}</ListWrapper>
+      {isData && <ListWrapper>{renderList()}</ListWrapper>}
+      {isData || (
+        <NoDataMessage>지출·수입 내역이 존재하지 않습니다.</NoDataMessage>
+      )}
     </>
   );
 }
@@ -61,4 +65,9 @@ const ListDate = styled.div`
     line-height: 0px;
     margin: 0px 5px;
   }
+`;
+
+const NoDataMessage = styled.p`
+  margin-top: 70px;
+  text-align: center;
 `;
