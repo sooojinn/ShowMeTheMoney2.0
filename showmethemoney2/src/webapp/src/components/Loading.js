@@ -13,7 +13,6 @@ export default function Loading() {
     }, 3000);
     let counter = setInterval(() => {
       setCount((prevCount) => prevCount - 1);
-      console.log("count");
     }, 1000);
 
     return () => {

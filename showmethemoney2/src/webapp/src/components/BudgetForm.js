@@ -48,7 +48,7 @@ export default function BudgetForm({ year, month }) {
           onFocus={removeComma}
           onBlur={addComma}
         />
-        원<button type="submit">저장</button>
+        원<Button type="submit">저장</Button>
       </div>
     </Form>
   );
@@ -58,14 +58,6 @@ const Form = styled.form`
   font-size: 21px;
   width: fit-content;
   margin: 50px auto;
-
-  & button {
-    width: 40px;
-    height: 35px;
-    margin-left: 10px;
-    font-family: inherit;
-    font-size: 17px;
-  }
 `;
 
 const BudgetInput = styled.input`
@@ -77,4 +69,16 @@ const BudgetInput = styled.input`
   border: 2px solid var(--maincolor);
   border-width: 0 0 2px;
   background-color: transparent;
+`;
+
+const Button = styled.button`
+  width: 40px;
+  height: 35px;
+  margin-left: 10px;
+  font-family: inherit;
+  font-size: 17px;
+  background-color: var(--maincolor);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 `;
