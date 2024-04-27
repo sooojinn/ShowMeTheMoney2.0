@@ -7,8 +7,13 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.YearMonth;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import com.example.showmethemoney2.entity.Calendar;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 @Transactional
@@ -112,11 +117,14 @@ public class CalendarService {
         return total;
     }
 
-    //각각의 카테고리당 월별 지출/수입 합계
+    //로그인한 유저의 카테고리당 월별 총액 조회
     @Cacheable("categoryMonthlyTotal")
-    public Map<String,Number> categoryMonthlyTotal(String username, int year, int month, String division) {
+    public Map<String,Number> categoryMonthlyTotal(
+            @RequestParam("username") String username,
+        @RequestParam("year") int year,
+        @RequestParam("month") int month,
+        @RequestParam("division") String division) {
 
-        //{food, income,3만} , {cafe, income, 2만} ...
         List<Object[]> afterGroupBy = calendarRepository.CategoryTotal(username,division,year,month);
         // 월별 총 수입/총 지출을 불러옴
         int[] monthlytotal = monthlyTotal(username, year, month);
@@ -136,5 +144,20 @@ public class CalendarService {
         return categoryTotal;
     }
 
+    public List<CalendarDTO> getUserTransactionsForMonth(String username, int year, int month) {
+        List<Calendar> calendars = calendarRepository.findByUserAndMonthYear(username, year, month);
+        return calendars.stream()
+                .map(calendar -> {
+                    CalendarDTO calendarDTO = new CalendarDTO();
+                    calendarDTO.setId(calendar.getCalid());
+                    calendarDTO.setDate(String.format("%d-%d-%d",calendar.getYear(),calendar.getMonth(), calendar.getDay()));
+                    calendarDTO.setDivision(calendar.getDivision());
+                    calendarDTO.setMoney(calendar.getMoney());
+                    calendarDTO.setCategory(calendar.getCategory());
+                    calendarDTO.setMemo(calendar.getMemo());
+                    return calendarDTO;
+                })
+                .collect(Collectors.toList());
+    }
 }
 
