@@ -3,18 +3,26 @@ import { getTransactions } from "../api";
 import { NavLink, Outlet } from "react-router-dom";
 import { getMonthlyTotal } from "../api";
 import { getBudget } from "../api.js";
-import Spinner from "../Spinner2.gif";
-import "./Accountbook.css";
+import { getCategoryTotal } from "../api";
+import SpinnerImg from "../images/Spinner_overlay.gif";
+import styled from "styled-components";
 
-function Accountbook() {
+export default function Accountbook() {
+  const storedYear = sessionStorage.getItem("year");
+  const storedMonth = sessionStorage.getItem("month");
   const today = new Date();
-  const [year, setYear] = useState(today.getFullYear());
-  const [month, setMonth] = useState(today.getMonth());
+  const [year, setYear] = useState(
+    storedYear ? +storedYear : today.getFullYear()
+  );
+  const [month, setMonth] = useState(
+    storedMonth ? +storedMonth : today.getMonth()
+  );
   const [monthlyTransactions, setMonthlyTransactions] = useState([]);
-  const [monthlyData, setMonthlyData] = useState({
+  const [monthlyTotals, setMonthlyTotals] = useState({
     "income-total": 0,
     "expense-total": 0,
   });
+  const [categoryTotal, setCategoryTotal] = useState({});
   const [budget, setBudget] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,10 +31,12 @@ function Accountbook() {
       setIsLoading(true);
       try {
         const nextMonthlyTransactions = await getTransactions(year, month + 1);
-        const nextMonthlyData = await getMonthlyTotal(year, month + 1);
+        const nextMonthlyTotals = await getMonthlyTotal(year, month + 1);
+        const nextCategoryTotal = await getCategoryTotal(year, month + 1);
         const nextBudget = await getBudget(year, month + 1);
         setMonthlyTransactions(nextMonthlyTransactions);
-        setMonthlyData(nextMonthlyData);
+        setMonthlyTotals(nextMonthlyTotals);
+        setCategoryTotal(nextCategoryTotal);
         setBudget(nextBudget);
       } catch {
         alert("데이터를 불러오는 데 실패했습니다.");
@@ -35,6 +45,9 @@ function Accountbook() {
       }
     };
     fetchData();
+
+    sessionStorage.setItem("year", year);
+    sessionStorage.setItem("month", month);
   }, [month]);
 
   const handlePrevBtn = () => {
@@ -51,63 +64,111 @@ function Accountbook() {
     } else setMonth(month + 1);
   };
 
-  const pageBtnStyle = ({ isActive }) => {
-    return "page-btn " + (isActive ? "current-page" : "");
-  };
-
-  const style = {
-    width: "80px",
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transform: "translate(-50%, -50%)",
-  };
-
-  console.log("Accountbook이 렌더링되었습니다.");
-
   return (
     <div>
-      <div className="page-btns">
-        <NavLink to="calendar" className={pageBtnStyle}>
-          달력
-        </NavLink>
-        <NavLink to="statics" className={pageBtnStyle}>
-          통계
-        </NavLink>
-        <NavLink to="list" className={pageBtnStyle}>
-          리스트
-        </NavLink>
-        <NavLink to="budget" className={pageBtnStyle}>
-          예산
-        </NavLink>
-      </div>
-      <div className="calendar-header">
-        <div className="btn" onClick={handlePrevBtn}>
-          ◀
-        </div>
+      <LogoutBtn></LogoutBtn>
+      <PageBtns>
+        <PageBtn to="calendar">달력</PageBtn>
+        <PageBtn to="statics">통계</PageBtn>
+        <PageBtn to="list">리스트</PageBtn>
+        <PageBtn to="budget">예산</PageBtn>
+      </PageBtns>
+      <CalendarHeader>
+        <Btn onClick={handlePrevBtn}>◀</Btn>
         <h2>
           {year}년 {month + 1}월
         </h2>
-        <div className="btn" onClick={handleNextBtn}>
-          ▶
-        </div>
-      </div>
-      <Outlet
-        context={{
-          year: year,
-          month: month,
-          monthlyData: monthlyData,
-          monthlyTransactions: monthlyTransactions,
-          budget: budget,
-        }}
-      />
+        <Btn onClick={handleNextBtn}>▶</Btn>
+      </CalendarHeader>
+      {isLoading || (
+        <Outlet
+          context={{
+            year: year,
+            month: month,
+            monthlyTotals: monthlyTotals,
+            monthlyTransactions: monthlyTransactions,
+            categoryTotal: categoryTotal,
+            budget: budget,
+          }}
+        />
+      )}
       {isLoading && (
-        <div className="overlay">
-          <img src={Spinner} style={style} alt="로딩중..." />
-        </div>
+        <Overlay>
+          <Spinner src={SpinnerImg} alt="로딩중..." />
+        </Overlay>
       )}
     </div>
   );
 }
 
-export default Accountbook;
+const LogoutBtn = styled.div`
+  width: 30px;
+  height: 30px;
+  background-image: url("https://cdn-icons-png.flaticon.com/512/992/992680.png");
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e6e6e6;
+  }
+`;
+
+const PageBtns = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+`;
+
+const PageBtn = styled(NavLink)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 15.5px;
+  color: black;
+  width: 50px;
+  height: 25px;
+  border: 1px solid var(--maincolor);
+  text-decoration: none;
+  cursor: pointer;
+
+  &.active {
+    background-color: var(--maincolor);
+  }
+`;
+
+const CalendarHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+`;
+const Btn = styled.div`
+  cursor: pointer;
+`;
+
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(250, 250, 250, 0.3);
+  z-index: 999;
+`;
+
+const Spinner = styled.img`
+  width: 80px;
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+`;
