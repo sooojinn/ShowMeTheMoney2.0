@@ -72,6 +72,7 @@ export default function Calendar() {
   const transactionsOfToday = getDailyTransactions(currentDate);
   const [dailyTransactions, setDailyTransactions] =
     useState(transactionsOfToday);
+
   const [selectedDate, setSelectedDate] = useState();
 
   const handleDateClick = (i) => {
@@ -84,7 +85,7 @@ export default function Calendar() {
       setSelectedDate(currentDate);
       setDailyTransactions(getDailyTransactions(currentDate));
     } else {
-      setSelectedDate();
+      setSelectedDate("");
       setDailyTransactions([]);
     }
   }, [month]);
