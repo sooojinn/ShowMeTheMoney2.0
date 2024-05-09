@@ -19,24 +19,32 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        String reactUrl="http://localhost:3000";
+        String reactUrl="https://localhost:3000";
 
+        //Configure form login
         http.formLogin(auth -> auth
                 .loginPage(reactUrl+"/login")
                 .loginProcessingUrl("/loginProc")
                 .failureHandler(new MyFailureHandler()));
 
+        //Configure authorization rules
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/","/login/**", "/loginProc", "/join/**", "/joinProc").permitAll()//모든 사용자에게 오픈
-                .requestMatchers("/write/**", "/accountbook/**","transactions/**").hasRole("USER") //USER role을 부여받았을떄만오픈
+                .requestMatchers("/write/**", "/accountbook/**","/transactions/**").permitAll() //USER role을 부여받았을떄만오픈
                 .requestMatchers(HttpMethod.PUT, "/accountbook/**").hasRole("USER")
-                .anyRequest().authenticated());
+                .anyRequest().permitAll());
 
+        //Session management
         http.sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 
+        //Configrue logout
         http.logout(logout -> logout.logoutUrl("/logout")
                 .logoutSuccessUrl("/"));
+
+        //Disable CSRF
         http.csrf(AbstractHttpConfigurer::disable);
+
+
         return http.build();
     }
 
