@@ -1,4 +1,4 @@
-const baseUrl = "https://localhost:8080";
+const baseUrl = "http://localhost:8000";
 
 const categoryList = {
   food: "식비",
@@ -23,7 +23,7 @@ const categoryList = {
 
 export async function getTransactions(year, month) {
   const res = await fetch(
-    baseUrl + `/transactions?year=${year}&month=${month}`
+    baseUrl + `/transactions?year=${year}&month=${month}`, {mode : 'no-cors'}
   );
 
   const datas = await res.json();
