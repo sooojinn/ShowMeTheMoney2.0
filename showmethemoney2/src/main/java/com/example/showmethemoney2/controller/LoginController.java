@@ -1,17 +1,17 @@
 package com.example.showmethemoney2.controller;
 
-import jakarta.servlet.http.HttpSession;
-import org.springframework.data.redis.core.StringRedisTemplate;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 
 @Controller
@@ -30,25 +30,22 @@ public class LoginController {
 
  */
 
+    //username에서 email로 수정
     @GetMapping("/calendar")
-    public ResponseEntity<Void> userName(Principal principal) {
-        String username = principal.getName();
-        String redirectUrl = "/calendar/users/" + username;
+    public ResponseEntity<Void> userEmail(Principal principal) {
+        String email = principal.getName();
+        String encodedEmail = null;
+        try {
+            encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        String redirectUrl = "/calendar/users/" + encodedEmail;
         return ResponseEntity.status(HttpStatus.FOUND)
                 .location(ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path(redirectUrl).build().toUri())
                 .build();
     }
-/*
-    @GetMapping("/calendar/users")
-    public String mainPage() {
-
-        return "calendar";
-    }
-
-
- */
-
 
 }
 

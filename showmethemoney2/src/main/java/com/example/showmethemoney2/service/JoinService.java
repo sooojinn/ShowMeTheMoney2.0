@@ -5,15 +5,15 @@ import com.example.showmethemoney2.dao.UserRepository;
 import com.example.showmethemoney2.entity.UserEntity;
 import com.example.showmethemoney2.myexception.InvalidUserAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JoinService {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+//    @Autowired
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     //중복 회원 검사 로직(true면 중복인거)
     public boolean isDuplicateUsername(String username) {
@@ -29,7 +29,8 @@ public class JoinService {
         UserEntity data = new UserEntity();
 
         data.setUsername(joinDTO.getUsername());
-        data.setPassword(bCryptPasswordEncoder.encode(joinDTO.getPassword()));
+//        data.setPassword(bCryptPasswordEncoder.encode(joinDTO.getPassword()));
+        data.setPassword((joinDTO.getPassword()));
         data.setRole("ROLE_USER");
 
         userRepository.save(data);

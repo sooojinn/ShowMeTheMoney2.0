@@ -150,7 +150,7 @@ export default function WriteForm({ request, defaultValues }) {
             name="memo"
             autoComplete="off"
             placeholder="20자 이내로 입력하세요."
-            maxlength="20"
+            //maxlength="20"/>/
             {...register("memo")}
           />
         </InputGroup>

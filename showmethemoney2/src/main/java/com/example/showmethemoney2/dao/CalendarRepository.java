@@ -9,6 +9,10 @@ import java.util.List;
 
 @Repository
 public interface CalendarRepository extends JpaRepository<Calendar,Integer> {
+
+    @Query(value = "SELECT c FROM Calendar c WHERE c.username = :username AND c.year = :year AND c.month = :month")
+    List<Calendar> findByUserAndMonthYear(String username, int year, int month);
+
     @Query(value = "SELECT c FROM Calendar c WHERE c.username = :username AND c.year = :year AND c.month = :month AND c.day = :day")
     List<Calendar> SearchUser(String username, int year, int month, int day);
 
