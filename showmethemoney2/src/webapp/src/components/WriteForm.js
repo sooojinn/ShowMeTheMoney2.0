@@ -50,7 +50,6 @@ export default function WriteForm({ request, defaultValues }) {
         const status = await request(defaultValues.id, data);
         if (status === 200) {
           navigate("/accountbook/calendar");
-          console.log(data);
         } else {
           throw new Error("에러가 발생했습니다.");
         }
@@ -150,7 +149,9 @@ export default function WriteForm({ request, defaultValues }) {
             name="memo"
             autoComplete="off"
             placeholder="20자 이내로 입력하세요."
-            //maxlength="20"/>/
+
+            maxLength="20"
+
             {...register("memo")}
           />
         </InputGroup>
