@@ -4,11 +4,10 @@ import com.example.showmethemoney2.dao.CalendarDTO;
 import com.example.showmethemoney2.dao.CalendarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.YearMonth;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,8 +46,9 @@ public class CalendarService {
     // #READ 내역 조회
     @Cacheable("calendar")
     public Calendar viewCal(int calid) {
-        return calendarRepository.findById(calid)
+        var test = calendarRepository.findById(calid)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 내역을 찾을 수 없습니다. :" + calid));
+        return test;
     }
 
     public void modifyCal(int calid, CalendarDTO calendarDTO, String username) {

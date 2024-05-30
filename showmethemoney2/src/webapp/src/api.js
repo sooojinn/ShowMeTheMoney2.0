@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:8000";
+const baseUrl = "http://localhost:8080";
 
 const categoryList = {
   food: "식비",
@@ -23,9 +23,10 @@ const categoryList = {
 
 export async function getTransactions(year, month) {
   const res = await fetch(
-    baseUrl + `/transactions?year=${year}&month=${month}`, {mode : 'no-cors'}
+    baseUrl + `/transactions?year=${year}&month=${month}`, {mode : 'no-cors'}, {method: "GET"}
   );
 
+  console.log(res)
   const datas = await res.json();
 
   return datas.map((data) => {
@@ -66,6 +67,8 @@ export async function postLoginForm(data) {
   for (const key in data) {
     formData.append(key, data[key]);
   }
+  console.log(data)
+  console.log(formData.toString())
   const res = await fetch(baseUrl + "/loginProc", {
     method: "POST",
     headers: {

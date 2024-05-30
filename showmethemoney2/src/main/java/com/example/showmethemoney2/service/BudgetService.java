@@ -1,10 +1,13 @@
 package com.example.showmethemoney2.service;
 
+import com.example.showmethemoney2.dao.BudgetDTO;
 import com.example.showmethemoney2.dao.BudgetRepository;
 import com.example.showmethemoney2.entity.Budget;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 
 @Service
@@ -30,7 +33,11 @@ public class BudgetService {
     }
 
     //예산 저장
-    public void saveBudget(String username, int year, int month, double budget) {
+    public void saveBudget(String username, BudgetDTO budgetDTO) {
+        int year = budgetDTO.getYear();
+        int month = budgetDTO.getMonth();
+        double budget = budgetDTO.getBudget();
+
         try {
             Budget budgetEntity = new Budget(username, year, month, budget);
             budgetRepository.save(budgetEntity);

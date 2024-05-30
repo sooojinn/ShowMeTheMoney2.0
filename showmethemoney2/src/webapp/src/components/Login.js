@@ -22,11 +22,13 @@ import {
 export default function LoginForm() {
   const navigate = useNavigate();
   const {
+    register,
     handleSubmit,
     formState: { isSubmitting, isSubmitted },
   } = useForm();
 
   const onSubmit = async (data) => {
+    console.log(data)
     try {
       const status = await postLoginForm(data);
       if (status === 200) {
@@ -50,9 +52,10 @@ export default function LoginForm() {
           이메일
           <Input
             type="text"
-            name="email"
+            name="username"
             placeholder="이메일 입력하세요."
             autoComplete="off"
+            {...register("username")}
           />
         </InputDiv>
         <InputDiv>
@@ -61,6 +64,7 @@ export default function LoginForm() {
             type="password"
             name="password"
             placeholder="비밀번호를 입력하세요."
+            {...register("password")}
           />
         </InputDiv>
         <Button disabled={isSubmitting || isSubmitted} value="login">
