@@ -1,12 +1,19 @@
 package com.example.showmethemoney2.controller;
 
 
+import com.example.showmethemoney2.dao.UserRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.UnsupportedEncodingException;
@@ -14,21 +21,24 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 
-@Controller
+@Slf4j
+@RestController
 public class LoginController {
 
-/*
-    @GetMapping("/login")
-    public String loginPage(Model model, HttpSession session) {
-        String errorMessage = (String)session.getAttribute("errorMessage");
-        model.addAttribute("errorMessage", errorMessage);
+    @PostMapping("/loginProc")
+    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
 
-        // 에러 메시지 사용 후 세션에서 제거
-        session.removeAttribute("errorMessage");
-        return "login";
+
+
+        return ResponseEntity.ok("Login successful");
     }
+//    @PostMapping(value="/loginPage")
+//    public String login() {
+//        log.info("test");
+//        return "hello";
+//    }
 
- */
+
 
     //username에서 email로 수정
     @GetMapping("/calendar")
@@ -48,4 +58,6 @@ public class LoginController {
     }
 
 }
+
+
 
