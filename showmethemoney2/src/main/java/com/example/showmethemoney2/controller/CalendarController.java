@@ -1,5 +1,6 @@
 package com.example.showmethemoney2.controller;
 
+import com.example.showmethemoney2.configuration.security.service.CustomUserDetailsService;
 import com.example.showmethemoney2.dao.CalendarDTO;
 import com.example.showmethemoney2.entity.Calendar;
 import com.example.showmethemoney2.service.CalendarService;
@@ -9,6 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 //import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -28,9 +33,17 @@ public class CalendarController {
     @GetMapping("/transactions")
     public ResponseEntity<List<CalendarDTO>> loadUserTransactions(@RequestParam("year") int year,
                                                                   @RequestParam("month")int month) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String username = authentication.getName();
-        List<CalendarDTO> caldto = calendarService.getUserTransactionsForMonth("currentUsername",year,month);
+
+        var context = SecurityContextHolder.getContextHolderStrategy();
+        var auth = context.getContext();
+        var tt = context.getDeferredContext();
+        String username = auth.getAuthentication().getName();
+
+
+
+
+
+        List<CalendarDTO> caldto = calendarService.getUserTransactionsForMonth(username,year,month);
         return new ResponseEntity<>(caldto,HttpStatus.OK);
     }
 

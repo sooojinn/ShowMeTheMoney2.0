@@ -22,15 +22,14 @@ public class JoinService {
 
     //회원가입 로직
     public void joinProcess(JoinDTO joinDTO) {
-        if(isDuplicateUsername(joinDTO.getUsername())) {
+        if(isDuplicateUsername(joinDTO.getEmail())) {
             throw new InvalidUserAccessException("이미 사용하고 있는 유저명입니다.","/join");
         }
 
         UserEntity data = new UserEntity();
 
-        data.setUsername(joinDTO.getUsername());
+        data.setUsername(joinDTO.getEmail());
         data.setPassword(bCryptPasswordEncoder.encode(joinDTO.getPassword()));
-        data.setPassword((joinDTO.getPassword()));
         data.setRole("ROLE_USER");
 
         userRepository.save(data);
