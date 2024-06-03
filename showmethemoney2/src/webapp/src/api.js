@@ -23,16 +23,17 @@ const categoryList = {
 
 export async function getTransactions(year, month) {
   const res = await fetch(
-    baseUrl + `/transactions?year=${year}&month=${month}`, {mode : 'no-cors'}, {method: "GET"}
+    baseUrl + `/transactions?year=${year}&month=${month}`,
+    { mode: "no-cors" },
+    { method: "GET" }
   );
 
-  const datas = await res.body;
-  console.log(datas)
+  const datas = await res.json();
+  console.log(datas);
 
-  // if(datas === null)
-  //   return {
-  //     ...datas
-  //   }
+  if (!datas || !Array.isArray(datas)) {
+    return []; // datas가 null이거나 배열이 아니면 빈 배열 반환
+  }
 
   return datas.map((data) => {
     const translatedCategory = categoryList[data.category];
@@ -72,8 +73,8 @@ export async function postLoginForm(data) {
   for (const key in data) {
     formData.append(key, data[key]);
   }
-  console.log(data)
-  console.log(formData.toString())
+  console.log(data);
+  console.log(formData.toString());
   const res = await fetch(baseUrl + "/loginProc", {
     method: "POST",
     headers: {
