@@ -30,7 +30,7 @@ export default function Accountbook() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const nextMonthlyTransactions = getTransactions(year, month + 1);
+        const nextMonthlyTransactions = await getTransactions(year, month + 1);
         setMonthlyTransactions(await nextMonthlyTransactions);
       } catch (error) {
         alert("데이터를 불러오는 데 실패했습니다.");

@@ -52,10 +52,10 @@ export default function LoginForm() {
           이메일
           <Input
             type="text"
-            name="username"
+            name="email"
             placeholder="이메일 입력하세요."
             autoComplete="off"
-            {...register("username")}
+            {...register("email")}
           />
         </InputDiv>
         <InputDiv>

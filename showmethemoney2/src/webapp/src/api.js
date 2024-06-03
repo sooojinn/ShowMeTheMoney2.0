@@ -26,8 +26,13 @@ export async function getTransactions(year, month) {
     baseUrl + `/transactions?year=${year}&month=${month}`, {mode : 'no-cors'}, {method: "GET"}
   );
 
-  console.log(res)
-  const datas = await res.json();
+  const datas = await res.body;
+  console.log(datas)
+
+  // if(datas === null)
+  //   return {
+  //     ...datas
+  //   }
 
   return datas.map((data) => {
     const translatedCategory = categoryList[data.category];
@@ -44,11 +49,11 @@ export async function isUnique(value) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ username: value }),
+    body: JSON.stringify({ email: value }),
   });
   const result = await res.text();
 
-  return result === "true" ? false : true;
+  return result === "false" ? false : true;
 }
 
 export async function postJoinForm(data) {

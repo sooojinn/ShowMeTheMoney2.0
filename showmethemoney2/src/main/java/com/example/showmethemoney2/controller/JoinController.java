@@ -17,7 +17,7 @@ public class JoinController {
 
     @PostMapping("/joinProc")
     public ResponseEntity<Void> joinProcess(@RequestBody JoinDTO joinDTO) {
-        System.out.println(joinDTO.getUsername());
+        System.out.println(joinDTO.getEmail());
         joinService.joinProcess(joinDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -26,7 +26,7 @@ public class JoinController {
     @PostMapping("/join/username/duplication")
     public ResponseEntity<String> DuplicateCheck(@RequestBody JoinDTO dto) {
         //중복이라서 가입못함 -> true, 중복X 가입가능 -> false
-        boolean res = joinService.isDuplicateUsername(dto.getUsername());
+        boolean res = joinService.isDuplicateUsername(dto.getEmail());
         return new ResponseEntity<>(String.valueOf(res), HttpStatus.OK);
     }
 }

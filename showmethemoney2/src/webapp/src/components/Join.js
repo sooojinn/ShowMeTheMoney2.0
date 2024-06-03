@@ -75,8 +75,15 @@ export default function JoinForm() {
                     message: "이메일 형식에 맞지 않습니다.",
                   },
                   validate: {
-                    isUnique: (value) =>
-                      isUnique(value) || "이미 가입된 이메일입니다.",
+                    isUnique: (value) => {
+                      isUnique(value).then((v) => {
+                        if(v === false) {
+                          console.log("가입이 가능합니다")
+                        }else {
+                          console.log("이미 가입된 이메일입니다.")
+                        }
+                      })
+                    }
                   },
                 })}
               />
