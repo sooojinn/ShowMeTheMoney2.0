@@ -12,10 +12,10 @@ export default function Accountbook() {
   const storedMonth = sessionStorage.getItem("month");
   const today = new Date();
   const [year, setYear] = useState(
-      storedYear ? +storedYear : today.getFullYear()
+    storedYear ? +storedYear : today.getFullYear()
   );
   const [month, setMonth] = useState(
-      storedMonth ? +storedMonth : today.getMonth()
+    storedMonth ? +storedMonth : today.getMonth()
   );
   const [monthlyTransactions, setMonthlyTransactions] = useState([]);
   const [monthlyTotals, setMonthlyTotals] = useState({
@@ -30,15 +30,16 @@ export default function Accountbook() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const nextMonthlyTransactions = await getTransactions(year, month + 1);
+        const nextMonthlyTransactions = getTransactions(year, month + 1);
         setMonthlyTransactions(await nextMonthlyTransactions);
       } catch (error) {
         alert("데이터를 불러오는 데 실패했습니다.");
-        console.log(error)
+        console.log(error);
       } finally {
         setIsLoading(false);
       }
     };
+
     const fetchData2 = async () => {
       setIsLoading(true);
       try {
@@ -48,26 +49,22 @@ export default function Accountbook() {
         const nextBudget = getBudget(year, month + 1);
         setMonthlyTransactions(await nextMonthlyTransactions);
         setMonthlyTotals(await nextMonthlyTotals);
-        setCategoryTotal(nextCategoryTotal);
+        setCategoryTotal(await nextCategoryTotal);
         setBudget(await nextBudget);
       } catch (error) {
         alert("데이터를 불러오는 데 실패했습니다.");
-        console.log(error)
+        console.log(error);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchData().then(r => {
 
-    } )
-    // fetchData2().then(r => {
-    //
-    // })
+    // fetchData().then((r) => {});
+    fetchData2().then((r) => {});
 
     sessionStorage.setItem("year", year);
     sessionStorage.setItem("month", month);
   }, [month]);
-
 
   const handlePrevBtn = () => {
     if (month === 0) {

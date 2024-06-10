@@ -23,6 +23,7 @@ const categoryList = {
 
 export async function getTransactions(year, month) {
   const res = await fetch(
+
     baseUrl + `/transactions?year=${year}&month=${month}`, { method: "GET"
       , credentials: 'include'}, // 쿠키를 포함시키기 위해 설정
   );
@@ -38,12 +39,6 @@ export async function getTransactions(year, month) {
     return []; // datas가 null이거나 배열이 아니면 빈 배열 반환
   }
 
-
-
-  // if(datas === null)
-  //   return {
-  //     ...datas
-  //   }
 
   return data.map((d) => {
     const translatedCategory = categoryList[d.category];
@@ -83,8 +78,8 @@ export async function postLoginForm(data) {
   for (const key in data) {
     formData.append(key, data[key]);
   }
-  console.log(data)
-  console.log(formData.toString())
+  console.log(data);
+  console.log(formData.toString());
   const res = await fetch(baseUrl + "/loginProc", {
     method: "POST",
     headers: {
