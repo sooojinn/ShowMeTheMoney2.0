@@ -52,7 +52,7 @@ const ListDate = styled.div`
   flex-basis: 100%;
   align-items: center;
   color: rgba(0, 0, 0, 0.35);
-  font-size: 18px;
+  font-size: 0.95rem;
   margin: 8px 0px;
 
   &::before,

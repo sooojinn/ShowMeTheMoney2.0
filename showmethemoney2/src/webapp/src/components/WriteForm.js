@@ -149,9 +149,7 @@ export default function WriteForm({ request, defaultValues }) {
             name="memo"
             autoComplete="off"
             placeholder="20자 이내로 입력하세요."
-
             maxLength="20"
-
             {...register("memo")}
           />
         </InputGroup>
@@ -166,7 +164,6 @@ export default function WriteForm({ request, defaultValues }) {
 const Form = styled.form`
   width: 350px;
   margin: 30px auto 20px;
-  font-size: 20px;
 `;
 
 const XBtn = styled.div`
@@ -178,7 +175,7 @@ const XBtn = styled.div`
   height: 40px;
   color: black;
   text-decoration: none;
-  font-size: 30px;
+  font-size: 1.5rem;
   cursor: pointer;
 
   &:hover {
@@ -196,7 +193,7 @@ const InputGroup = styled.div`
   & > * {
     width: 250px;
     height: 50px;
-    font-size: 18px;
+    font-size: 0.95rem;
   }
 `;
 
@@ -241,7 +238,7 @@ const Input = styled.input`
     css`
       flex-shrink: 1;
       width: 100%;
-      font-size: 25px;
+      font-size: 1.3rem;
     `}
 `;
 
@@ -255,7 +252,7 @@ const Select = styled.select`
 const MoneyDiv = styled.div`
   display: flex;
   align-items: center;
-  font-size: 25px;
+  font-size: 1.3rem;
 `;
 
 function ExpenseCategory() {

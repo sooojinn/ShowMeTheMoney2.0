@@ -119,6 +119,12 @@ const LogoutBtn = styled.div`
   &:hover {
     background-color: #e6e6e6;
   }
+
+  @media (max-width: 390px) {
+    width: 25px;
+    height: 25px;
+    background-size: 15px 15px;
+  }
 `;
 
 const PageBtns = styled.div`

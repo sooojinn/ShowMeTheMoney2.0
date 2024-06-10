@@ -161,9 +161,9 @@ const MonthlyTotal = styled.span`
 `;
 
 const CalendarWrapper = styled.div`
-  width: 400px;
+  width: 100%;
   margin: 10px auto;
-  font-size: 17px;
+  font-size: 0.9rem;
 
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -195,7 +195,7 @@ const DateNum = styled.p`
 `;
 
 const DailyTotal = styled.div`
-  font-size: 14px;
+  font-size: 0.7rem;
   margin: 0;
   padding-left: 3px;
 `;

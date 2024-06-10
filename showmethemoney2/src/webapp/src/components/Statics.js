@@ -185,7 +185,7 @@ const TotalAmountDiv = styled.div`
   margin-bottom: 10px;
   padding: 10px 5px 10px 15px;
   width: 365px;
-  font-size: 17px;
+  font-size: 0.9rem;
   color: #b6b7bb;
   border-bottom: 0.5px solid #b6b7bb;
 `;
@@ -217,7 +217,7 @@ const LegendItem = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 10px 15px;
-  font-size: 19px;
+  font-size: 1rem;
 `;
 
 const LeftDiv = styled.div`
@@ -236,7 +236,7 @@ const IndexColor = styled.div`
 
 const Percent = styled.span`
   color: #b6b7bb;
-  font-size: 15px;
+  font-size: 0.8rem;
 `;
 
 const NoDataMessage = styled.p`
