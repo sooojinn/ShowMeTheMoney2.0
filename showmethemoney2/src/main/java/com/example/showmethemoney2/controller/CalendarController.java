@@ -40,11 +40,8 @@ public class CalendarController {
         String username = auth.getAuthentication().getName();
 
 
-
-
-
         List<CalendarDTO> caldto = calendarService.getUserTransactionsForMonth(username,year,month);
-        return new ResponseEntity<>(caldto,HttpStatus.OK);
+        return ResponseEntity.ok(caldto);
     }
 
 
