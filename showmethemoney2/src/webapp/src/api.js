@@ -23,21 +23,32 @@ const categoryList = {
 
 export async function getTransactions(year, month) {
   const res = await fetch(
-    baseUrl + `/transactions?year=${year}&month=${month}`, {mode : 'no-cors'}, {method: "GET"}
+    baseUrl + `/transactions?year=${year}&month=${month}`, { method: "GET"
+      , credentials: 'include'}, // 쿠키를 포함시키기 위해 설정
   );
 
-  const datas = await res.body;
-  console.log(datas)
+  if (!res.ok) {
+    throw new Error('Network response was not ok ' + res.statusText);
+  }
+
+  const data = await res.json(); // 응답을 JSON으로 변환
+  console.log('Fetched data:', data);
+
+  if (!data || !Array.isArray(data)) {
+    return []; // datas가 null이거나 배열이 아니면 빈 배열 반환
+  }
+
+
 
   // if(datas === null)
   //   return {
   //     ...datas
   //   }
 
-  return datas.map((data) => {
-    const translatedCategory = categoryList[data.category];
+  return data.map((d) => {
+    const translatedCategory = categoryList[d.category];
     return {
-      ...data,
+      ...d,
       category: translatedCategory,
     };
   });
@@ -79,6 +90,7 @@ export async function postLoginForm(data) {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
+    credentials: 'include',
     body: formData,
   });
   return res.status;
@@ -90,13 +102,15 @@ export async function postTransaction(data) {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: 'include', // 쿠키를 포함시키기 위해 설정
     body: JSON.stringify(data),
   });
   return res.status;
 }
 
 export async function getTransaction(id) {
-  const res = await fetch(baseUrl + `/transactions/${id}`);
+  const res = await fetch(baseUrl + `/transactions/${id}`,
+      {credentials: 'include'}) // 쿠키를 포함시키기 위해 설정});
   const result = await res.json();
   return result;
 }
@@ -107,6 +121,7 @@ export async function putTransaction(id, data) {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: 'include', // 쿠키를 포함시키기 위해 설정
     body: JSON.stringify(data),
   });
   return res.status;
@@ -115,7 +130,7 @@ export async function putTransaction(id, data) {
 export async function deleteTransaction(id) {
   const res = await fetch(baseUrl + `/transactions/${id}`, {
     method: "DELETE",
-  });
+  }, {credentials: 'include'});
   return res.status;
 }
 

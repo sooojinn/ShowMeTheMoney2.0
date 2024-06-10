@@ -2,7 +2,6 @@ package com.example.showmethemoney2.configuration.security;
 
 
 import com.example.showmethemoney2.configuration.security.filter.CustomAuthenticationFilter;
-import com.example.showmethemoney2.configuration.security.filter.TestFilter;
 import com.example.showmethemoney2.configuration.security.handler.CustomLoginSuccessHandler;
 import com.example.showmethemoney2.configuration.security.provider.CustomAuthenticationProvider;
 import com.example.showmethemoney2.configuration.security.service.CustomUserDetailsService;
@@ -42,11 +41,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/loginPage", "loginProc", "/join", "/join/username/duplication", "/joinProc").permitAll()
 //                        .requestMatchers("/api/**").hasRole("USER")
-                        .requestMatchers("/transactions/**").authenticated()
+                        .requestMatchers("/transactions/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/loginPage")
-//                        .loginProcessingUrl("/loginProc")
+                        .loginProcessingUrl("/loginProc")
 //                        .defaultSuccessUrl("/",true)
 //                        .failureUrl("/failed")
 //                        .usernameParameter("email")
@@ -86,10 +85,10 @@ public class SecurityConfig {
 //        return filter;
 //    }
 
-    @Bean
-    public Filter testFilter22() {
-        return new TestFilter();
-    }
+//    @Bean
+//    public Filter testFilter22() {
+//        return new TestFilter();
+//    }
 
 //    @Bean
 //    public UserDetailsService userDetailsService() {
