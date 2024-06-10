@@ -31,19 +31,6 @@ export default function Accountbook() {
       setIsLoading(true);
       try {
         const nextMonthlyTransactions = getTransactions(year, month + 1);
-        setMonthlyTransactions(await nextMonthlyTransactions);
-      } catch (error) {
-        alert("데이터를 불러오는 데 실패했습니다.");
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    const fetchData2 = async () => {
-      setIsLoading(true);
-      try {
-        const nextMonthlyTransactions = getTransactions(year, month + 1);
         const nextMonthlyTotals = getMonthlyTotal(year, month + 1);
         const nextCategoryTotal = getCategoryTotal(year, month + 1);
         const nextBudget = getBudget(year, month + 1);
@@ -59,8 +46,7 @@ export default function Accountbook() {
       }
     };
 
-    // fetchData().then((r) => {});
-    fetchData2().then((r) => {});
+    fetchData().then((r) => {});
 
     sessionStorage.setItem("year", year);
     sessionStorage.setItem("month", month);
@@ -147,7 +133,7 @@ const PageBtn = styled(NavLink)`
   justify-content: center;
   align-items: center;
 
-  font-size: 15.5px;
+  font-size: 0.8rem;
   color: black;
   width: 50px;
   height: 25px;
