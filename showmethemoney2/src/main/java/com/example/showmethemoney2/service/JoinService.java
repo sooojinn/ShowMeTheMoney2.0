@@ -1,6 +1,6 @@
 package com.example.showmethemoney2.service;
 
-import com.example.showmethemoney2.dao.JoinDTO;
+import com.example.showmethemoney2.dao.dto.JoinDTO;
 import com.example.showmethemoney2.dao.UserRepository;
 import com.example.showmethemoney2.entity.UserEntity;
 import com.example.showmethemoney2.myexception.InvalidUserAccessException;
