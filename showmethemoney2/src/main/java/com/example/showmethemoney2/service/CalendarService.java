@@ -1,6 +1,6 @@
 package com.example.showmethemoney2.service;
 
-import com.example.showmethemoney2.dao.CalendarDTO;
+import com.example.showmethemoney2.dao.dto.CalendarDTO;
 import com.example.showmethemoney2.dao.CalendarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;

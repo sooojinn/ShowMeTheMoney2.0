@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
@@ -32,12 +33,16 @@ public class LoginController {
 
         return ResponseEntity.ok("Login successful");
     }
-//    @PostMapping(value="/loginPage")
-//    public String login() {
-//        log.info("test");
-//        return "hello";
-//    }
 
+
+    @GetMapping("/login")
+    public ResponseEntity<?> oauthLogin() {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("http://localhost:3000/accountbook/calendar"));
+        headers.setAccessControlAllowOrigin("http://localhost:3000");
+        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+    }
 
 
     //username에서 email로 수정

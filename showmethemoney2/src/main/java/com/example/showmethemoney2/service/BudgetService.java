@@ -1,13 +1,11 @@
 package com.example.showmethemoney2.service;
 
-import com.example.showmethemoney2.dao.BudgetDTO;
+import com.example.showmethemoney2.dao.dto.BudgetDTO;
 import com.example.showmethemoney2.dao.BudgetRepository;
 import com.example.showmethemoney2.entity.Budget;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 
 
 @Service

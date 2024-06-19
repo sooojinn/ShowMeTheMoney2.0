@@ -1,7 +1,7 @@
 package com.example.showmethemoney2.controller;
 
 
-import com.example.showmethemoney2.dao.BudgetDTO;
+import com.example.showmethemoney2.dao.dto.BudgetDTO;
 import com.example.showmethemoney2.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 //import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.logging.Logger;
 
 @RestController
 public class BudgetController {

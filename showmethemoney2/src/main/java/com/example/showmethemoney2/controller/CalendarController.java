@@ -1,23 +1,18 @@
 package com.example.showmethemoney2.controller;
 
-import com.example.showmethemoney2.configuration.security.service.CustomUserDetailsService;
-import com.example.showmethemoney2.dao.CalendarDTO;
+import com.example.showmethemoney2.dao.dto.CalendarDTO;
 import com.example.showmethemoney2.entity.Calendar;
 import com.example.showmethemoney2.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CalendarController {
