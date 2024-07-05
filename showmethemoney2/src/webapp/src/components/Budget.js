@@ -6,7 +6,7 @@ import styled from "styled-components";
 export default function Budget() {
   const [showBudgetForm, setShowBudgetForm] = useState(false);
 
-  const { year, month, monthlyTotals, budget } = useOutletContext();
+  const { year, month, monthlyTotals, budget = 0 } = useOutletContext();
   const remainingBudget = budget - monthlyTotals["expense-total"];
   const isOver = remainingBudget < 0;
   const progress = isOver ? 100 : Math.floor((remainingBudget / budget) * 100);
@@ -17,7 +17,7 @@ export default function Budget() {
   const recommendedSpending = Math.floor((budget / daysOfMonth) * today);
 
   useEffect(() => {
-    setShowBudgetForm(budget === "");
+    setShowBudgetForm(!budget);
   }, [budget]);
 
   const handleModifyClick = () => {

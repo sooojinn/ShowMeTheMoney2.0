@@ -31,12 +31,7 @@ export async function getTransactions(year, month) {
     throw new Error("Network response was not ok");
   }
 
-  const data = await res.json();
-  console.log("Fetched data:", data);
-
-  if (!data || !Array.isArray(data)) {
-    return []; // datas가 null이거나 배열이 아니면 빈 배열 반환
-  }
+  const data = (await res.json()) ?? [];
 
   return data.map((d) => {
     const translatedCategory = categoryList[d.category];

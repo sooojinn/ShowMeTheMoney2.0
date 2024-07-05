@@ -18,7 +18,7 @@ export default function Home() {
 const Copy = styled.div`
   margin: 100px auto 20px;
   text-align: center;
-  font-size: 25px;
+  font-size: 1.3rem;
 `;
 
 const LinkStyle = styled(Link)`
