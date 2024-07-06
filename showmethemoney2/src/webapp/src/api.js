@@ -24,7 +24,14 @@ const categoryList = {
 export async function getTransactions(year, month) {
   const res = await fetch(
     baseUrl + `/transactions?year=${year}&month=${month}`,
-    { method: "GET", credentials: "include" } // 쿠키를 포함시키기 위해 설정
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      credentials: "include",
+    } // 쿠키를 포함시키기 위해 설정
   );
 
   if (!res.ok) {
@@ -71,8 +78,7 @@ export async function postLoginForm(data) {
   for (const key in data) {
     formData.append(key, data[key]);
   }
-  console.log(data);
-  console.log(formData.toString());
+
   const res = await fetch(baseUrl + "/loginProc", {
     method: "POST",
     headers: {
@@ -98,6 +104,10 @@ export async function postTransaction(data) {
 
 export async function getTransaction(id) {
   const res = await fetch(baseUrl + `/transactions/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
     credentials: "include",
   }); // 쿠키를 포함시키기 위해 설정
 
@@ -134,7 +144,13 @@ export async function deleteTransaction(id) {
 
 export async function getMonthlyTotal(year, month) {
   const res = await fetch(
-    baseUrl + `/statics/total?year=${year}&month=${month}`
+    baseUrl + `/statics/total?year=${year}&month=${month}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }
   );
 
   if (!res.ok) {
@@ -176,11 +192,12 @@ export async function getCategoryTotal(year, month) {
     throw new Error("Network response was not ok");
   }
 
+  const data = await res.json();
+
   if (data.length === 0) {
     return [];
   }
 
-  const data = await res.json();
   const expenseCategory = data["expense"];
   const incomeCategory = data["income"];
 
