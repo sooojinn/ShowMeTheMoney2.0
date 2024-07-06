@@ -16,7 +16,8 @@ public class BudgetController {
     @Autowired
     private BudgetService budgetService;
 
-    //로그인한 유저의 해당 월의 예산 조회
+    //로그인한 유저의 해당 월의 예산조회
+
     @GetMapping("/budget")
     public ResponseEntity<String> getBudget(
             @RequestParam("year") int year,

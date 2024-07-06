@@ -1,6 +1,6 @@
 package com.example.showmethemoney2.controller;
 
-import com.example.showmethemoney2.dao.dto.JoinDTO;
+import com.example.showmethemoney2.dao.JoinDTO;
 import com.example.showmethemoney2.service.JoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
