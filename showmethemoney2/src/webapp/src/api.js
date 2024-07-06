@@ -176,6 +176,10 @@ export async function getCategoryTotal(year, month) {
     throw new Error("Network response was not ok");
   }
 
+  if (data.length === 0) {
+    return [];
+  }
+
   const data = await res.json();
   const expenseCategory = data["expense"];
   const incomeCategory = data["income"];

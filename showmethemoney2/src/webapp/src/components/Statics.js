@@ -58,14 +58,16 @@ function DoughnutChart({ categoryTotal }) {
 
 export default function Statics() {
   const { monthlyTotals, categoryTotal: allCategoryTotal } = useOutletContext();
+  const isData = monthlyTotals["expense"];
+
   const [division, setDivision] = useState("expense");
   const [categoryTotal, setCategoryTotal] = useState(
     allCategoryTotal["expense"]
   );
-  const expenseTotal = +monthlyTotals["expense-total"];
-  const incomeTotal = +monthlyTotals["income-total"];
+  const expenseTotal = isData ? +monthlyTotals["expense-total"] : 0;
+  const incomeTotal = isData ? +monthlyTotals["income-total"] : 0;
   const totalAmount = division === "expense" ? expenseTotal : incomeTotal;
-  const isData = totalAmount !== 0;
+
   const translate = {
     expense: "지출",
     income: "수입",
