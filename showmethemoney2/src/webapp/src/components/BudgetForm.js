@@ -55,7 +55,7 @@ export default function BudgetForm({ year, month }) {
 }
 
 const Form = styled.form`
-  font-size: 21px;
+  font-size: 1.1rem;
   width: fit-content;
   margin: 50px auto;
 `;
@@ -65,7 +65,7 @@ const BudgetInput = styled.input`
   height: 40px;
   margin-top: 10px;
   padding: 3px;
-  font-size: 25px;
+  font-size: 1.3rem;
   border: 2px solid var(--maincolor);
   border-width: 0 0 2px;
   background-color: transparent;
@@ -76,7 +76,7 @@ const Button = styled.button`
   height: 35px;
   margin-left: 10px;
   font-family: inherit;
-  font-size: 17px;
+  font-size: 0.9rem;
   background-color: var(--maincolor);
   border: none;
   border-radius: 5px;

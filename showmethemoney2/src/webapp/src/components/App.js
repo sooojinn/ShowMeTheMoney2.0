@@ -46,9 +46,25 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  html {
+    font-size: 19px;
+
+  }
+
+  @media (max-width: 390px) {
+    html {
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 350px) {
+    html {
+      font-size: 17px;
+    }
+  }
+
   body {
     font-family: "omyu_pretty";
-    font-size: 19px;
   }
 `;
 
@@ -63,4 +79,14 @@ const Layout = styled.div`
   box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
     rgba(17, 17, 26, 0.05) 0px 8px 32px;
   position: relative;
+
+  @media (max-width: 430px) {
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+  }
+
+  @media (max-width: 320px) {
+    width: 320px;
+  }
 `;

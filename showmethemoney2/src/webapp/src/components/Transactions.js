@@ -79,15 +79,15 @@ const Transaction = styled.div`
 `;
 
 const Category = styled.div`
-  font-size: 22px;
+  font-size: 1.15rem;
 `;
 
 const Memo = styled.div`
   color: #a0a1a6;
-  font-size: 17px;
+  font-size: 0.9rem;
   margin-top: 3px;
 `;
 
 const Money = styled.div`
-  font-size: 25px;
+  font-size: 1.3rem;
 `;

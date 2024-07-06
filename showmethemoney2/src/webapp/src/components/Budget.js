@@ -6,7 +6,7 @@ import styled from "styled-components";
 export default function Budget() {
   const [showBudgetForm, setShowBudgetForm] = useState(false);
 
-  const { year, month, monthlyTotals, budget } = useOutletContext();
+  const { year, month, monthlyTotals, budget = 0 } = useOutletContext();
   const remainingBudget = budget - monthlyTotals["expense-total"];
   const isOver = remainingBudget < 0;
   const progress = isOver ? 100 : Math.floor((remainingBudget / budget) * 100);
@@ -17,7 +17,7 @@ export default function Budget() {
   const recommendedSpending = Math.floor((budget / daysOfMonth) * today);
 
   useEffect(() => {
-    setShowBudgetForm(budget === "");
+    setShowBudgetForm(!budget);
   }, [budget]);
 
   const handleModifyClick = () => {
@@ -58,11 +58,11 @@ export default function Budget() {
 
 const BudgetPage = styled.div`
   margin: 20px 20px;
-  font-size: 22px;
+  font-size: 1.2rem;
 `;
 
 const RemainingBudget = styled.div`
-  font-size: 27px;
+  font-size: 1.4rem;
   margin-top: 5px;
   color: ${(props) => (props.isOver ? "#FE6677" : "inherit")};
 `;
@@ -91,7 +91,7 @@ const ProgressBar = styled.div`
 `;
 
 const Progress = styled.div`
-  font-size: 14px;
+  font-size: 0.75rem;
 `;
 
 const RecommendedLine = styled.div`
@@ -112,7 +112,7 @@ const TodayBadge = styled.div`
   background-color: #d1d1d2;
   color: #fff;
   border-radius: 10px;
-  font-size: 13px;
+  font-size: 0.75rem;
   position: absolute;
   top: -18px;
   right: -15px;
@@ -121,12 +121,12 @@ const TodayBadge = styled.div`
 const BudgetData = styled.div`
   display: flex;
   justify-content: space-between;
-  font-size: 19px;
+  font-size: 1rem;
   margin-bottom: 2px;
 `;
 
 const ModifyBtn = styled.div`
-  font-size: 17px;
+  font-size: 0.9rem;
   background-color: var(--maincolor);
   width: 70px;
   height: 25px;

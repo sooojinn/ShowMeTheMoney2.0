@@ -77,13 +77,13 @@ export default function JoinForm() {
                   validate: {
                     isUnique: (value) => {
                       isUnique(value).then((v) => {
-                        if(v === false) {
-                          console.log("가입이 가능합니다")
-                        }else {
-                          console.log("이미 가입된 이메일입니다.")
+                        if (v === false) {
+                          console.log("가입이 가능합니다");
+                        } else {
+                          console.log("이미 가입된 이메일입니다.");
                         }
-                      })
-                    }
+                      });
+                    },
                   },
                 })}
               />
@@ -167,7 +167,7 @@ export const Form = styled.div`
   width: 350px;
   margin: 70px auto 0;
   font-family: "Pretendard-Regular";
-  font-size: 16px;
+  font-size: 0.85rem;
 `;
 
 export const TitleDiv = styled.div`
@@ -176,7 +176,7 @@ export const TitleDiv = styled.div`
 `;
 
 export const Title = styled.div`
-  font-size: 25px;
+  font-size: 1.3rem;
   font-weight: 600;
 `;
 
@@ -199,7 +199,7 @@ export const Input = styled.input`
   background-color: transparent;
   border: 1px solid #d7d7d7;
   border-width: 0 0 1px;
-  font-size: 15px;
+  font-size: 0.8rem;
 
   &::placeholder {
     color: #cbcbcb;
@@ -221,7 +221,7 @@ export const Input = styled.input`
 
 export const ErrorMessage = styled.div`
   color: #ff3f3f;
-  font-size: 14px;
+  font-size: 0.7rem;
   margin-top: 5px;
 `;
 
@@ -231,7 +231,7 @@ export const LinkMessage = styled.span`
   margin: 20px auto;
   text-align: center;
   color: #1e1e1e;
-  font-size: 14px;
+  font-size: 0.7rem;
 `;
 
 export const PageLink = styled(Link)`
@@ -253,8 +253,7 @@ export const Line = styled.p`
   display: flex;
   align-items: center;
   color: rgba(0, 0, 0, 0.35);
-  font-size: 18px;
-  font-size: 16px;
+  font-size: 0.85rem;
 
   &::before,
   &:after {
@@ -271,7 +270,7 @@ export const Line = styled.p`
 export const SocialLoginInfo = styled.p`
   color: rgba(0, 0, 0, 0.45);
   text-align: center;
-  font-size: 15px;
+  font-size: 0.8rem;
   margin: 15px 0;
 `;
 

@@ -30,8 +30,17 @@ export default function Accountbook() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const nextMonthlyTransactions = getTransactions(year, month + 1);
-        setMonthlyTransactions(await nextMonthlyTransactions);
+        const [transactions, totals, categoryTotals, budget] =
+          await Promise.all([
+            getTransactions(year, month + 1),
+            getMonthlyTotal(year, month + 1),
+            getCategoryTotal(year, month + 1),
+            getBudget(year, month + 1),
+          ]);
+        setMonthlyTransactions(transactions);
+        setMonthlyTotals(totals);
+        setCategoryTotal(categoryTotals);
+        setBudget(budget);
       } catch (error) {
         alert("데이터를 불러오는 데 실패했습니다.");
         console.log(error);
@@ -40,27 +49,7 @@ export default function Accountbook() {
       }
     };
 
-    const fetchData2 = async () => {
-      setIsLoading(true);
-      try {
-        const nextMonthlyTransactions = getTransactions(year, month + 1);
-        const nextMonthlyTotals = getMonthlyTotal(year, month + 1);
-        const nextCategoryTotal = getCategoryTotal(year, month + 1);
-        const nextBudget = getBudget(year, month + 1);
-        setMonthlyTransactions(await nextMonthlyTransactions);
-        setMonthlyTotals(await nextMonthlyTotals);
-        setCategoryTotal(await nextCategoryTotal);
-        setBudget(await nextBudget);
-      } catch (error) {
-        alert("데이터를 불러오는 데 실패했습니다.");
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    // fetchData().then((r) => {});
-    fetchData2().then((r) => {});
+    fetchData().then((r) => {});
 
     sessionStorage.setItem("year", year);
     sessionStorage.setItem("month", month);
@@ -133,6 +122,12 @@ const LogoutBtn = styled.div`
   &:hover {
     background-color: #e6e6e6;
   }
+
+  @media (max-width: 390px) {
+    width: 25px;
+    height: 25px;
+    background-size: 15px 15px;
+  }
 `;
 
 const PageBtns = styled.div`
@@ -147,7 +142,7 @@ const PageBtn = styled(NavLink)`
   justify-content: center;
   align-items: center;
 
-  font-size: 15.5px;
+  font-size: 0.8rem;
   color: black;
   width: 50px;
   height: 25px;
