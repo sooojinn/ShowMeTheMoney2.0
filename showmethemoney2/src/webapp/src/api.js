@@ -84,7 +84,7 @@ export async function postLoginForm(data) {
   return res.status;
 }
 
-export async function postTransaction(id, data) {
+export async function postTransaction(data) {
   const res = await fetch(baseUrl + "/transactions", {
     method: "POST",
     headers: {
@@ -134,15 +134,14 @@ export async function deleteTransaction(id) {
 
 export async function getMonthlyTotal(year, month) {
   const res = await fetch(
-    baseUrl + `/statics/total?year=${year}&month=${month}`,
-      {credentials: "include",}
+    baseUrl + `/statics/total?year=${year}&month=${month}`
   );
 
   if (!res.ok) {
     throw new Error("Network response was not ok");
   }
 
-  const result = (await res.json()) ?? [];
+  const result = await res.json();
   return result;
 }
 
@@ -158,32 +157,30 @@ export async function postBudget(data) {
 }
 
 export async function getBudget(year, month) {
-  const res = await fetch(baseUrl + `/budget?year=${year}&month=${month}`,
-      {credentials: "include",}
-  );
+  const res = await fetch(baseUrl + `/budget?year=${year}&month=${month}`);
 
-  if (res.ok !== true) {
+  if (!res.ok) {
     throw new Error("Network response was not ok");
   }
 
-  let result = null;
-  if(res.status !== 204)
-    result = await res.json();
-
+  const result = await res.json();
   return result;
 }
 
-export async function getCategoryTotal(year, month, di) {
+export async function getCategoryTotal(year, month) {
   const res = await fetch(
-    baseUrl + `/statics/category?year=${year}&month=${month}&division=${di}`,
-      {credentials: "include",}
+    baseUrl + `/statics/category?year=${year}&month=${month}`
   );
 
   if (!res.ok) {
     throw new Error("Network response was not ok");
   }
 
-  const data = (await res.json()) ?? [];
+  if (data.length === 0) {
+    return [];
+  }
+
+  const data = await res.json();
   const expenseCategory = data["expense"];
   const incomeCategory = data["income"];
 
@@ -196,18 +193,18 @@ export async function getCategoryTotal(year, month, di) {
     delete incomeCategory[key];
   }
 
-  // const translatedData = {
-  //   expense: expenseCategory,
-  //   income: incomeCategory,
-  // };
-  //
-  // for (const key in translatedData) {
-  //   translatedData[key] = Object.fromEntries(
-  //     Object.entries(translatedData[key]).sort(([, a], [, b]) =>
-  //       +a > +b ? -1 : 1
-  //     )
-  //   );
-  // }
+  const translatedData = {
+    expense: expenseCategory,
+    income: incomeCategory,
+  };
 
-  return null;
+  for (const key in translatedData) {
+    translatedData[key] = Object.fromEntries(
+      Object.entries(translatedData[key]).sort(([, a], [, b]) =>
+        +a > +b ? -1 : 1
+      )
+    );
+  }
+
+  return translatedData;
 }
