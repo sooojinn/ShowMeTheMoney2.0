@@ -30,14 +30,17 @@ export default function Accountbook() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const nextMonthlyTransactions = getTransactions(year, month + 1);
-        const nextMonthlyTotals = getMonthlyTotal(year, month + 1);
-        const nextCategoryTotal = getCategoryTotal(year, month + 1);
-        const nextBudget = getBudget(year, month + 1);
-        setMonthlyTransactions(await nextMonthlyTransactions);
-        setMonthlyTotals(await nextMonthlyTotals);
-        setCategoryTotal(await nextCategoryTotal);
-        setBudget(await nextBudget);
+        const [transactions, totals, categoryTotals, budget] =
+          await Promise.all([
+            getTransactions(year, month + 1),
+            getMonthlyTotal(year, month + 1),
+            getCategoryTotal(year, month + 1),
+            getBudget(year, month + 1),
+          ]);
+        setMonthlyTransactions(transactions);
+        setMonthlyTotals(totals);
+        setCategoryTotal(categoryTotals);
+        setBudget(budget);
       } catch (error) {
         alert("데이터를 불러오는 데 실패했습니다.");
         console.log(error);
