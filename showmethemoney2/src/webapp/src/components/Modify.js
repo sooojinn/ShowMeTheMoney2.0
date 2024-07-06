@@ -82,7 +82,7 @@ const Loading = styled.div`
   justify-contnet: center;
   align-items: center;
   margin: 100px auto;
-  font-size: 23px;
+  font-size: 1.2rem;
 `;
 
 const Spinner = styled.img`
@@ -142,7 +142,7 @@ const DeleteMessage = styled.div`
     border: none;
     border-radius: 4px;
     font-family: inherit;
-    font-size: 17px;
+    font-size: 0.9rem;
     cursor: pointer;
   }
 `;

@@ -41,7 +41,7 @@ export default function Loading() {
 export const Message = styled.p`
   margin: 150px auto 30px;
   text-align: center;
-  font-size: 23px;
+  font-size: 1.2rem;
   line-height: 150%;
 `;
 
@@ -77,6 +77,6 @@ export const Circle = styled.div`
 `;
 
 export const Count = styled.div`
-  font-size: 25px;
+  font-size: 1.3rem;
   animation: ${count} 1s linear infinite;
 `;
