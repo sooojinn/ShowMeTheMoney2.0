@@ -10,6 +10,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,13 +26,13 @@ public class CalendarController {
 
 
     //해당 월 데이터 조회
+    @CrossOrigin(origins ={ "http://localhost:3000" })
     @GetMapping("/transactions")
     public ResponseEntity<List<CalendarDTO>> loadUserTransactions(@RequestParam("year") int year,
                                                                   @RequestParam("month")int month) {
 
         var context = SecurityContextHolder.getContextHolderStrategy();
         var auth = context.getContext();
-        var tt = context.getDeferredContext();
         String username = auth.getAuthentication().getName();
 
 
@@ -41,12 +42,14 @@ public class CalendarController {
 
 
     //저장
+    @CrossOrigin(originPatterns ={ "*" })
     @PostMapping("/transactions")
     public ResponseEntity<String> saveCalendar(@RequestBody CalendarDTO calendardto) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String currentUsername = authentication.getName();
+        var context = SecurityContextHolder.getContextHolderStrategy();
+        var auth = context.getContext();
+        String username = auth.getAuthentication().getName();
         try {
-            calendarService.saveCal("currentUsername", calendardto);
+            calendarService.saveCal(username, calendardto);
             return new
                     ResponseEntity<>("저장되었습니다.", HttpStatus.OK);
         } catch (HttpMessageNotReadableException e) {
@@ -56,6 +59,7 @@ public class CalendarController {
     }
 
     //삭제
+    @CrossOrigin(originPatterns ={ "*" })
     @DeleteMapping("/transactions/{calid}")
     public ResponseEntity<String> deleteCalendar(@PathVariable("calid") int calid) {
         calendarService.deleteCal(calid);
@@ -64,6 +68,7 @@ public class CalendarController {
 
 
     //조회
+    @CrossOrigin(originPatterns ={ "*" })
     @GetMapping("/transactions/{calid}")
     public ResponseEntity<CalendarDTO> viewCalendar(
             @PathVariable("calid") int calid) {
@@ -73,13 +78,15 @@ public class CalendarController {
     }
 
     //수정
+    @CrossOrigin(originPatterns ={ "*" })
     @PutMapping("/transactions/{calid}")
     public ResponseEntity<String> modifyCalendar(@RequestBody CalendarDTO calendarDTO,
                                                  @PathVariable("calid") int calid) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String currentUsername = authentication.getName();
+        var context = SecurityContextHolder.getContextHolderStrategy();
+        var auth = context.getContext();
+        String username = auth.getAuthentication().getName();
         try {
-            calendarService.modifyCal(calid, calendarDTO, "currentUsername");
+            calendarService.modifyCal(calid, calendarDTO, username);
             return new ResponseEntity<>("수정되었습니다", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("해당 내역을 찾을 수 없습니다", HttpStatus.NOT_FOUND);
@@ -88,14 +95,16 @@ public class CalendarController {
 
 
     //한 유저의 월별 총 수입/지출 통계
+    @CrossOrigin(originPatterns ={ "*" })
     @GetMapping("/statics/total")
     public Map<String, Object> monthlytotal(
             @RequestParam("year") int year,
             @RequestParam("month") int month) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String currentUsername = authentication.getName();
+        var context = SecurityContextHolder.getContextHolderStrategy();
+        var auth = context.getContext();
+        String username = auth.getAuthentication().getName();
 
-        int[] total = calendarService.monthlyTotal("currentUsername", year, month);
+        int[] total = calendarService.monthlyTotal(username, year, month);
 
         Map<String, Object> response = new HashMap<>();
         response.put("year", year);
@@ -107,14 +116,21 @@ public class CalendarController {
     }
 
     //한 유저의 해당 월의 카테코리별 총 수입/지출 통계
+    @CrossOrigin(originPatterns ={ "*" })
     @GetMapping("/statics/category")
-    public Map<String, Number> monthlyCategoryTotal(
+    public ResponseEntity<?> monthlyCategoryTotal(
             @RequestParam("year") int year,
             @RequestParam("month") int month,
             @RequestParam("division") String division) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String currentUsername = authentication.getName();
-        return calendarService.categoryMonthlyTotal("currentUsername", year, month, division);
+        var context = SecurityContextHolder.getContextHolderStrategy();
+        var auth = context.getContext();
+        String username = auth.getAuthentication().getName();
+        var test = calendarService.categoryMonthlyTotal(username, year, month, division);
+
+        if(test == null)
+            return ResponseEntity.ok(new ArrayList<>()); // [ ]
+
+        return ResponseEntity.ok(new ArrayList<>());
 
     }
 }

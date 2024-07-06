@@ -7,6 +7,8 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -38,7 +40,8 @@ public class OauthSecurityConfig {
                 .httpBasic((basic) -> basic.disable());
         http
                 .oauth2Login((oauth2) -> oauth2
-                        .loginPage("/login")
+                        .successHandler(successHandler())
+//                        .loginPage("/login")
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService)));
         http
@@ -49,11 +52,16 @@ public class OauthSecurityConfig {
         return http.build();
     }
 
-
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+        successHandler.setDefaultTargetUrl("http://localhost:3000/accountbook/calendar");
+        return successHandler;
+    }
 
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("localhost"));  // 허용할 도메인 설정
+        configuration.setAllowedOrigins(List.of("http://localhost"));  // 허용할 도메인 설정
         configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // 허용할 HTTP 메서드 설정
         configuration.setAllowedHeaders(List.of("*"));  // 허용할 헤더 설정

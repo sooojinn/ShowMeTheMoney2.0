@@ -44,7 +44,6 @@ public class CalendarService {
     }
 
     // #READ 내역 조회
-    @Cacheable("calendar")
     public Calendar viewCal(int calid) {
         var test = calendarRepository.findById(calid)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 내역을 찾을 수 없습니다. :" + calid));
@@ -104,7 +103,6 @@ public class CalendarService {
     }
 
     //월별 총수입 or 총지출
-    @Cacheable("monthlyTotal")
     public int[] monthlyTotal(String username, int year, int month) {
         List<Calendar> calendars = calendarRepository.MonthlyCal(username,year,month);
         //total[0] = incometotal, total[1]=expensetotal
@@ -118,7 +116,6 @@ public class CalendarService {
     }
 
     //로그인한 유저의 카테고리당 월별 총액 조회
-    @Cacheable("categoryMonthlyTotal")
     public Map<String,Number> categoryMonthlyTotal(
             @RequestParam("username") String username,
         @RequestParam("year") int year,
@@ -133,10 +130,10 @@ public class CalendarService {
         Map<String, Number> categoryTotal = new HashMap<>();
         categoryTotal.put("year",year);
         categoryTotal.put("month",month);
-
-        if(division.equals("income"))categoryTotal.put("total", monthlytotal[0]);
-        else if(division.equals("expense"))categoryTotal.put("total",monthlytotal[1]);
-        else throw new IllegalArgumentException("categoryMonthlyTotal : division이 유효하지 않습니다.");
+//
+//        if(division.equals("income"))categoryTotal.put("total", monthlytotal[0]);
+//        else if(division.equals("expense"))categoryTotal.put("total",monthlytotal[1]);
+//        else throw new IllegalArgumentException("categoryMonthlyTotal : division이 유효하지 않습니다.");
 
         for(Object[] obarr : afterGroupBy) {
             categoryTotal.put(obarr[0].toString(),(Long)obarr[1]);

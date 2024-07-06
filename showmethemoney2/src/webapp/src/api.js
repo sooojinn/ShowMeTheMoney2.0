@@ -84,7 +84,7 @@ export async function postLoginForm(data) {
   return res.status;
 }
 
-export async function postTransaction(data) {
+export async function postTransaction(id, data) {
   const res = await fetch(baseUrl + "/transactions", {
     method: "POST",
     headers: {
@@ -134,14 +134,15 @@ export async function deleteTransaction(id) {
 
 export async function getMonthlyTotal(year, month) {
   const res = await fetch(
-    baseUrl + `/statics/total?year=${year}&month=${month}`
+    baseUrl + `/statics/total?year=${year}&month=${month}`,
+      {credentials: "include",}
   );
 
   if (!res.ok) {
     throw new Error("Network response was not ok");
   }
 
-  const result = await res.json();
+  const result = (await res.json()) ?? [];
   return result;
 }
 
@@ -157,26 +158,32 @@ export async function postBudget(data) {
 }
 
 export async function getBudget(year, month) {
-  const res = await fetch(baseUrl + `/budget?year=${year}&month=${month}`);
+  const res = await fetch(baseUrl + `/budget?year=${year}&month=${month}`,
+      {credentials: "include",}
+  );
 
-  if (!res.ok) {
+  if (res.ok !== true) {
     throw new Error("Network response was not ok");
   }
 
-  const result = await res.json();
+  let result = null;
+  if(res.status !== 204)
+    result = await res.json();
+
   return result;
 }
 
-export async function getCategoryTotal(year, month) {
+export async function getCategoryTotal(year, month, di) {
   const res = await fetch(
-    baseUrl + `/statics/category?year=${year}&month=${month}`
+    baseUrl + `/statics/category?year=${year}&month=${month}&division=${di}`,
+      {credentials: "include",}
   );
 
   if (!res.ok) {
     throw new Error("Network response was not ok");
   }
 
-  const data = await res.json();
+  const data = (await res.json()) ?? [];
   const expenseCategory = data["expense"];
   const incomeCategory = data["income"];
 
@@ -189,18 +196,18 @@ export async function getCategoryTotal(year, month) {
     delete incomeCategory[key];
   }
 
-  const translatedData = {
-    expense: expenseCategory,
-    income: incomeCategory,
-  };
+  // const translatedData = {
+  //   expense: expenseCategory,
+  //   income: incomeCategory,
+  // };
+  //
+  // for (const key in translatedData) {
+  //   translatedData[key] = Object.fromEntries(
+  //     Object.entries(translatedData[key]).sort(([, a], [, b]) =>
+  //       +a > +b ? -1 : 1
+  //     )
+  //   );
+  // }
 
-  for (const key in translatedData) {
-    translatedData[key] = Object.fromEntries(
-      Object.entries(translatedData[key]).sort(([, a], [, b]) =>
-        +a > +b ? -1 : 1
-      )
-    );
-  }
-
-  return translatedData;
+  return null;
 }

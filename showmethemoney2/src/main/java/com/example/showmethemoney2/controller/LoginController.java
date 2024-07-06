@@ -23,11 +23,11 @@ import java.util.List;
 @RestController
 public class LoginController {
 
-    @PostMapping("/loginProc")
-    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
-
-        return ResponseEntity.ok("Login successful");
-    }
+//    @PostMapping("/loginProc")
+//    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
+//
+//        return ResponseEntity.ok("Login successful");
+//    }
 
 //    @GetMapping("/login2")
 //    public ResponseEntity<?> oauthLogin() {
@@ -38,20 +38,22 @@ public class LoginController {
 //        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
 //    }
 
-//    @GetMapping("/login")
-//    public ResponseEntity<?> oauthLoginSocial() {
-//
+    @GetMapping("/login")
+    public ResponseEntity<?> oauthLoginSocial() {
+
 //        HttpHeaders headers = new HttpHeaders();
 //        headers.setLocation(URI.create("http://localhost:3000/accountbook/calendar"));
-//        headers.setAccessControlAllowOrigin("http://localhost");
+//        headers.setAccessControlAllowOrigin("http://localhost:8080");
 //        headers.setAccessControlAllowHeaders(List.of("*"));
 //        headers.setAccessControlAllowMethods(List.of(HttpMethod.GET, HttpMethod.DELETE,HttpMethod.POST , HttpMethod.PATCH, HttpMethod.PUT));
 //        headers.setAccessControlAllowCredentials(true);
-//        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
-//    }
+        return ResponseEntity.ok().build();
+//        return ResponseEntity.ok().build();
+    }
 
 
     //username에서 email로 수정
+    @CrossOrigin(originPatterns ={ "*" })
     @GetMapping("/calendar")
     public ResponseEntity<Void> userEmail(Principal principal) {
         String email = principal.getName();
