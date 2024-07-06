@@ -181,10 +181,9 @@ const Label = styled.label`
 const TotalAmountDiv = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-left: 15px;
-  margin-bottom: 10px;
-  padding: 10px 5px 10px 15px;
-  width: 365px;
+  margin: 0 0px 10px 15px;
+  padding: 10px 15px;
+  width: auto;
   font-size: 0.9rem;
   color: #b6b7bb;
   border-bottom: 0.5px solid #b6b7bb;
