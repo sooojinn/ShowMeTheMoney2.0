@@ -9,12 +9,19 @@ export default function Budget() {
   const { year, month, monthlyTotals, budget = 0 } = useOutletContext();
   const remainingBudget = budget - monthlyTotals["expense-total"];
   const isOver = remainingBudget < 0;
-  const progress = isOver ? 100 : Math.floor((remainingBudget / budget) * 100);
+  const progress =
+    budget === 0
+      ? 0
+      : isOver
+      ? 100
+      : Math.floor((remainingBudget / budget) * 100);
 
   const daysOfMonth = new Date(year, month, 0).getDate();
   const today =
     month === new Date().getMonth() ? new Date().getDate() : daysOfMonth;
   const recommendedSpending = Math.floor((budget / daysOfMonth) * today);
+  const recommendedWidth =
+    budget === 0 ? 0 : (recommendedSpending / budget) * 100;
 
   useEffect(() => {
     setShowBudgetForm(!budget);
@@ -23,20 +30,21 @@ export default function Budget() {
   const handleModifyClick = () => {
     setShowBudgetForm(true);
   };
+
   return (
     <>
       {showBudgetForm || (
         <BudgetPage>
           <div>한 달 예산</div>
-          <RemainingBudget isOver={isOver}>
+          <RemainingBudget $isOver={isOver}>
             {Math.abs(remainingBudget).toLocaleString()}원{" "}
             {isOver ? "초과" : "남음"}
           </RemainingBudget>
           <ProgressContainer>
-            <ProgressBar progress={progress} isOver={isOver}>
+            <ProgressBar $progress={progress} $isOver={isOver}>
               <Progress>{progress}%</Progress>
             </ProgressBar>
-            <RecommendedLine width={(recommendedSpending / budget) * 100}>
+            <RecommendedLine width={recommendedWidth}>
               <TodayBadge>오늘</TodayBadge>
             </RecommendedLine>
           </ProgressContainer>
@@ -64,7 +72,7 @@ const BudgetPage = styled.div`
 const RemainingBudget = styled.div`
   font-size: 1.4rem;
   margin-top: 5px;
-  color: ${(props) => (props.isOver ? "#FE6677" : "inherit")};
+  color: ${(props) => (props.$isOver ? "#FE6677" : "inherit")};
 `;
 
 const ProgressContainer = styled.div`
@@ -85,9 +93,9 @@ const ProgressBar = styled.div`
   align-items: center;
   padding-right: 5px;
 
-  width: ${(props) => props.progress}%;
-  backgroundcolor: ${(props) =>
-    props.isOver ? "#FE6677" : "var(--maincolor)"};
+  width: ${(props) => props.$progress}%;
+  background-color: ${(props) =>
+    props.$isOver ? "#FE6677" : "var(--maincolor)"};
 `;
 
 const Progress = styled.div`
