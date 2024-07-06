@@ -6,7 +6,7 @@ export default function List() {
   const { year, month, monthlyTransactions } = useOutletContext();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const isData = monthlyTransactions.length !== 0;
-  console.log(monthlyTransactions);
+
   const getDailyTransactions = (date) => {
     return monthlyTransactions.filter(
       (data) => data.date === `${year}-${month + 1}-${date}`
