@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpHeaders;
+
 @RestController
 public class BudgetController {
 
@@ -26,23 +28,28 @@ public class BudgetController {
             @RequestParam("month") int month) {
         var context = SecurityContextHolder.getContextHolderStrategy();
         var auth = context.getContext();
-        String username = auth.getAuthentication().getName();
-
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         String budgetData = budgetService.getBudgetDataAsString(username, year, month);
 
         if (budgetData.isEmpty()) {
-            return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+            return ResponseEntity.ok("\"\""); // 빈 문자열 반환
         }
-
-        return new ResponseEntity<>(budgetData, HttpStatus.OK);
+        return ResponseEntity.ok("\"" + budgetData + "\""); // 문자열로 감싼 예산 데이터 반환
     }
+
+//        if (budgetData.isEmpty()) {
+//            return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+//        }
+
+
+
 
     @CrossOrigin(originPatterns ={ "*" })
     @PostMapping("/budget")
     public ResponseEntity<String> saveBudget(@RequestBody BudgetDTO budgetDTO) {
         var context = SecurityContextHolder.getContextHolderStrategy();
         var auth = context.getContext();
-        String username = auth.getAuthentication().getName();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         try {
             budgetService.saveBudget(username, budgetDTO);

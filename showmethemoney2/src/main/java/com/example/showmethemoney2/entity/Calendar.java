@@ -15,7 +15,7 @@ import lombok.Setter;
 public class Calendar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int calid;
+    private int id;
     private String username;
     private int year;
     private int month;

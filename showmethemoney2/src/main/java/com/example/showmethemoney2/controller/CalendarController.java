@@ -1,6 +1,8 @@
 package com.example.showmethemoney2.controller;
 
 import com.example.showmethemoney2.dao.dto.CalendarDTO;
+import com.example.showmethemoney2.dao.dto.CategoryTotalDTO;
+import com.example.showmethemoney2.dao.dto.MonthlyTotalDTO;
 import com.example.showmethemoney2.entity.Calendar;
 import com.example.showmethemoney2.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,6 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,7 @@ public class CalendarController {
         try {
             calendarService.saveCal(username, calendardto);
             return new
-                    ResponseEntity<>("저장되었습니다.", HttpStatus.OK);
+                    ResponseEntity<>(HttpStatus.OK);
         } catch (HttpMessageNotReadableException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
@@ -63,7 +64,7 @@ public class CalendarController {
     @DeleteMapping("/transactions/{calid}")
     public ResponseEntity<String> deleteCalendar(@PathVariable("calid") int calid) {
         calendarService.deleteCal(calid);
-        return new ResponseEntity<>("삭제되었습니다", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
@@ -87,50 +88,45 @@ public class CalendarController {
         String username = auth.getAuthentication().getName();
         try {
             calendarService.modifyCal(calid, calendarDTO, username);
-            return new ResponseEntity<>("수정되었습니다", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("해당 내역을 찾을 수 없습니다", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
 
-    //한 유저의 월별 총 수입/지출 통계
+    //로그인한 유저의 월별 수입/지출 총액 조회
     @CrossOrigin(originPatterns ={ "*" })
     @GetMapping("/statics/total")
-    public Map<String, Object> monthlytotal(
+    public ResponseEntity<Object> getMonthlyTotal(
             @RequestParam("year") int year,
             @RequestParam("month") int month) {
-        var context = SecurityContextHolder.getContextHolderStrategy();
-        var auth = context.getContext();
-        String username = auth.getAuthentication().getName();
+        MonthlyTotalDTO result = calendarService.getMonthlyTotal(year, month);
 
-        int[] total = calendarService.monthlyTotal(username, year, month);
+        if (result == null) {
+            Map<String, String> emptyResult = new HashMap<>();
+            emptyResult.put("expense-total", "0");
+            emptyResult.put("income-total", "0");
+            return ResponseEntity.ok(emptyResult);
+        }
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("year", year);
-        response.put("month", month);
-        response.put("expense-total", total[1]); //지출 총계
-        response.put("income-total", total[0]); //수입 총계
+        Map<String, String> response = new HashMap<>();
+        response.put("year", String.valueOf(result.getYear()));
+        response.put("month", String.valueOf(result.getMonth()));
+        response.put("expense-total", String.valueOf(result.getExpenseTotal()));
+        response.put("income-total", String.valueOf(result.getIncomeTotal()));
 
-        return response;
+        return ResponseEntity.ok(response);
     }
 
     //한 유저의 해당 월의 카테코리별 총 수입/지출 통계
     @CrossOrigin(originPatterns ={ "*" })
     @GetMapping("/statics/category")
-    public ResponseEntity<?> monthlyCategoryTotal(
+    public ResponseEntity<CategoryTotalDTO> getCategoryTotals(
             @RequestParam("year") int year,
-            @RequestParam("month") int month,
-            @RequestParam("division") String division) {
-        var context = SecurityContextHolder.getContextHolderStrategy();
-        var auth = context.getContext();
-        String username = auth.getAuthentication().getName();
-        var test = calendarService.categoryMonthlyTotal(username, year, month, division);
-
-        if(test == null)
-            return ResponseEntity.ok(new ArrayList<>()); // [ ]
-
-        return ResponseEntity.ok(new ArrayList<>());
+            @RequestParam("month") int month) {
+        CategoryTotalDTO result = calendarService.getCategoryTotals(year, month);
+        return ResponseEntity.ok(result);
 
     }
 }
