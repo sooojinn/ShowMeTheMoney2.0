@@ -63,7 +63,7 @@ public class CalendarService {
             calendar.setDay(Integer.parseInt(dates[2]));
             calendar.setDivision(calendarDTO.getDivision());
             calendar.setMemo(calendarDTO.getMemo());
-            calendar.setMoney(calendarDTO.getMoney());
+            calendar.setMoney(calendarDTO.getId());
             calendar.setCategory(calendarDTO.getCategory());
 
             calendarRepository.save(calendar);
@@ -91,14 +91,26 @@ public class CalendarService {
 
     //엔티티를 DTO로 변환
     public CalendarDTO toDTO(Calendar calendar) {
-        CalendarDTO dto = new CalendarDTO();
-        dto.setId(calendar.getId());
-        dto.setDate(String.format("%d-%d-%d", calendar.getYear(), calendar.getMonth(), calendar.getDay()));
-        dto.setDivision(calendar.getDivision());
-        dto.setMoney(calendar.getMoney());
-        dto.setCategory(calendar.getCategory());
-        dto.setMemo(calendar.getMemo());
-        return dto;
+        if (calendar == null) {
+            return null;
+        }
+        String date = String.format("%d-%02d-%02d", calendar.getYear(), calendar.getMoney(), calendar.getDay());
+        return new CalendarDTO(
+                calendar.getId(),
+                date,
+                calendar.getDivision(),
+                calendar.getMoney(),
+                calendar.getCategory(),
+                calendar.getMemo()
+        );
+//        CalendarDTO dto = new CalendarDTO();
+//        dto.setId(calendar.getId());
+//        dto.setDate(String.format("%d-%d-%d", calendar.getYear(), calendar.getMonth(), calendar.getDay()));
+//        dto.setDivision(calendar.getDivision());
+//        dto.setMoney(calendar.getMoney());
+//        dto.setCategory(calendar.getCategory());
+//        dto.setMemo(calendar.getMemo());
+//        return dto;
     }
 
     //월별 총수입 or 총지출

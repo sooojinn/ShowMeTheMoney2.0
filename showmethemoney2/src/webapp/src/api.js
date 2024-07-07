@@ -98,6 +98,7 @@ export async function postTransaction(data) {
         credentials: 'include', // 쿠키를 포함시키기 위해 설정
         body: JSON.stringify(data),
     });
+    console.log(JSON.stringify(data))
     return res.status;
 }
 
