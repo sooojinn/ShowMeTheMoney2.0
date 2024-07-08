@@ -8,8 +8,16 @@ export default function List() {
   const isData = monthlyTransactions.length !== 0;
 
   const getDailyTransactions = (date) => {
+    let twoDigitMonth = month;
+    let twoDigitDate = date;
+    if (month < 9) {
+      twoDigitMonth = "0" + `${month + 1}`;
+    }
+    if (date < 10) {
+      twoDigitDate = "0" + `${date}`;
+    }
     return monthlyTransactions.filter(
-      (data) => data.date === `${year}-${month + 1}-${date}`
+        (data) => data.date === `${year}-${twoDigitMonth}-${twoDigitDate}`
     );
   };
 
@@ -45,6 +53,25 @@ export default function List() {
 
 const ListWrapper = styled.div`
   margin-top: 15px;
+  height: 780px;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #fafaf9;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #b6b7bb;
+    border-radius: 1.5px;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
 `;
 
 const ListDate = styled.div`

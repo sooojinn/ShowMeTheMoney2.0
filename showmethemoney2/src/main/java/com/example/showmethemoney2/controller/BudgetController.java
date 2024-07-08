@@ -1,16 +1,18 @@
 package com.example.showmethemoney2.controller;
 
 
-import com.example.showmethemoney2.dao.BudgetDTO;
+import com.example.showmethemoney2.dao.dto.BudgetDTO;
+import com.example.showmethemoney2.entity.Budget;
 import com.example.showmethemoney2.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.logging.Logger;
+import java.net.http.HttpHeaders;
 
 @RestController
 public class BudgetController {
@@ -18,41 +20,54 @@ public class BudgetController {
     @Autowired
     private BudgetService budgetService;
 
-    //로그인한 유저의 해당 월의 예산 조회
+    //로그인한 유저의 해당 월의 예산조회
+
+    @CrossOrigin(originPatterns ={ "*" })
     @GetMapping("/budget")
-    public ResponseEntity<String> getBudget(
+    public ResponseEntity<Integer> getBudget(
             @RequestParam("year") int year,
             @RequestParam("month") int month) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication == null || authentication.getName() == null) {
-//            return new ResponseEntity<>("Unauthorized access", HttpStatus.UNAUTHORIZED);
-//        }
-//        String currentUsername = authentication.getName();
+        var context = SecurityContextHolder.getContextHolderStrategy();
+        var auth = context.getContext();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        int budgetData = budgetService.getBudget(username, year, month);
 
-        String budgetData = budgetService.getBudgetDataAsString("currentUsername", year, month);
+        return ResponseEntity.ok(budgetData);
 
-        if (budgetData.isEmpty()) {
-            return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(budgetData, HttpStatus.OK);
     }
 
+
+
+//        if (budgetData.isEmpty()) {
+//            return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+//        }
+
+
+
+
+    //예산 저장
+    @CrossOrigin(originPatterns ={ "*" })
     @PostMapping("/budget")
     public ResponseEntity<String> saveBudget(@RequestBody BudgetDTO budgetDTO) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication == null || authentication.getName() == null) {
-//            return new ResponseEntity<>("인증되지 않은 사용자입니다.", HttpStatus.UNAUTHORIZED);
-//        }
-//        String currentUsername = authentication.getName();
+        var context = SecurityContextHolder.getContextHolderStrategy();
+        var auth = context.getContext();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         try {
-            budgetService.saveBudget("currentUsername", budgetDTO);
+            budgetService.saveBudget(username, budgetDTO);
             return new ResponseEntity<>("성공적으로 저장되었습니다.", HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("저장을 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    //예산 수정
+    @PutMapping("/budget")
+    public ResponseEntity<Budget> updateBudget(@RequestBody BudgetDTO budgetDTO) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Budget updatedBudget = budgetService.updateBudget(username, budgetDTO.getYear(), budgetDTO.getMonth(), budgetDTO.getBudget());
+        return ResponseEntity.ok(updatedBudget);
     }
 }
 
