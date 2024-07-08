@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { postBudget } from "../api.js";
+import { postBudget, putBudget } from "../api.js";
 import styled from "styled-components";
 
-export default function BudgetForm({ year, month }) {
-  const [newBudget, setNewBudget] = useState("0");
+export default function BudgetForm({ year, month, budget }) {
+  const initialBudget = budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const [newBudget, setNewBudget] = useState(initialBudget);
+  const isBudget = !!budget;
 
   const handleChange = (e) => {
     let validMoneyValue = e.target.value.replace(/[^0-9]/g, "");
@@ -23,10 +25,15 @@ export default function BudgetForm({ year, month }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = { year: year, month: month + 1, budget: newBudget };
+    const budget = newBudget.replaceAll(",", "");
+    const data = {
+      year: year,
+      month: month + 1,
+      budget: budget,
+    };
     try {
-      const status = await postBudget(data);
-      if (status === 200) {
+      const res = isBudget ? await putBudget(data) : await postBudget(data);
+      if (res.ok) {
         console.log("성공");
         window.location.reload();
       } else {

@@ -24,15 +24,10 @@ const categoryList = {
 export async function getTransactions(year, month) {
   const res = await fetch(
     baseUrl + `/transactions?year=${year}&month=${month}`,
-    { method: "GET", credentials: "include" } // 쿠키를 포함시키기 위해 설정
+    { method: "GET", credentials: "include" }
   );
 
-  if (!res.ok) {
-    throw new Error("Network response was not ok " + res.statusText);
-  }
-
-  const data = await res.json(); // 응답을 JSON으로 변환
-  console.log("Fetched data:", data);
+  const data = await res.json();
 
   return data.map((d) => {
     const translatedCategory = categoryList[d.category];
@@ -63,8 +58,8 @@ export async function postJoinForm(data) {
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "include",
     body: JSON.stringify(data),
+    credentials: "include",
   });
   return res.status;
 }
@@ -74,15 +69,14 @@ export async function postLoginForm(data) {
   for (const key in data) {
     formData.append(key, data[key]);
   }
-  console.log(data);
-  console.log(formData.toString());
+
   const res = await fetch(baseUrl + "/loginProc", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    credentials: "include",
     body: formData,
+    credentials: "include",
   });
   return res.status;
 }
@@ -93,16 +87,17 @@ export async function postTransaction(data) {
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "include", // 쿠키를 포함시키기 위해 설정
     body: JSON.stringify(data),
+    credentials: "include",
   });
-  return res.status;
+
+  return res;
 }
 
 export async function getTransaction(id) {
   const res = await fetch(baseUrl + `/transactions/${id}`, {
     credentials: "include",
-  }); // 쿠키를 포함시키기 위해 설정});
+  });
   const result = await res.json();
   return result;
 }
@@ -113,21 +108,18 @@ export async function putTransaction(id, data) {
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "include", // 쿠키를 포함시키기 위해 설정
     body: JSON.stringify(data),
+    credentials: "include",
   });
-  return res.status;
+  return res;
 }
 
 export async function deleteTransaction(id) {
-  const res = await fetch(
-    baseUrl + `/transactions/${id}`,
-    {
-      method: "DELETE",
-    },
-    { credentials: "include" }
-  );
-  return res.status;
+  const res = await fetch(baseUrl + `/transactions/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  return res;
 }
 
 export async function getMonthlyTotal(year, month) {
@@ -150,14 +142,28 @@ export async function postBudget(data) {
     body: JSON.stringify(data),
     credentials: "include",
   });
-  return res.status;
+
+  return res;
+}
+
+export async function putBudget(data) {
+  const res = await fetch(baseUrl + `/budget`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+    credentials: "include",
+  });
+
+  return res;
 }
 
 export async function getBudget(year, month) {
-  const res = await fetch(
-    baseUrl + `/budget?year=${year}&month=${month}`,
-    { method: "GET", credentials: "include" } // 쿠키를 포함시키기 위해 설정
-  );
+  const res = await fetch(baseUrl + `/budget?year=${year}&month=${month}`, {
+    method: "GET",
+    credentials: "include",
+  });
   const result = await res.json();
   return result;
 }
@@ -165,7 +171,7 @@ export async function getBudget(year, month) {
 export async function getCategoryTotal(year, month) {
   const res = await fetch(
     baseUrl + `/statics/category?year=${year}&month=${month}`,
-    { method: "GET", credentials: "include" } // 쿠키를 포함시키기 위해 설정
+    { method: "GET", credentials: "include" }
   );
   const data = await res.json();
   const expenseCategory = data["expense"];

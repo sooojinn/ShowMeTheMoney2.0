@@ -4,7 +4,7 @@ import BudgetForm from "./BudgetForm.js";
 import styled from "styled-components";
 
 export default function Budget() {
-  const { year, month, monthlyTotals, budget = 0 } = useOutletContext();
+  const { year, month, monthlyTotals, budget } = useOutletContext();
   const [showBudgetForm, setShowBudgetForm] = useState(false);
 
   const remainingBudget = budget - monthlyTotals["expense-total"];
@@ -19,7 +19,7 @@ export default function Budget() {
   const today =
     month === new Date().getMonth() ? new Date().getDate() : daysOfMonth;
   const recommendedSpending = Math.floor((budget / daysOfMonth) * today);
-  const recommendedWidth = !budget ? 0 : (recommendedSpending / budget) * 100;
+  const recommendedWidth = budget ? (recommendedSpending / budget) * 100 : 0;
 
   useEffect(() => {
     setShowBudgetForm(!budget);
@@ -57,7 +57,9 @@ export default function Budget() {
           <ModifyBtn onClick={handleModifyClick}>예산 수정</ModifyBtn>
         </BudgetPage>
       )}
-      {showBudgetForm && <BudgetForm year={year} month={month} />}
+      {showBudgetForm && (
+        <BudgetForm year={year} month={month} budget={budget} />
+      )}
     </>
   );
 }
