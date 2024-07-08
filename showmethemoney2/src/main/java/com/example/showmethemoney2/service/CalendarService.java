@@ -3,6 +3,8 @@ package com.example.showmethemoney2.service;
 import com.example.showmethemoney2.dao.dto.*;
 import com.example.showmethemoney2.dao.CalendarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.example.showmethemoney2.entity.Calendar;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -36,7 +39,7 @@ public class CalendarService {
         calendar.setDay(Integer.parseInt(dates[2]));
         calendar.setDivision(calendarDTO.getDivision());
         calendar.setMemo(calendarDTO.getMemo());
-        calendar.setMoney(calendarDTO.getMoney());
+        calendar.setMoney(Integer.parseInt(calendarDTO.getMoney()));
         calendar.setCategory(calendarDTO.getCategory());
 
         calendarRepository.save(calendar);
@@ -44,6 +47,13 @@ public class CalendarService {
 
     // #READ 내역 조회
     public Calendar viewCal(int calid) {
+
+//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//
+//        Calendar calendar = calendarRepository.findById(calid)
+//                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND) , "해당하는 내역을 찾을 수 없습니다: " + calid);
+//
+//if (!)
         var test = calendarRepository.findById(calid)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 내역을 찾을 수 없습니다. :" + calid));
         return test;
@@ -63,7 +73,7 @@ public class CalendarService {
             calendar.setDay(Integer.parseInt(dates[2]));
             calendar.setDivision(calendarDTO.getDivision());
             calendar.setMemo(calendarDTO.getMemo());
-            calendar.setMoney(calendarDTO.getId());
+            calendar.setMoney(Integer.parseInt(calendarDTO.getMoney()));
             calendar.setCategory(calendarDTO.getCategory());
 
             calendarRepository.save(calendar);
@@ -74,6 +84,18 @@ public class CalendarService {
 
     // #DELETE 내역 삭제
     public void deleteCal(int calid) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        // 해당 ID의 내역을 조회합니다.
+        Calendar calendar = calendarRepository.findById(calid)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 내역을 찾을 수 없습니다: " + calid));
+
+        // 내역이 로그인한 유저의 것인지 확인합니다.
+        if (!calendar.getUsername().equals(username)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 내역을 삭제할 권한이 없습니다.");
+        }
+
         calendarRepository.deleteById(calid);
     }
 
@@ -85,7 +107,7 @@ public class CalendarService {
             afterDTO.add(toDTO(cal));
         }
         //id 역순(최신순)정렬
-        afterDTO.sort(Comparator.comparingInt(CalendarDTO::getId).reversed());
+        afterDTO.sort(Comparator.comparingInt(dto -> Integer.parseInt(((CalendarDTO) dto).getId())).reversed());
         return afterDTO;
     }
 
@@ -94,12 +116,12 @@ public class CalendarService {
         if (calendar == null) {
             return null;
         }
-        String date = String.format("%d-%02d-%02d", calendar.getYear(), calendar.getMoney(), calendar.getDay());
+        String date = String.format("%d-%02d-%02d", calendar.getYear(), calendar.getMonth(), calendar.getDay());
         return new CalendarDTO(
-                calendar.getId(),
+                String.valueOf(calendar.getId()),
                 date,
                 calendar.getDivision(),
-                calendar.getMoney(),
+                String.valueOf(calendar.getMoney()),
                 calendar.getCategory(),
                 calendar.getMemo()
         );
@@ -170,21 +192,25 @@ public class CalendarService {
     }
 
     public List<CalendarDTO> getUserTransactionsForMonth(String username, int year, int month) {
+//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
         List<Calendar> calendars = calendarRepository.findByUserAndMonthYear(username, year, month);
 
         return calendars.stream()
                 .map(calendar -> new CalendarDTO(
-                        calendar.getId(),
+                        String.valueOf(calendar.getId()),
                         String.format("%d-%02d-%02d", calendar.getYear(), calendar.getMonth(), calendar.getDay()),
                         calendar.getDivision(),
-                        calendar.getMoney(),
+                        String.valueOf(calendar.getMoney()),
                         calendar.getCategory(),
                         calendar.getMemo()
                 ))
                 .collect(Collectors.toList());
     }
-
 }
+
+
+
 
     //로그인한 유저의 카테고리당 월별 총액 조회
 //    public Map<String,Number> categoryMonthlyTotal(

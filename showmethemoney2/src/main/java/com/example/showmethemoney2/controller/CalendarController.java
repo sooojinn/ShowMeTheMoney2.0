@@ -59,7 +59,7 @@ public class CalendarController {
         }
     }
 
-    //삭제
+    //로그인 유저의 거래 내역 삭제
     @CrossOrigin(originPatterns ={ "*" })
     @DeleteMapping("/transactions/{calid}")
     public ResponseEntity<String> deleteCalendar(@PathVariable("calid") int calid) {
@@ -68,7 +68,7 @@ public class CalendarController {
     }
 
 
-    //조회
+    //로그인 유저의 거래 내역 조회
     @CrossOrigin(originPatterns ={ "*" })
     @GetMapping("/transactions/{calid}")
     public ResponseEntity<CalendarDTO> viewCalendar(
@@ -78,7 +78,7 @@ public class CalendarController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    //수정
+    //로그인 유저의 거래 내역 수정
     @CrossOrigin(originPatterns ={ "*" })
     @PutMapping("/transactions/{calid}")
     public ResponseEntity<String> modifyCalendar(@RequestBody CalendarDTO calendarDTO,
