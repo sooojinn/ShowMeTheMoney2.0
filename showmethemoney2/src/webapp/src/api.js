@@ -22,6 +22,7 @@ const categoryList = {
 };
 
 export async function getTransactions(year, month) {
+
     const res = await fetch(
 
         baseUrl + `/transactions?year=${year}&month=${month}`, { method: "GET"
@@ -87,6 +88,7 @@ export async function postLoginForm(data) {
         body: formData,
     });
     return res.status;
+
 }
 
 export async function postTransaction(id, data) {
@@ -103,10 +105,13 @@ export async function postTransaction(id, data) {
 }
 
 export async function getTransaction(id) {
+
     const res = await fetch(baseUrl + `/transactions/${id}`,
         {credentials: 'include'}) // 쿠키를 포함시키기 위해 설정});
     const result = await res.json();
     return result;
+
+
 }
 
 export async function putTransaction(id, data) {
@@ -149,12 +154,6 @@ export async function deleteTransaction(id) {
     return res;
 }
 
-// export async function deleteTransaction(id) {
-//     const res = await fetch(baseUrl + `/transactions/${id}`, {
-//         method: "DELETE",
-//     }, {credentials: 'include'});
-//     return res;
-// }
 
 export async function getMonthlyTotal(year, month) {
     const res = await fetch(
@@ -205,6 +204,8 @@ export async function getCategoryTotal(year, month) {
     const res = await fetch(
         baseUrl + `/statics/category?year=${year}&month=${month}`,
         { method: "GET", credentials: 'include'}, // 쿠키를 포함시키기 위해 설정
+
+
 
     );
     const data = await res.json();

@@ -4,6 +4,7 @@ import BudgetForm from "./BudgetForm.js";
 import styled from "styled-components";
 
 export default function Budget() {
+
   const { year, month, monthlyTotals, budget } = useOutletContext();
   const [showBudgetForm, setShowBudgetForm] = useState(false);
 
@@ -16,11 +17,14 @@ export default function Budget() {
           ? 100
           : Math.floor((remainingBudget / budget) * 100);
 
+
   const daysOfMonth = new Date(year, month, 0).getDate();
   const today =
       month === new Date().getMonth() ? new Date().getDate() : daysOfMonth;
   const recommendedSpending = Math.floor((budget / daysOfMonth) * today);
+
   const recommendedWidth = budget ? (recommendedSpending / budget) * 100 : 0;
+
 
   useEffect(() => {
     setShowBudgetForm(!budget);
