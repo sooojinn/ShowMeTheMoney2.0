@@ -13,6 +13,9 @@ export default function WriteForm({ request, defaultValues }) {
     );
     return dateOffset.toISOString().slice(0, 10);
   };
+
+  console.log(defaultValues.date);
+  console.log(defaultDate(defaultValues.date));
   const addComma = (money) => {
     return money?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };

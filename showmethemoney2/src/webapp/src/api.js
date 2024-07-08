@@ -89,7 +89,7 @@ export async function postLoginForm(data) {
     return res.status;
 }
 
-export async function postTransaction(data) {
+export async function postTransaction(id, data) {
     const res = await fetch(baseUrl + "/transactions", {
         method: "POST",
         headers: {
@@ -121,12 +121,40 @@ export async function putTransaction(id, data) {
     return res.status;
 }
 
+async function getCsrfToken() {
+    const res = await fetch(baseUrl + '/csrf', {
+        credentials: 'include' // 인증 쿠키 포함
+    });
+    const data = await res.json();
+    return data.token;
+}
+
+
 export async function deleteTransaction(id) {
+    const csrfToken = await getCsrfToken();
+
     const res = await fetch(baseUrl + `/transactions/${id}`, {
         method: "DELETE",
-    }, {credentials: 'include'});
-    return res.status;
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken // CSRF 토큰 포함
+        },
+        credentials: 'include' // 인증 쿠키 포함
+    });
+
+    if (!res.ok) {
+        throw new Error('Failed to delete transaction');
+    }
+
+    return res;
 }
+
+// export async function deleteTransaction(id) {
+//     const res = await fetch(baseUrl + `/transactions/${id}`, {
+//         method: "DELETE",
+//     }, {credentials: 'include'});
+//     return res;
+// }
 
 export async function getMonthlyTotal(year, month) {
     const res = await fetch(
@@ -146,7 +174,23 @@ export async function postBudget(data) {
         },
         body: JSON.stringify(data), credentials: 'include',
     });
-    return res.status;
+    console.log(JSON.stringify(data));
+    return res;
+}
+
+export async function putBudget(data) {
+    // const csrfToken = await getCsrfToken();
+    const res = await fetch(baseUrl + `/budget`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            // 'X-CSRF-TOKEN': csrfToken // CSRF 토큰 포함
+        },
+        body: JSON.stringify(data),
+        credentials: "include",
+    });
+
+    return res;
 }
 
 export async function getBudget(year, month) {
