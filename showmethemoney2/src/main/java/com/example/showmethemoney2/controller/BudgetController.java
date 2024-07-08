@@ -2,6 +2,7 @@ package com.example.showmethemoney2.controller;
 
 
 import com.example.showmethemoney2.dao.dto.BudgetDTO;
+import com.example.showmethemoney2.entity.Budget;
 import com.example.showmethemoney2.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,19 +24,19 @@ public class BudgetController {
 
     @CrossOrigin(originPatterns ={ "*" })
     @GetMapping("/budget")
-    public ResponseEntity<String> getBudget(
+    public ResponseEntity<Integer> getBudget(
             @RequestParam("year") int year,
             @RequestParam("month") int month) {
         var context = SecurityContextHolder.getContextHolderStrategy();
         var auth = context.getContext();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        String budgetData = budgetService.getBudgetDataAsString(username, year, month);
+        int budgetData = budgetService.getBudget(username, year, month);
 
-        if (budgetData.isEmpty()) {
-            return ResponseEntity.ok("\"\""); // 빈 문자열 반환
-        }
-        return ResponseEntity.ok("\"" + budgetData + "\""); // 문자열로 감싼 예산 데이터 반환
+        return ResponseEntity.ok(budgetData);
+
     }
+
+
 
 //        if (budgetData.isEmpty()) {
 //            return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
@@ -44,6 +45,7 @@ public class BudgetController {
 
 
 
+    //예산 저장
     @CrossOrigin(originPatterns ={ "*" })
     @PostMapping("/budget")
     public ResponseEntity<String> saveBudget(@RequestBody BudgetDTO budgetDTO) {
@@ -58,6 +60,14 @@ public class BudgetController {
             e.printStackTrace();
             return new ResponseEntity<>("저장을 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    //예산 수정
+    @PutMapping("/budget")
+    public ResponseEntity<Budget> updateBudget(@RequestBody BudgetDTO budgetDTO) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Budget updatedBudget = budgetService.updateBudget(username, budgetDTO.getYear(), budgetDTO.getMonth(), budgetDTO.getBudget());
+        return ResponseEntity.ok(updatedBudget);
     }
 }
 
