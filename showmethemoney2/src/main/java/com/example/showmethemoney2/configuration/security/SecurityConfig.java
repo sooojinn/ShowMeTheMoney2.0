@@ -37,7 +37,7 @@ public class SecurityConfig {
                     x.configurationSource(corsConfigurationSource2());
                 })
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/loginPage", "loginProc", "/join", "/join/username/duplication", "/joinProc", "/login/oauth2/**", "/login").permitAll()
+                        .requestMatchers("/loginPage", "loginProc", "/join", "/join/username/duplication", "/joinProc", "/login/oauth2/**", "/login", "csrf").permitAll()
 //                        .requestMatchers("/api/**").hasRole("USER")
 //                        .requestMatchers("/transactions/**").permitAll()
                         .anyRequest().authenticated())
