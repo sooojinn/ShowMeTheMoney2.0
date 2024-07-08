@@ -28,13 +28,13 @@ export default function LoginForm() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data)
+    console.log(data);
     try {
       const status = await postLoginForm(data);
       if (status === 200) {
         navigate("/accountbook/calendar");
       } else {
-        throw new Error("에러가 발생했습니다.");
+        throw new Error("로그인에 실패했습니다.");
       }
     } catch (error) {
       alert(error.message);

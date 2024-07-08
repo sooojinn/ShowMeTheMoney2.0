@@ -70,7 +70,7 @@ export default function Calendar() {
       twoDigitDate = "0" + `${date}`;
     }
     return monthlyTransactions.filter(
-        (data) => data.date === `${year}-${twoDigitMonth}-${twoDigitDate}`
+      (data) => data.date === `${year}-${twoDigitMonth}-${twoDigitDate}`
     );
   };
 

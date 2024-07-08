@@ -7,18 +7,17 @@ export default function Budget() {
   const { year, month, monthlyTotals, budget } = useOutletContext();
   const [showBudgetForm, setShowBudgetForm] = useState(false);
 
-  console.log(budget)
   const remainingBudget = budget - monthlyTotals["expense-total"];
   const isOver = remainingBudget < 0;
   const progress = !budget
-      ? 0
-      : isOver
-          ? 100
-          : Math.floor((remainingBudget / budget) * 100);
+    ? 0
+    : isOver
+    ? 100
+    : Math.floor((remainingBudget / budget) * 100);
 
   const daysOfMonth = new Date(year, month, 0).getDate();
   const today =
-      month === new Date().getMonth() ? new Date().getDate() : daysOfMonth;
+    month === new Date().getMonth() ? new Date().getDate() : daysOfMonth;
   const recommendedSpending = Math.floor((budget / daysOfMonth) * today);
   const recommendedWidth = budget ? (recommendedSpending / budget) * 100 : 0;
 
@@ -31,37 +30,37 @@ export default function Budget() {
   };
 
   return (
-      <>
-        {showBudgetForm || (
-            <BudgetPage>
-              <div>한 달 예산</div>
-              <RemainingBudget $isOver={isOver}>
-                {Math.abs(remainingBudget).toLocaleString()}원{" "}
-                {isOver ? "초과" : "남음"}
-              </RemainingBudget>
-              <ProgressContainer>
-                <ProgressBar $progress={progress} $isOver={isOver}>
-                  <Progress>{progress}%</Progress>
-                </ProgressBar>
-                <RecommendedLine width={recommendedWidth}>
-                  <TodayBadge>오늘</TodayBadge>
-                </RecommendedLine>
-              </ProgressContainer>
-              <BudgetData>
-                <span>총 예산</span>
-                <span>{[+budget].toLocaleString()}원</span>
-              </BudgetData>
-              <BudgetData>
-                <span>오늘까지 권장 지출</span>
-                <span>{recommendedSpending.toLocaleString()}원</span>
-              </BudgetData>
-              <ModifyBtn onClick={handleModifyClick}>예산 수정</ModifyBtn>
-            </BudgetPage>
-        )}
-        {showBudgetForm && (
-            <BudgetForm year={year} month={month} budget={budget} />
-        )}
-      </>
+    <>
+      {showBudgetForm || (
+        <BudgetPage>
+          <div>한 달 예산</div>
+          <RemainingBudget $isOver={isOver}>
+            {Math.abs(remainingBudget).toLocaleString()}원{" "}
+            {isOver ? "초과" : "남음"}
+          </RemainingBudget>
+          <ProgressContainer>
+            <ProgressBar $progress={progress} $isOver={isOver}>
+              <Progress>{progress}%</Progress>
+            </ProgressBar>
+            <RecommendedLine width={recommendedWidth}>
+              <TodayBadge>오늘</TodayBadge>
+            </RecommendedLine>
+          </ProgressContainer>
+          <BudgetData>
+            <span>총 예산</span>
+            <span>{[+budget].toLocaleString()}원</span>
+          </BudgetData>
+          <BudgetData>
+            <span>오늘까지 권장 지출</span>
+            <span>{recommendedSpending.toLocaleString()}원</span>
+          </BudgetData>
+          <ModifyBtn onClick={handleModifyClick}>예산 수정</ModifyBtn>
+        </BudgetPage>
+      )}
+      {showBudgetForm && (
+        <BudgetForm year={year} month={month} budget={budget} />
+      )}
+    </>
   );
 }
 
