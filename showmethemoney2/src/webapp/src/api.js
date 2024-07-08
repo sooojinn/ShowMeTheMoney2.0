@@ -114,11 +114,26 @@ export async function putTransaction(id, data) {
   return res;
 }
 
+async function getCsrfToken() {
+  const res = await fetch(baseUrl + "/csrf", {
+    credentials: "include", // 인증 쿠키 포함
+  });
+  const data = await res.json();
+  return data.token;
+}
+
 export async function deleteTransaction(id) {
+  const csrfToken = await getCsrfToken();
+
   const res = await fetch(baseUrl + `/transactions/${id}`, {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": csrfToken, // CSRF 토큰 포함
+    },
     credentials: "include",
   });
+
   return res;
 }
 
