@@ -40,7 +40,7 @@
 
 ### 리스트 페이지
 
-![list](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/01e71423-6c04-403b-a437-2dfe600ca11a)
+![list (1)](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/d930b8c7-81a6-4e83-ba80-7727585af190)
 
 
 - 월별 거래 내역을 리스트 형태로 조회
