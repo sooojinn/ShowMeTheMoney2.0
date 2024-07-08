@@ -14,7 +14,7 @@
 
 ## 💡 주요 기능
 
-### 회원가입, 로그인 기능
+### 회원가입, 로그인 페이지
 
 ![sign_login](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/50c3d03f-af63-4621-80d9-5b3c0b99b8f6)
 
@@ -55,6 +55,12 @@
 - 총 예산을 설정할 수 있음
 - 설정한 예산에 맞게 남은 금액
 
+## 협업
+
+### API 설계
+
+[Notion](https://checker-grease-ccf.notion.site/REST-API-6a3023013bbe41f6a514a4a9e13c3dc4?pvs=4)
+
 ### 커밋 메시지 규칙
 
 - [FE] / [BE] 말머리로 적기
@@ -64,6 +70,8 @@
   - 🐞: 버그 수정
   - ❌: 코드 삭제
   - 📁: 파일 위치 이동
+
+## 🚀 트러블 슈팅
 
 ## 📝 후기
 
