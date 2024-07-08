@@ -33,7 +33,8 @@
 
 ### 통계 페이지
 
-![statics](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/52c0ecd8-57ec-454d-8684-3c756e74dbb3)
+![statics](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/49060eca-3b4f-4ac6-9cfe-4b12d750da33)
+
 
 - 거래 내역의 카테고리별 합계 금액을 도넛 차트로 보여주는 기능
 - 합계 금액이 높은 순서대로 정렬
