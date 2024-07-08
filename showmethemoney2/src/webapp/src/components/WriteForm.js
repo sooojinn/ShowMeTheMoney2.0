@@ -57,7 +57,7 @@ export default function WriteForm({ request, defaultValues }) {
         }
       } catch (error) {
         alert(error.message);
-        window.location.reload();
+        // window.location.reload();
         return;
       }
     }

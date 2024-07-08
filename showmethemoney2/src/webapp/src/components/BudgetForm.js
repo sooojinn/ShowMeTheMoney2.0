@@ -31,6 +31,7 @@ export default function BudgetForm({ year, month, budget }) {
       month: month + 1,
       budget: budget,
     };
+
     try {
       const res = isBudget ? await putBudget(data) : await postBudget(data);
       if (res.ok) {
@@ -46,18 +47,18 @@ export default function BudgetForm({ year, month, budget }) {
     }
   };
   return (
-    <Form onSubmit={handleSubmit}>
-      <div>한 달 예산</div>
-      <div>
-        <BudgetInput
-          value={newBudget}
-          onChange={handleChange}
-          onFocus={removeComma}
-          onBlur={addComma}
-        />
-        원<Button type="submit">저장</Button>
-      </div>
-    </Form>
+      <Form onSubmit={handleSubmit}>
+        <div>한 달 예산</div>
+        <div>
+          <BudgetInput
+              value={newBudget}
+              onChange={handleChange}
+              onFocus={removeComma}
+              onBlur={addComma}
+          />
+          원<Button type="submit">저장</Button>
+        </div>
+      </Form>
   );
 }
 
@@ -76,6 +77,7 @@ const BudgetInput = styled.input`
   border: 2px solid var(--maincolor);
   border-width: 0 0 2px;
   background-color: transparent;
+  outline: none;
 `;
 
 const Button = styled.button`

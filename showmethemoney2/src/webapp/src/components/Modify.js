@@ -19,6 +19,7 @@ export default function Modify() {
     const fetchData = async () => {
       try {
         const fetchedData = await getTransaction(id);
+        console.log(fetchedData)
         setDefaultValues({
           ...fetchedData,
         });

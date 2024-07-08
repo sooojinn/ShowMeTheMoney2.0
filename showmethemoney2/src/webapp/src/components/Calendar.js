@@ -61,8 +61,16 @@ export default function Calendar() {
   const monthlyTotal = monthlyIncome - monthlyExpense;
 
   const getDailyTransactions = (date) => {
+    let twoDigitMonth = month;
+    let twoDigitDate = date;
+    if (month < 9) {
+      twoDigitMonth = "0" + `${month + 1}`;
+    }
+    if (date < 10) {
+      twoDigitDate = "0" + `${date}`;
+    }
     return monthlyTransactions.filter(
-      (data) => data.date === `${year}-${month + 1}-${date}`
+        (data) => data.date === `${year}-${twoDigitMonth}-${twoDigitDate}`
     );
   };
 

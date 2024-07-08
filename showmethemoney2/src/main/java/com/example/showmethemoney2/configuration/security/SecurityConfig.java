@@ -4,30 +4,26 @@ package com.example.showmethemoney2.configuration.security;
 import com.example.showmethemoney2.configuration.security.filter.CustomAuthenticationFilter;
 import com.example.showmethemoney2.configuration.security.handler.CustomLoginSuccessHandler;
 import com.example.showmethemoney2.configuration.security.provider.CustomAuthenticationProvider;
+import com.example.showmethemoney2.configuration.security.service.CustomOAuth2UserService;
 import com.example.showmethemoney2.configuration.security.service.CustomUserDetailsService;
-import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -35,13 +31,15 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        AuthenticationManagerBuilder managerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-//        managerBuilder.userDetailsService(customUserDetailsService()).passwordEncoder(bCryptPasswordEncoder());
+
         http
+                .cors(x -> {
+                    x.configurationSource(corsConfigurationSource2());
+                })
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/loginPage", "loginProc", "/join", "/join/username/duplication", "/joinProc").permitAll()
+                        .requestMatchers("/loginPage", "loginProc", "/join", "/join/username/duplication", "/joinProc", "/login/oauth2/**", "/login", "csrf").permitAll()
 //                        .requestMatchers("/api/**").hasRole("USER")
-                        .requestMatchers("/transactions/**").permitAll()
+//                        .requestMatchers("/transactions/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/loginPage")
@@ -68,8 +66,12 @@ public class SecurityConfig {
                 ).logout((config) -> {
                     config.logoutUrl("/logout").clearAuthentication(true);
                 })
+//                .oauth2Login((oauth) -> {
+//                    oauth
+//                            .loginPage("/login")
+//                            .successHandler(customLoginSuccessHandler());
+//                })
                 .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .addFilterAt(testFilter22(), Filter.class)
                 .sessionManagement((configurer -> {
                     configurer.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                             .maximumSessions(1);
@@ -85,28 +87,22 @@ public class SecurityConfig {
 //        return filter;
 //    }
 
-//    @Bean
-//    public Filter testFilter22() {
-//        return new TestFilter();
-//    }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails user = User.withUsername("user").password("{noop}1111").roles("USER").build();
-//        return new InMemoryUserDetailsManager(user);
-//    }
+    public CorsConfigurationSource corsConfigurationSource2() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost"));  // 허용할 도메인 설정
+        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // 허용할 HTTP 메서드 설정
+        configuration.setAllowedHeaders(List.of("*"));  // 허용할 헤더 설정
+        configuration.setAllowCredentials(true);  // 자격 증명 허용
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//
-//        AuthenticationManagerBuilder managerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-//        managerBuilder.userDetailsService(customUserDetailsService());
-//
-//        http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated());
-//        http.formLogin(Customizer.withDefaults());
-//
-//        return http.build();
-//    }
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+
+
 
     @Bean
     public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
