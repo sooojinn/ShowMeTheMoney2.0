@@ -13,6 +13,7 @@ export default function WriteForm({ request, defaultValues }) {
     );
     return dateOffset.toISOString().slice(0, 10);
   };
+
   const addComma = (money) => {
     return money?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
@@ -42,13 +43,14 @@ export default function WriteForm({ request, defaultValues }) {
 
   const onSubmit = async (data) => {
     data["money"] = removeComma(money);
+
     if (!+data.money) alert("금액을 입력해주세요.");
     else if (!data.date) alert("날짜를 선택해주세요.");
     else if (!data.category) alert("카테고리를 선택해주세요.");
     else {
       try {
-        const status = await request(defaultValues.id, data);
-        if (status === 200) {
+        const res = await request(defaultValues.id, data);
+        if (res.ok) {
           navigate("/accountbook/calendar");
         } else {
           throw new Error("에러가 발생했습니다.");
