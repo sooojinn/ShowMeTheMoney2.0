@@ -102,7 +102,7 @@ export async function postTransaction(id, data) {
         body: JSON.stringify(data),
     });
     console.log(JSON.stringify(data))
-    return res.status;
+    return res;
 }
 
 export async function getTransaction(id) {
@@ -124,7 +124,7 @@ export async function putTransaction(id, data) {
         credentials: 'include', // 쿠키를 포함시키기 위해 설정
         body: JSON.stringify(data),
     });
-    return res.status;
+    return res;
 }
 
 async function getCsrfToken() {
