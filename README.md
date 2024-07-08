@@ -40,6 +40,9 @@
 
 ### 리스트 페이지
 
+![list](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/01e71423-6c04-403b-a437-2dfe600ca11a)
+
+
 - 월별 거래 내역을 리스트 형태로 조회
 - 날짜별로 분류
 
