@@ -16,7 +16,7 @@
 
 ### 회원가입, 로그인 기능
 
-![ezgif com-video-to-gif-converter](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/b9b58119-f940-4c2d-9723-dc2f3fe03a9e)
+![sign_login](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/50c3d03f-af63-4621-80d9-5b3c0b99b8f6)
 
 
 - react-hook-form을 이용하여 회원가입시 아이디, 비밀번호 조건에 맞도록 제어
