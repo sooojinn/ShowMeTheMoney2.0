@@ -45,6 +45,9 @@
 
 ### 예산 페이지
 
+![budget](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/1ef4f995-0239-4318-a87a-095f8d3a4865)
+
+
 - 총 예산을 설정할 수 있음
 - 설정한 예산에 맞게 남은 금액
 
