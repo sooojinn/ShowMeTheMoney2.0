@@ -13,6 +13,9 @@ export default function WriteForm({ request, defaultValues }) {
     );
     return dateOffset.toISOString().slice(0, 10);
   };
+
+  console.log(defaultValues.date);
+  console.log(defaultDate(defaultValues.date));
   const addComma = (money) => {
     return money?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
@@ -42,6 +45,7 @@ export default function WriteForm({ request, defaultValues }) {
 
   const onSubmit = async (data) => {
     data["money"] = removeComma(money);
+    console.log(JSON.stringify(data));
     if (!+data.money) alert("금액을 입력해주세요.");
     else if (!data.date) alert("날짜를 선택해주세요.");
     else if (!data.category) alert("카테고리를 선택해주세요.");
@@ -55,7 +59,7 @@ export default function WriteForm({ request, defaultValues }) {
         }
       } catch (error) {
         alert(error.message);
-        window.location.reload();
+        // window.location.reload();
         return;
       }
     }

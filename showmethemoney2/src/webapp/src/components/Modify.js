@@ -19,6 +19,7 @@ export default function Modify() {
     const fetchData = async () => {
       try {
         const fetchedData = await getTransaction(id);
+        console.log(fetchedData)
         setDefaultValues({
           ...fetchedData,
         });
@@ -44,8 +45,8 @@ export default function Modify() {
 
   const handleDeleteClick = async () => {
     try {
-      const status = await deleteTransaction(id);
-      if (status === 200) {
+      const res = await deleteTransaction(id);
+      if (res.ok) {
         navigate(-1);
       } else {
         throw new Error("오류가 발생했습니다.");

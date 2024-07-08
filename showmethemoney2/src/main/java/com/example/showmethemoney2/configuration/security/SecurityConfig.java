@@ -19,6 +19,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -28,8 +33,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+                .cors(x -> {
+                    x.configurationSource(corsConfigurationSource2());
+                })
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/loginPage", "loginProc", "/join", "/join/username/duplication", "/joinProc", "/login/oauth2/code/google", "/login").permitAll()
+                        .requestMatchers("/loginPage", "loginProc", "/join", "/join/username/duplication", "/joinProc", "/login/oauth2/**", "/login", "csrf").permitAll()
 //                        .requestMatchers("/api/**").hasRole("USER")
 //                        .requestMatchers("/transactions/**").permitAll()
                         .anyRequest().authenticated())
@@ -58,11 +66,11 @@ public class SecurityConfig {
                 ).logout((config) -> {
                     config.logoutUrl("/logout").clearAuthentication(true);
                 })
-                .oauth2Login((oauth) -> {
-                    oauth
-                            .loginPage("/login")
-                            .successHandler(customLoginSuccessHandler());
-                })
+//                .oauth2Login((oauth) -> {
+//                    oauth
+//                            .loginPage("/login")
+//                            .successHandler(customLoginSuccessHandler());
+//                })
                 .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement((configurer -> {
                     configurer.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
@@ -80,6 +88,18 @@ public class SecurityConfig {
 //    }
 
 
+    public CorsConfigurationSource corsConfigurationSource2() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost"));  // 허용할 도메인 설정
+        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // 허용할 HTTP 메서드 설정
+        configuration.setAllowedHeaders(List.of("*"));  // 허용할 헤더 설정
+        configuration.setAllowCredentials(true);  // 자격 증명 허용
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
 
 
