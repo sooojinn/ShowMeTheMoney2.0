@@ -3,12 +3,9 @@ import { postBudget, putBudget } from "../api.js";
 import styled from "styled-components";
 
 export default function BudgetForm({ year, month, budget }) {
-  console.log(budget)
   const initialBudget = budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const [newBudget, setNewBudget] = useState(initialBudget);
   const isBudget = !!budget;
-  console.log(budget)
-  console.log(isBudget)
 
   const handleChange = (e) => {
     let validMoneyValue = e.target.value.replace(/[^0-9]/g, "");
@@ -34,7 +31,7 @@ export default function BudgetForm({ year, month, budget }) {
       month: month + 1,
       budget: budget,
     };
-    console.log(data)
+
     try {
       const res = isBudget ? await putBudget(data) : await postBudget(data);
       if (res.ok) {

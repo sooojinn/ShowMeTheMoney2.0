@@ -61,6 +61,7 @@ export async function isUnique(value) {
 }
 
 export async function postJoinForm(data) {
+
     const res = await fetch(baseUrl + "/joinProc", {
         method: "POST",
         headers: {
@@ -166,6 +167,7 @@ export async function getMonthlyTotal(year, month) {
 }
 
 export async function postBudget(data) {
+  
     const res = await fetch(baseUrl + `/budget`, {
         method: "POST",
         headers: {
@@ -204,9 +206,6 @@ export async function getCategoryTotal(year, month) {
     const res = await fetch(
         baseUrl + `/statics/category?year=${year}&month=${month}`,
         { method: "GET", credentials: 'include'}, // 쿠키를 포함시키기 위해 설정
-
-
-
     );
     const data = await res.json();
     const expenseCategory = data["expense"];
