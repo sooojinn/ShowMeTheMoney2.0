@@ -24,7 +24,7 @@
 
 ### 달력 페이지
 
-![1BB2B1AA-2E9A-43B0-8581-C4D13E6E62F5_2_0_a](https://github.com/soojinpark99/ShowMeTheMoney/assets/154590790/d5f71cb4-5a4e-469c-a682-b4810fe83b2d)
+![calendar](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/7bf3bd52-2a48-483a-96a1-d6fde7130d69)
 
 - 지출/수입 내역 작성 기능
 - 작성한 내역은 달력에 일별 합계 금액으로 표시/달력 상단에 월별 합계 금액으로 표시
