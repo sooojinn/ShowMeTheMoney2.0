@@ -16,7 +16,8 @@
 
 ### 회원가입, 로그인 기능
 
-![F9A4328F-1503-473D-83C4-366093792F5E_2_0_a](https://github.com/soojinpark99/ShowMeTheMoney/assets/154590790/32d6399e-c15d-4871-8693-4a501161c564)
+![ezgif com-video-to-gif-converter](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/b9b58119-f940-4c2d-9723-dc2f3fe03a9e)
+
 
 - react-hook-form을 이용하여 회원가입시 아이디, 비밀번호 조건에 맞도록 제어
 - 네이버, 구글 소셜 로그인 구현
