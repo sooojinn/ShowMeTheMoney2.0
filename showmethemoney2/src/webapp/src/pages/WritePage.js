@@ -1,8 +1,8 @@
 import { useLocation } from "react-router-dom";
 import { postTransaction } from "../api";
-import WriteForm from "./WriteForm";
+import WriteForm from "../components/WriteForm";
 
-export default function Write() {
+export default function WritePage() {
   const location = useLocation();
   const { dateString } = location.state;
   const defaultValues = {

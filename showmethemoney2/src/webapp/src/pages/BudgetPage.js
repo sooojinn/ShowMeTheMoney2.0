@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import BudgetForm from "./BudgetForm.js";
+import BudgetForm from "../components/BudgetForm.js";
 import styled from "styled-components";
 
-export default function Budget() {
+export default function BudgetPage() {
   const { year, month, monthlyTotals, budget } = useOutletContext();
   const [showBudgetForm, setShowBudgetForm] = useState(false);
 
@@ -32,7 +32,7 @@ export default function Budget() {
   return (
     <>
       {showBudgetForm || (
-        <BudgetPage>
+        <BudgetPageWrapper>
           <div>한 달 예산</div>
           <RemainingBudget $isOver={isOver}>
             {Math.abs(remainingBudget).toLocaleString()}원{" "}
@@ -55,7 +55,7 @@ export default function Budget() {
             <span>{recommendedSpending.toLocaleString()}원</span>
           </BudgetData>
           <ModifyBtn onClick={handleModifyClick}>예산 수정</ModifyBtn>
-        </BudgetPage>
+        </BudgetPageWrapper>
       )}
       {showBudgetForm && (
         <BudgetForm year={year} month={month} budget={budget} />
@@ -64,7 +64,7 @@ export default function Budget() {
   );
 }
 
-const BudgetPage = styled.div`
+const BudgetPageWrapper = styled.div`
   margin: 20px 20px;
   font-size: 1.2rem;
 `;

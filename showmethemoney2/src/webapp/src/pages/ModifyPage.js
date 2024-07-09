@@ -3,11 +3,11 @@ import { getTransaction } from "../api";
 import { putTransaction } from "../api";
 import { deleteTransaction } from "../api";
 import { useEffect, useRef, useState } from "react";
-import WriteForm from "./WriteForm";
+import WriteForm from "../components/WriteForm";
 import SpinnerImg from "../images/Spinner_button.gif";
 import styled, { keyframes } from "styled-components";
 
-export default function Modify() {
+export default function ModifyPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const deleteRef = useRef();
@@ -19,7 +19,7 @@ export default function Modify() {
     const fetchData = async () => {
       try {
         const fetchedData = await getTransaction(id);
-        console.log(fetchedData)
+        console.log(fetchedData);
         setDefaultValues({
           ...fetchedData,
         });

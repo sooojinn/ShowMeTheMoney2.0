@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
       <Copy>

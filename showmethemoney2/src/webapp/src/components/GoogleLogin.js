@@ -1,4 +1,4 @@
-import { SocialLoginBtn } from "./Join";
+import { SocialLoginBtn } from "../pages/JoinPage";
 import googleIcon from "../images/icon_google.png";
 
 export default function GoogleLogin() {
