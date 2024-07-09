@@ -70,7 +70,7 @@ export default function Accountbook() {
   };
 
   return (
-    <div>
+    <>
       <LogoutBtn></LogoutBtn>
       <PageBtns>
         <PageBtn to="calendar">달력</PageBtn>
@@ -102,7 +102,7 @@ export default function Accountbook() {
           <Spinner src={SpinnerImg} alt="로딩중..." />
         </Overlay>
       )}
-    </div>
+    </>
   );
 }
 
@@ -162,6 +162,7 @@ const CalendarHeader = styled.div`
   gap: 10px;
   margin-top: 15px;
 `;
+
 const Btn = styled.div`
   cursor: pointer;
 `;

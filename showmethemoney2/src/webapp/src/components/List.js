@@ -53,8 +53,8 @@ export default function List() {
 
 const ListWrapper = styled.div`
   margin-top: 15px;
-  height: 780px;
-  overflow: auto;
+  height: 100%;
+  overflow-y: auto;
 
   &::-webkit-scrollbar {
     width: 3px;
