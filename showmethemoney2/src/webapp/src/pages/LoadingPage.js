@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
-import { Button } from "./Button.style";
+import { Button } from "../components/Button.style";
 
-export default function Loading() {
+export default function LoadingPage() {
   const [count, setCount] = useState(3);
   const navigate = useNavigate();
 

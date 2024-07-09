@@ -7,7 +7,7 @@ import { getCategoryTotal } from "../api";
 import SpinnerImg from "../images/Spinner_overlay.gif";
 import styled from "styled-components";
 
-export default function Accountbook() {
+export default function AccountbookPage() {
   const storedYear = sessionStorage.getItem("year");
   const storedMonth = sessionStorage.getItem("month");
   const today = new Date();

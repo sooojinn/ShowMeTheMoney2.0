@@ -4,13 +4,13 @@ import { useForm } from "react-hook-form";
 import { postJoinForm } from "../api";
 import { isUnique } from "../api";
 import SpinnerImg from "../images/Spinner_button.gif";
-import Loading from "./Loading.js";
+import LoadingPage from "../pages/LoadingPage.js";
 import styled, { css, keyframes } from "styled-components";
-import NaverLogin from "./NaverLogin.js";
-import GoogleLogin from "./GoogleLogin.js";
-import { Button } from "./Button.style.js";
+import NaverLogin from "../components/NaverLogin.js";
+import GoogleLogin from "../components/GoogleLogin.js";
+import { Button } from "../components/Button.style.js";
 
-export default function JoinForm() {
+export default function JoinPage() {
   const {
     register,
     handleSubmit,
@@ -158,7 +158,7 @@ export default function JoinForm() {
           </SocialLoginBtns>
         </Form>
       )}
-      {isSubmitted && postSuccess && <Loading />}
+      {isSubmitted && postSuccess && <LoadingPage />}
     </>
   );
 }

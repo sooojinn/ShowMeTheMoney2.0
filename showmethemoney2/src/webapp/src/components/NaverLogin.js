@@ -1,5 +1,5 @@
 import naverIcon from "../images/icon_naver.png";
-import { SocialLoginBtn } from "./Join.js";
+import { SocialLoginBtn } from "../pages/JoinPage.js";
 
 export default function NaverLogin() {
   const NAVER_CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID;

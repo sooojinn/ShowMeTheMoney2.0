@@ -1,8 +1,8 @@
 import { useOutletContext } from "react-router-dom";
-import Transactions from "./Transactions.js";
+import Transactions from "../components/Transactions.js";
 import styled from "styled-components";
 
-export default function List() {
+export default function ListPage() {
   const { year, month, monthlyTransactions } = useOutletContext();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const isData = monthlyTransactions.length !== 0;
