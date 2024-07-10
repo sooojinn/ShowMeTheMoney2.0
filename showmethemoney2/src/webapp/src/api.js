@@ -1,26 +1,5 @@
 const baseUrl = "http://localhost:8080";
 
-const categoryList = {
-  food: "식비",
-  cafe: "카페",
-  mart: "마트/생필품",
-  culture: "문화생활",
-  medical: "의료비",
-  dues: "공과금",
-  transportation: "교통비",
-  communication: "통신비",
-  subscription: "구독료",
-  hobby: "취미",
-  shopping: "쇼핑",
-  beauty: "미용",
-  gift: "경조사/선물",
-  travel: "여행",
-  etc: "기타",
-  salary: "급여",
-  additional: "부수입",
-  allowance: "용돈",
-};
-
 export async function getTransactions(year, month) {
   const res = await fetch(
     baseUrl + `/transactions?year=${year}&month=${month}`,
@@ -32,13 +11,7 @@ export async function getTransactions(year, month) {
 
   const data = await res.json();
 
-  return data.map((d) => {
-    const translatedCategory = categoryList[d.category];
-    return {
-      ...d,
-      category: translatedCategory,
-    };
-  });
+  return data;
 }
 
 export async function isUnique(value) {
@@ -199,30 +172,6 @@ export async function getCategoryTotal(year, month) {
     }
   );
   const data = await res.json();
-  const expenseCategory = data["expense"];
-  const incomeCategory = data["income"];
 
-  for (const key in expenseCategory) {
-    expenseCategory[categoryList[key]] = expenseCategory[key];
-    delete expenseCategory[key];
-  }
-  for (const key in incomeCategory) {
-    incomeCategory[categoryList[key]] = incomeCategory[key];
-    delete incomeCategory[key];
-  }
-
-  const translatedData = {
-    expense: expenseCategory,
-    income: incomeCategory,
-  };
-
-  for (const key in translatedData) {
-    translatedData[key] = Object.fromEntries(
-      Object.entries(translatedData[key]).sort(([, a], [, b]) =>
-        +a > +b ? -1 : 1
-      )
-    );
-  }
-
-  return translatedData;
+  return data;
 }
