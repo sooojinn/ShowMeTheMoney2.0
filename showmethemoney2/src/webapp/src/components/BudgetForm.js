@@ -4,13 +4,13 @@ import styled from "styled-components";
 
 export default function BudgetForm({ year, month, budget }) {
   const budgetWithComma = (budget) =>
-    budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    (budget ?? 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   const budgetWithoutComma = (budget) => budget.replaceAll(",", "");
 
   const initialBudget = budgetWithComma(budget);
   const [newBudget, setNewBudget] = useState(initialBudget);
-  const isBudget = !!budget;
+  const isBudget = typeof budget === "number";
 
   const handleChange = (e) => {
     let validMoneyValue = e.target.value.replace(/[^0-9]/g, "");
