@@ -16,6 +16,9 @@
 
 ### 회원가입, 로그인 페이지
 
+![test2024-07-10-오후-6 03 59](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/aa425100-67e4-4414-a099-13f04899174e)
+
+
 ![sign_login](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/50c3d03f-af63-4621-80d9-5b3c0b99b8f6)
 
 
