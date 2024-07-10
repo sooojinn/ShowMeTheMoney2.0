@@ -5,15 +5,6 @@ import styled, { css } from "styled-components";
 import { Button } from "./Button.style";
 
 export default function WriteForm({ request, defaultValues }) {
-  const defaultDate = (dateString) => {
-    let [year, month, date] = dateString.split("-");
-    const offset = new Date(year, month - 1, date).getTimezoneOffset() * 60000;
-    const dateOffset = new Date(
-      new Date(year, month - 1, date).getTime() - offset
-    );
-    return dateOffset.toISOString().slice(0, 10);
-  };
-
   const addComma = (money) => {
     return money?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
@@ -30,7 +21,7 @@ export default function WriteForm({ request, defaultValues }) {
   } = useForm({
     defaultValues: {
       division: defaultValues.division,
-      date: defaultDate(defaultValues.date),
+      date: defaultValues.date,
       category: defaultValues.category,
       memo: defaultValues.memo,
     },

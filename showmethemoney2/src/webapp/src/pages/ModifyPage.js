@@ -19,7 +19,6 @@ export default function ModifyPage() {
     const fetchData = async () => {
       try {
         const fetchedData = await getTransaction(id);
-        console.log(fetchedData);
         setDefaultValues({
           ...fetchedData,
         });

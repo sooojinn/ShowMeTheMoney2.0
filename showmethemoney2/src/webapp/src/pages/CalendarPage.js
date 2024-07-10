@@ -42,7 +42,6 @@ export default function CalendarPage() {
   };
 
   const handleWriteBtnClick = () => {
-    console.log("작성 버튼 클릭");
     sessionStorage.setItem("selectedDate", selectedDate);
   };
 
