@@ -49,10 +49,12 @@ export default function CalendarPage() {
   useEffect(() => {
     if (month === currentMonth) {
       setSelectedDate(storedSelectedDate || currentDate);
-      setDailyTransactions(getDailyTransactions(currentDate));
+      setDailyTransactions(
+        getDailyTransactions(storedSelectedDate || currentDate)
+      );
     } else {
       setSelectedDate(storedSelectedDate || "");
-      setDailyTransactions([]);
+      setDailyTransactions(getDailyTransactions(storedSelectedDate || []));
     }
   }, [month]);
 
