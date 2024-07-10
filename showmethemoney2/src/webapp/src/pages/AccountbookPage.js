@@ -60,6 +60,7 @@ export default function AccountbookPage() {
       setYear(year - 1);
       setMonth(11);
     } else setMonth(month - 1);
+    sessionStorage.removeItem("selectedDate");
   };
 
   const handleNextBtn = () => {
@@ -67,6 +68,7 @@ export default function AccountbookPage() {
       setYear(year + 1);
       setMonth(0);
     } else setMonth(month + 1);
+    sessionStorage.removeItem("selectedDate");
   };
 
   return (
