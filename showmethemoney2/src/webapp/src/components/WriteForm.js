@@ -263,21 +263,21 @@ function ExpenseCategory() {
       <option value="" hidden>
         선택하세요.
       </option>
-      <option value="food">식비</option>
-      <option value="cafe">카페</option>
-      <option value="mart">마트/생필품</option>
-      <option value="culture">문화생활</option>
-      <option value="medical">의료비</option>
-      <option value="dues">공과금</option>
-      <option value="transportation">교통비</option>
-      <option value="communication">통신비</option>
-      <option value="subscription">구독료</option>
-      <option value="hobby">취미</option>
-      <option value="shopping">쇼핑</option>
-      <option value="beauty">미용</option>
-      <option value="gift">경조사/선물</option>
-      <option value="travel">여행</option>
-      <option value="etc">기타</option>
+      <option value="식비">식비</option>
+      <option value="카페">카페</option>
+      <option value="마트/생필품">마트/생필품</option>
+      <option value="문화생활">문화생활</option>
+      <option value="의료비">의료비</option>
+      <option value="공과금">공과금</option>
+      <option value="교통비">교통비</option>
+      <option value="통신비">통신비</option>
+      <option value="구독료">구독료</option>
+      <option value="취미">취미</option>
+      <option value="쇼핑">쇼핑</option>
+      <option value="미용">미용</option>
+      <option value="경조사/선물">경조사/선물</option>
+      <option value="여행">여행</option>
+      <option value="기타">기타</option>
     </>
   );
 }
@@ -288,10 +288,10 @@ function IncomeCategory() {
       <option value="" hidden>
         선택하세요.
       </option>
-      <option value="salary">급여</option>
-      <option value="additional">부수입</option>
-      <option value="allowance">용돈</option>
-      <option value="etc">기타</option>
+      <option value="급여">급여</option>
+      <option value="부수입">부수입</option>
+      <option value="용돈">용돈</option>
+      <option value="기타">기타</option>
     </>
   );
 }
