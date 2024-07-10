@@ -16,12 +16,6 @@
 
 ### 회원가입, 로그인 페이지
 
-![test](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/154590790/2c9d8ba3-76cb-4502-80a1-949da2bbdda9)
-
-
-![size](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/4ca54f45-453b-4955-8582-039b2d72dfe1)
-
-
 ![sign_login](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/50c3d03f-af63-4621-80d9-5b3c0b99b8f6)
 
 
