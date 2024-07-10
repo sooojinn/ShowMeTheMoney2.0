@@ -1,33 +1,33 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import App from "./components/App.js";
-import Home from "./components/Home.js";
-import Join from "./components/Join.js";
-import Login from "./components/Login.js";
-import Accountbook from "./components/Accountbook.js";
-import Calendar from "./components/Calendar.js";
-import Statics from "./components/Statics.js";
-import List from "./components/List.js";
-import Budget from "./components/Budget.js";
-import Write from "./components/Write.js";
-import Modify from "./components/Modify.js";
-import NotFound from "./components/NotFound.js";
+import App from "./pages/App.js";
+import HomePage from "./pages/HomePage.js";
+import JoinPage from "./pages/JoinPage.js";
+import LoginPage from "./pages/LoginPage.js";
+import AccountbookPage from "./pages/AccountbookPage.js";
+import CalendarPage from "./pages/CalendarPage.js";
+import StaticsPage from "./pages/StaticsPage.js";
+import ListPage from "./pages/ListPage.js";
+import BudgetPage from "./pages/BudgetPage.js";
+import WritePage from "./pages/WritePage.js";
+import ModifyPage from "./pages/ModifyPage.js";
+import NotFound from "./pages/NotFound.js";
 
 function Main() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route index element={<Home />} />
-          <Route path="join" element={<Join />} />
-          <Route path="login" element={<Login />} />
-          <Route path="accountbook" element={<Accountbook />}>
-            <Route path="calendar" element={<Calendar />} />
-            <Route path="statics" element={<Statics />} />
-            <Route path="list" element={<List />} />
-            <Route path="budget" element={<Budget />} />
+          <Route index element={<HomePage />} />
+          <Route path="join" element={<JoinPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="accountbook" element={<AccountbookPage />}>
+            <Route path="calendar" element={<CalendarPage />} />
+            <Route path="statics" element={<StaticsPage />} />
+            <Route path="list" element={<ListPage />} />
+            <Route path="budget" element={<BudgetPage />} />
           </Route>
-          <Route path="write" element={<Write />} />
-          <Route path="modify" element={<Modify />} />
+          <Route path="write" element={<WritePage />} />
+          <Route path="modify" element={<ModifyPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

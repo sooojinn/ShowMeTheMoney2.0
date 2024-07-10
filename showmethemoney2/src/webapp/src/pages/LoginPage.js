@@ -2,9 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { postLoginForm } from "../api";
 import SpinnerImg from "../images/Spinner_button.gif";
-import NaverLogin from "./NaverLogin.js";
-import GoogleLogin from "./GoogleLogin.js";
-import { Button } from "./Button.style.js";
+import NaverLogin from "../components/NaverLogin.js";
+import GoogleLogin from "../components/GoogleLogin.js";
+import { Button } from "../components/Button.style.js";
 import {
   Form,
   TitleDiv,
@@ -17,9 +17,9 @@ import {
   Line,
   SocialLoginBtns,
   SocialLoginInfo,
-} from "./Join.js";
+} from "./JoinPage.js";
 
-export default function LoginForm() {
+export default function LoginPage() {
   const navigate = useNavigate();
   const {
     register,

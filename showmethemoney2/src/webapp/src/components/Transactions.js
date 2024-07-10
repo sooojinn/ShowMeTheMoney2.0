@@ -39,7 +39,7 @@ export default function Transactions({ transactions }) {
 }
 
 const TransactionWrapper = styled.div`
-  flex-grow: 1;
+  height: 100%;
   overflow: auto;
 
   &::-webkit-scrollbar {
