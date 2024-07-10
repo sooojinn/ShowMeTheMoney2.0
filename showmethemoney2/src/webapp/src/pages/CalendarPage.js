@@ -33,18 +33,25 @@ export default function CalendarPage() {
     useState(transactionsOfToday);
 
   const [selectedDate, setSelectedDate] = useState();
+  const storedSelectedDate = +sessionStorage.getItem("selectedDate");
 
   const handleDateClick = (i) => {
     setSelectedDate(i);
     setDailyTransactions(getDailyTransactions(i));
+    sessionStorage.setItem("selectedDate", i);
+  };
+
+  const handleWriteBtnClick = () => {
+    console.log("작성 버튼 클릭");
+    sessionStorage.setItem("selectedDate", selectedDate);
   };
 
   useEffect(() => {
     if (month === currentMonth) {
-      setSelectedDate(currentDate);
+      setSelectedDate(storedSelectedDate || currentDate);
       setDailyTransactions(getDailyTransactions(currentDate));
     } else {
-      setSelectedDate("");
+      setSelectedDate(storedSelectedDate || "");
       setDailyTransactions([]);
     }
   }, [month]);
@@ -97,6 +104,7 @@ export default function CalendarPage() {
         state={{
           dateString: `${year}-${month + 1}-${selectedDate ? selectedDate : 1}`,
         }}
+        onClick={handleWriteBtnClick}
       >
         + 새로운 거래 추가하기
       </WriteBtn>
@@ -130,6 +138,7 @@ const CalendarWrapper = styled.div`
 
 const Day = styled.div`
   margin-top: 10px;
+  margin-bottom: 5px;
   text-align: center;
 `;
 
