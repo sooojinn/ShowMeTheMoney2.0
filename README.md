@@ -14,14 +14,14 @@
 
 ## 💡 주요 기능
 
-### 회원가입, 로그인 페이지
+### 1. 회원가입, 로그인 페이지
 
 ![sign_login](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/50c3d03f-af63-4621-80d9-5b3c0b99b8f6)
 
 - react-hook-form을 이용하여 회원가입시 아이디, 비밀번호 조건에 맞도록 제어
 - 네이버, 구글 소셜 로그인 구현
 
-### 달력 페이지
+### 2. 달력 페이지
 
 ![calendar](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/7bf3bd52-2a48-483a-96a1-d6fde7130d69)
 
@@ -30,14 +30,14 @@
 - 달력의 날짜를 클릭하면 해당 날짜의 거래 내역 조회 가능
 - 선택한 날짜를 세션에 저장하여 사용자 경험 개선
 
-### 통계 페이지
+### 3. 통계 페이지
 
 ![statics](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/49060eca-3b4f-4ac6-9cfe-4b12d750da33)
 
 - 거래 내역의 카테고리별 합계 금액을 도넛 차트로 보여주는 기능
 - 합계 금액이 높은 순서대로 정렬
 
-### 리스트 페이지
+### 4. 리스트 페이지
 
 ![list (1)](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/d930b8c7-81a6-4e83-ba80-7727585af190)
 
@@ -45,14 +45,14 @@
 - 날짜별로 분류
 - 거래 내역을 클릭하면 수정/삭제 페이지로 이동
 
-### 예산 페이지
+### 5. 예산 페이지
 
 ![budget](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/a8d27a38-53d9-48a5-9cfc-85ce9bf4e21a)
 
 - 총 예산을 설정할 수 있음
 - 설정한 예산에 맞게 남은 금액 표시
 
-## 협업
+## ✅ 협업
 
 ### API 설계
 
