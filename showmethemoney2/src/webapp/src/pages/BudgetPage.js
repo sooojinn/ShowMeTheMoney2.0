@@ -5,19 +5,26 @@ import styled from "styled-components";
 
 export default function BudgetPage() {
   const { year, month, monthlyTotals, budget } = useOutletContext();
+  console.log(budget);
   const [showBudgetForm, setShowBudgetForm] = useState(false);
 
-  const remainingBudget = budget - monthlyTotals["expense-total"];
+  const expenseTotal = monthlyTotals["expense-total"];
+  const remainingBudget = budget - expenseTotal;
   const isOver = remainingBudget < 0;
   const progress = !budget
     ? 0
     : isOver
     ? 100
-    : Math.floor((remainingBudget / budget) * 100);
+    : Math.floor((expenseTotal / budget) * 100);
 
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth();
+  const currentDate = new Date().getDate();
+  const isPast =
+    new Date(currentYear, currentMonth) - new Date(year, month) > 0;
   const daysOfMonth = new Date(year, month, 0).getDate();
-  const today =
-    month === new Date().getMonth() ? new Date().getDate() : daysOfMonth;
+
+  const today = month === currentMonth ? currentDate : isPast ? daysOfMonth : 0;
   const recommendedSpending = Math.floor((budget / daysOfMonth) * today);
   const recommendedWidth = budget ? (recommendedSpending / budget) * 100 : 0;
 
@@ -40,10 +47,10 @@ export default function BudgetPage() {
           </RemainingBudget>
           <ProgressContainer>
             <ProgressBar $progress={progress} $isOver={isOver}>
-              <Progress>{progress}%</Progress>
+              <Progress $progress={progress}>{progress}%</Progress>
             </ProgressBar>
             <RecommendedLine width={recommendedWidth}>
-              <TodayBadge>오늘</TodayBadge>
+              <TodayBadge>권장</TodayBadge>
             </RecommendedLine>
           </ProgressContainer>
           <BudgetData>
@@ -91,6 +98,7 @@ const ProgressBar = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  position: relative;
   padding-right: 5px;
 
   width: ${(props) => props.$progress}%;
@@ -100,6 +108,12 @@ const ProgressBar = styled.div`
 
 const Progress = styled.div`
   font-size: 0.75rem;
+  ${(props) =>
+    props.$progress === 0 &&
+    `
+    position: absolute;
+    left: 0.5rem;
+  `}
 `;
 
 const RecommendedLine = styled.div`
