@@ -3,29 +3,34 @@ import { postBudget, putBudget } from "../api.js";
 import styled from "styled-components";
 
 export default function BudgetForm({ year, month, budget }) {
-  const initialBudget = budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const budgetWithComma = (budget) =>
+    budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  const budgetWithoutComma = (budget) => budget.replaceAll(",", "");
+
+  const initialBudget = budgetWithComma(budget);
   const [newBudget, setNewBudget] = useState(initialBudget);
   const isBudget = !!budget;
 
   const handleChange = (e) => {
     let validMoneyValue = e.target.value.replace(/[^0-9]/g, "");
-    if (validMoneyValue.length > 0 && validMoneyValue[0] === "0") {
+    if (validMoneyValue.length > 1 && validMoneyValue[0] === "0") {
       validMoneyValue = validMoneyValue.slice(1);
     }
     setNewBudget(validMoneyValue);
   };
 
   const addComma = () => {
-    setNewBudget(newBudget?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    setNewBudget(budgetWithComma(newBudget));
   };
 
   const removeComma = () => {
-    setNewBudget(newBudget.replaceAll(",", ""));
+    setNewBudget(budgetWithoutComma(newBudget));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const budget = newBudget.replaceAll(",", "");
+    const budget = +budgetWithoutComma(newBudget);
     const data = {
       year: year,
       month: month + 1,
@@ -35,7 +40,6 @@ export default function BudgetForm({ year, month, budget }) {
     try {
       const res = isBudget ? await putBudget(data) : await postBudget(data);
       if (res.ok) {
-        console.log("성공");
         window.location.reload();
       } else {
         throw new Error("에러가 발생했습니다.");
@@ -47,18 +51,18 @@ export default function BudgetForm({ year, month, budget }) {
     }
   };
   return (
-      <Form onSubmit={handleSubmit}>
-        <div>한 달 예산</div>
-        <div>
-          <BudgetInput
-              value={newBudget}
-              onChange={handleChange}
-              onFocus={removeComma}
-              onBlur={addComma}
-          />
-          원<Button type="submit">저장</Button>
-        </div>
-      </Form>
+    <Form onSubmit={handleSubmit}>
+      <div>한 달 예산</div>
+      <div>
+        <BudgetInput
+          value={newBudget}
+          onChange={handleChange}
+          onFocus={removeComma}
+          onBlur={addComma}
+        />
+        원<Button type="submit">저장</Button>
+      </div>
+    </Form>
   );
 }
 
