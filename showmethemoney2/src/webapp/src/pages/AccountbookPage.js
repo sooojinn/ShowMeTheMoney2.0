@@ -6,6 +6,7 @@ import { getBudget } from "../api.js";
 import { getCategoryTotal } from "../api";
 import SpinnerImg from "../images/Spinner_overlay.gif";
 import styled from "styled-components";
+import LogoutButton from "../components/LogoutButton.js";
 
 export default function AccountbookPage() {
   const storedYear = sessionStorage.getItem("year");
@@ -49,7 +50,7 @@ export default function AccountbookPage() {
       }
     };
 
-    fetchData().then((r) => {});
+    fetchData();
 
     sessionStorage.setItem("year", year);
     sessionStorage.setItem("month", month);
@@ -73,7 +74,7 @@ export default function AccountbookPage() {
 
   return (
     <>
-      <LogoutBtn></LogoutBtn>
+      <LogoutButton></LogoutButton>
       <PageBtns>
         <PageBtn to="calendar">달력</PageBtn>
         <PageBtn to="statics">통계</PageBtn>
@@ -107,30 +108,6 @@ export default function AccountbookPage() {
     </>
   );
 }
-
-const LogoutBtn = styled.div`
-  width: 30px;
-  height: 30px;
-  background-image: url("https://cdn-icons-png.flaticon.com/512/992/992680.png");
-  background-size: 20px 20px;
-  background-repeat: no-repeat;
-  background-position: center;
-
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #e6e6e6;
-  }
-
-  @media (max-width: 390px) {
-    width: 25px;
-    height: 25px;
-    background-size: 15px 15px;
-  }
-`;
 
 const PageBtns = styled.div`
   display: flex;
