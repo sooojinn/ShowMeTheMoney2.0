@@ -11,7 +11,7 @@ export default function CalendarPage() {
   const monthlyExpense = +monthlyTotals["expense-total"];
   const monthlyTotal = monthlyIncome - monthlyExpense;
 
-  const getDailyTransactions = (date) => {
+  const transferDateString = (year, month, date = 1) => {
     let twoDigitMonth = month;
     let twoDigitDate = date;
     if (month < 9) {
@@ -20,9 +20,13 @@ export default function CalendarPage() {
     if (date < 10) {
       twoDigitDate = "0" + `${date}`;
     }
-    return monthlyTransactions.filter(
-      (data) => data.date === `${year}-${twoDigitMonth}-${twoDigitDate}`
-    );
+
+    return `${year}-${twoDigitMonth}-${twoDigitDate}`;
+  };
+
+  const getDailyTransactions = (date) => {
+    const dateString = transferDateString(year, month, date);
+    return monthlyTransactions.filter((data) => data.date === dateString);
   };
 
   const currentMonth = new Date().getMonth();
@@ -103,7 +107,7 @@ export default function CalendarPage() {
       <WriteBtn
         to="/write"
         state={{
-          dateString: `${year}-${month + 1}-${selectedDate ? selectedDate : 1}`,
+          dateString: transferDateString(year, month + 1, selectedDate),
         }}
         onClick={handleWriteBtnClick}
       >
