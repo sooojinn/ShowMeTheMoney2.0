@@ -23,7 +23,8 @@
 
 ### 2. 달력 페이지
 
-![calendar](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/7bf3bd52-2a48-483a-96a1-d6fde7130d69)
+![calendar_edit_](https://github.com/sooojinn/ShowMeTheMoney2.0/assets/155421665/749b3ca2-9fdc-4503-83f5-7d1fd32da626)
+
 
 - 지출/수입 내역 CRUD 기능
 - 작성한 내역은 달력에 일별 합계 금액으로 표시/달력 상단에 월별 합계 금액으로 표시
