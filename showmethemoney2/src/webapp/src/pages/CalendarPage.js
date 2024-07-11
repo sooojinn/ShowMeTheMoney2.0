@@ -107,7 +107,7 @@ export default function CalendarPage() {
       <WriteBtn
         to="/write"
         state={{
-          dateString: transferDateString(year, month + 1, selectedDate),
+          dateString: transferDateString(year, month, selectedDate),
         }}
         onClick={handleWriteBtnClick}
       >
