@@ -1,5 +1,17 @@
 const baseUrl = "http://localhost:8080";
 
+export async function postLogout() {
+  const res = await fetch(baseUrl + "/logout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    credentials: "include",
+  });
+
+  return res;
+}
+
 export async function getTransactions(year, month) {
   const res = await fetch(
     baseUrl + `/transactions?year=${year}&month=${month}`,
