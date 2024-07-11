@@ -42,17 +42,18 @@ export default function CalendarPage() {
   };
 
   const handleWriteBtnClick = () => {
-    console.log("작성 버튼 클릭");
     sessionStorage.setItem("selectedDate", selectedDate);
   };
 
   useEffect(() => {
     if (month === currentMonth) {
       setSelectedDate(storedSelectedDate || currentDate);
-      setDailyTransactions(getDailyTransactions(currentDate));
+      setDailyTransactions(
+        getDailyTransactions(storedSelectedDate || currentDate)
+      );
     } else {
       setSelectedDate(storedSelectedDate || "");
-      setDailyTransactions([]);
+      setDailyTransactions(getDailyTransactions(storedSelectedDate || []));
     }
   }, [month]);
 

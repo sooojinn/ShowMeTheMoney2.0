@@ -28,7 +28,6 @@ export default function LoginPage() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       const status = await postLoginForm(data);
       if (status === 200) {
