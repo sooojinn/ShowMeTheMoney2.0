@@ -38,6 +38,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -53,9 +54,9 @@ import lombok.Setter;
         private String username;
         private int year;
         private int month;
-        private int budget;
+        private Integer budget;
 
-        public Budget(String username, int year, int month, int budget) {
+        public Budget(String username, int year, int month, Integer budget) {
             this.username = username;
             this.year = year;
             this.month = month;

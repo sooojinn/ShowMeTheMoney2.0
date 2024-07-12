@@ -7,12 +7,10 @@ import com.example.showmethemoney2.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpHeaders;
+
 
 @RestController
 public class BudgetController {
@@ -21,28 +19,23 @@ public class BudgetController {
     private BudgetService budgetService;
 
     //로그인한 유저의 해당 월의 예산조회
-
     @CrossOrigin(originPatterns ={ "*" })
     @GetMapping("/budget")
-    public ResponseEntity<Integer> getBudget(
+    public ResponseEntity<String> getBudget(
             @RequestParam("year") int year,
             @RequestParam("month") int month) {
         var context = SecurityContextHolder.getContextHolderStrategy();
         var auth = context.getContext();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        int budgetData = budgetService.getBudget(username, year, month);
+        Integer budgetData = budgetService.getBudget(username, year, month);
 
-        return ResponseEntity.ok(budgetData);
+        if (budgetData == null) {
+            return ResponseEntity.ok(null); // 예산 데이터가 없는 경우 null 변환
+        }
+
+        return ResponseEntity.ok(String.valueOf(budgetData)); // 있는 경우 예산 값 반환
 
     }
-
-
-
-//        if (budgetData.isEmpty()) {
-//            return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
-//        }
-
-
 
 
     //예산 저장
@@ -64,10 +57,15 @@ public class BudgetController {
 
     //예산 수정
     @PutMapping("/budget")
-    public ResponseEntity<Budget> updateBudget(@RequestBody BudgetDTO budgetDTO) {
+    public ResponseEntity<String> updateBudget(@RequestBody BudgetDTO budgetDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Budget updatedBudget = budgetService.updateBudget(username, budgetDTO.getYear(), budgetDTO.getMonth(), budgetDTO.getBudget());
-        return ResponseEntity.ok(updatedBudget);
+
+        if (updatedBudget == null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+
+        return ResponseEntity.ok(String.valueOf(updatedBudget.getBudget()));
     }
 }
 
