@@ -6,6 +6,7 @@ import com.example.showmethemoney2.configuration.security.handler.CustomLoginSuc
 import com.example.showmethemoney2.configuration.security.provider.CustomAuthenticationProvider;
 import com.example.showmethemoney2.configuration.security.service.CustomOAuth2UserService;
 import com.example.showmethemoney2.configuration.security.service.CustomUserDetailsService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -42,7 +44,7 @@ public class SecurityConfig {
 //                        .requestMatchers("/transactions/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
-                        .loginPage("/loginPage")
+                        .loginPage("/login")
                         .loginProcessingUrl("/loginProc")
 //                        .defaultSuccessUrl("/",true)
 //                        .failureUrl("/failed")
@@ -57,14 +59,19 @@ public class SecurityConfig {
 //                            response.setStatus(200);
 //                        })
                                 .successHandler(customLoginSuccessHandler())
-                        .failureHandler((request, response, exception) -> {
-                            System.out.println("exception : " + exception.getMessage());
-                            response.setStatus(400);
-                        })
-                        .permitAll()
-
+                                .failureHandler((request, response, exception) -> {
+                                    System.out.println("exception : " + exception.getMessage());
+                                    response.setStatus(400);
+                                })
+                                .permitAll()
                 ).logout((config) -> {
-                    config.logoutUrl("/logout").clearAuthentication(true);
+                    config
+                            .logoutUrl("/logout").clearAuthentication(true)
+                            .logoutSuccessHandler(logoutSuccessHandler())
+                            .clearAuthentication(true)
+                            .invalidateHttpSession(true)
+                            .deleteCookies("JSESSIONID")
+                            .permitAll();
                 })
 //                .oauth2Login((oauth) -> {
 //                    oauth
@@ -158,6 +165,15 @@ public class SecurityConfig {
     public CustomLoginSuccessHandler customLoginSuccessHandler() {
         return new CustomLoginSuccessHandler();
     }
+
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return ((request, response, authentication) -> {
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.sendRedirect("/login?/logout=true");
+        });
+    }
+
 
 
     @Bean

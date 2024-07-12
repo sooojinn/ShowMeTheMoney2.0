@@ -21,36 +21,14 @@ public class BudgetService {
 
 
     //예산 조회
-    public int getBudget(String username, int year, int month) {
-//        Optional<Budget> budget = budgetRepository.findByUsernameAndYearAndMonth(username, year, month);
-//        return budget.map(Budget::getBudget).orElse(0);
-//    }
-//    public String getBudgetDataAsString(String username, int year, int month) {
+    public Integer getBudget(String username, int year, int month) {
         List<Budget> budgets = budgetRepository.findByUsernameAndYearAndMonth(username, year, month);
         if (budgets.isEmpty()) {
-            return 0;
+            return null; //예산 데이터가 없는 경우 null
         }
-        return budgets.get(0).getBudget();
+        Budget budget = budgets.get(0);
+        return budget.getBudget(); // 예산 데이터가 있는 경우 예산 값 반환
     }
-//        Budget budget = budgets.get(0);
-//        int budgetAmount = (int) budget.getBudget();
-//        return Integer.toString(budgetAmount);
-//    }
-
-
-//    public String getBudgetDataAsString(String username, int year, int month) {
-//        try {
-//            List<Budget> budgets = budgetRepository.findByUsernameAndYearAndMonth(username, year, month);
-//            if (budgets.isEmpty()) {
-//                return "";
-//            }
-//            Budget budget = budgets.get(0);
-//            return budget.toString();
-////            return String.format("%.2f",
-////                    budget.getBudget());
-//        } catch (DataAccessException e) {
-//            throw new RuntimeException("Database access error occurred", e);
-//        }
 
 
     //예산 저장
@@ -58,16 +36,9 @@ public class BudgetService {
         int budgetAmount = budgetDTO.getBudget();
         Budget budget = new Budget(username, budgetDTO.getYear(), budgetDTO.getMonth(), budgetAmount);
         return budgetRepository.save(budget);
-        //        double budgetValue = Double.parseDouble(budgetDTO.getBudget());
-//        Budget budget = new Budget(username, Integer.parseInt(budgetDTO.getYear()), Integer.parseInt(budgetDTO.getMonth()), budgetValue);
-//        Budget saveBudget = budgetRepository.save(budget);
-//
-//        return new BudgetDTO(String.valueOf(saveBudget.getYear()), String.valueOf(saveBudget.getMonth()), String.valueOf(saveBudget.getBudget()));
+
     }
-//        Budget budget = new Budget(username, budgetDTO.getYear(), budgetDTO.getMonth(), budgetDTO.getBudget());
-//        Budget saveBudget = budgetRepository.save(budget);
-//        return new BudgetDTO(saveBudget.getYear(), saveBudget.getMonth(), saveBudget.getBudget());
-//    }
+
 
     //예산 수정
     public Budget updateBudget(String username, int year, int month, int newBudget) {
@@ -80,12 +51,5 @@ public class BudgetService {
         return budgetRepository.save(budget);
     }
 }
-
-//        try {
-//            Budget budgetEntity = new Budget(username, budgetDTO.getYear(), budgetDTO.getMonth(), budgetDTO.getBudgetData(), budgetDTO.getBudget());
-//            budgetRepository.save(budgetEntity);
-//        } catch (DataAccessException e) {
-//            throw new RuntimeException("Database access error occurred", e);
-//        }
 
 
