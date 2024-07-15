@@ -54,9 +54,9 @@ import lombok.Setter;
         private String username;
         private int year;
         private int month;
-        private Integer budget;
+        private int budget;
 
-        public Budget(String username, int year, int month, Integer budget) {
+        public Budget(String username, int year, int month, int budget) {
             this.username = username;
             this.year = year;
             this.month = month;
