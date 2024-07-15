@@ -171,9 +171,35 @@ export async function getBudget(year, month) {
     method: "GET",
     credentials: "include",
   });
-  const result = await res.json();
+
+  if (res.status === 204) {
+    return null; // No Content 상태 처리
+  }
+
+  const text = await res.text();
+
+  if (!text) {
+    return null; // 빈 응답 처리
+  }
+
+  if (text === 'null') {
+    return null; // "null" 문자열 처리
+  }
+
+  const result = JSON.parse(text);
+  console.log(result);
   return result;
 }
+
+// export async function getBudget(year, month) {
+//   const res = await fetch(baseUrl + `/budget?year=${year}&month=${month}`, {
+//     method: "GET",
+//     credentials: "include",
+//   });
+//   const result = await res.json();
+//   console.log(result)
+//   return result;
+// }
 
 export async function getCategoryTotal(year, month) {
   const res = await fetch(
