@@ -27,7 +27,7 @@ public class BudgetService {
             return null; //예산 데이터가 없는 경우 null
         }
         Budget budget = budgets.get(0);
-        return budget.getBudget(); // 예산 데이터가 있는 경우 예산 값 반환
+        return budget.getBudget();
     }
 
 

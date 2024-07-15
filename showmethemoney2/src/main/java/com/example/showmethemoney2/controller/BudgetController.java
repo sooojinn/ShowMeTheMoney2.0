@@ -30,10 +30,10 @@ public class BudgetController {
         Integer budgetData = budgetService.getBudget(username, year, month);
 
         if (budgetData == null) {
-            return ResponseEntity.ok(null); // 예산 데이터가 없는 경우 null 변환
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("null");
         }
 
-        return ResponseEntity.ok(String.valueOf(budgetData)); // 있는 경우 예산 값 반환
+        return ResponseEntity.ok(String.valueOf(budgetData));
 
     }
 
@@ -57,15 +57,11 @@ public class BudgetController {
 
     //예산 수정
     @PutMapping("/budget")
-    public ResponseEntity<String> updateBudget(@RequestBody BudgetDTO budgetDTO) {
+    public ResponseEntity<Budget> updateBudget(@RequestBody BudgetDTO budgetDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Budget updatedBudget = budgetService.updateBudget(username, budgetDTO.getYear(), budgetDTO.getMonth(), budgetDTO.getBudget());
 
-        if (updatedBudget == null) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-        }
-
-        return ResponseEntity.ok(String.valueOf(updatedBudget.getBudget()));
+        return ResponseEntity.ok(updatedBudget);
     }
 }
 
