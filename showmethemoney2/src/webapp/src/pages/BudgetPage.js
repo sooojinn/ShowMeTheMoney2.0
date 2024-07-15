@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 export default function BudgetPage() {
   const { year, month, monthlyTotals, budget } = useOutletContext();
-  const [showBudgetForm, setShowBudgetForm] = useState(false);
+  const [showBudgetForm, setShowBudgetForm] = useState(!budget);
 
   const expenseTotal = monthlyTotals["expense-total"];
   const remainingBudget = budget - expenseTotal;

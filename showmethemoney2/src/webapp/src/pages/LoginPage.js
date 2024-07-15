@@ -32,6 +32,8 @@ export default function LoginPage() {
       const status = await postLoginForm(data);
       if (status === 200) {
         navigate("/accountbook/calendar");
+      } else if (status === 401) {
+        throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
       } else {
         throw new Error("로그인에 실패했습니다.");
       }
