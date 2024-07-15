@@ -2,6 +2,7 @@ package com.example.showmethemoney2.configuration.security;
 
 
 import com.example.showmethemoney2.configuration.security.filter.CustomAuthenticationFilter;
+import com.example.showmethemoney2.configuration.security.handler.CustomLoginFailureHandler;
 import com.example.showmethemoney2.configuration.security.handler.CustomLoginSuccessHandler;
 import com.example.showmethemoney2.configuration.security.provider.CustomAuthenticationProvider;
 import com.example.showmethemoney2.configuration.security.service.CustomOAuth2UserService;
@@ -59,10 +60,11 @@ public class SecurityConfig {
 //                            response.setStatus(200);
 //                        })
                                 .successHandler(customLoginSuccessHandler())
-                                .failureHandler((request, response, exception) -> {
-                                    System.out.println("exception : " + exception.getMessage());
-                                    response.setStatus(400);
-                                })
+                                .failureHandler(customLoginFailureHandler())
+//                                .failureHandler((request, response, exception) -> {
+//                                    System.out.println("exception : " + exception.getMessage());
+//                                    response.setStatus(400);
+//                                })
                                 .permitAll()
                 ).logout((config) -> {
                     config
@@ -166,6 +168,10 @@ public class SecurityConfig {
         return new CustomLoginSuccessHandler();
     }
 
+    @Bean
+    public CustomLoginFailureHandler customLoginFailureHandler() {
+        return new CustomLoginFailureHandler();
+    }
     @Bean
     public LogoutSuccessHandler logoutSuccessHandler() {
         return ((request, response, authentication) -> {
