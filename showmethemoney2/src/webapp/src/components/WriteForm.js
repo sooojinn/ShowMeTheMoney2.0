@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { Button } from "./Button.style";
+import useAsync from "../hooks/useAsync";
+import SpinnerImg from "../images/Spinner_button.gif";
+import { Spinner } from "../pages/JoinPage";
 
 export default function WriteForm({ request, defaultValues }) {
   const addComma = (money) => {
@@ -17,7 +20,7 @@ export default function WriteForm({ request, defaultValues }) {
     register,
     handleSubmit,
     watch,
-    formState: { isSubmitting },
+    // formState: { isSubmitting },
   } = useForm({
     defaultValues: {
       division: defaultValues.division,
@@ -31,6 +34,7 @@ export default function WriteForm({ request, defaultValues }) {
   const [money, setMoney] = useState(defaultMoney);
   const division = watch("division");
   const navigate = useNavigate();
+  const [isSubmitting, requestAsync] = useAsync(request);
 
   const onSubmit = async (data) => {
     data["money"] = removeComma(money);
@@ -39,18 +43,15 @@ export default function WriteForm({ request, defaultValues }) {
     else if (!data.date) alert("날짜를 선택해주세요.");
     else if (!data.category) alert("카테고리를 선택해주세요.");
     else {
-      try {
-        const res = await request(defaultValues.id, data);
-        if (res.ok) {
-          navigate("/accountbook/calendar");
-        } else {
-          throw new Error("에러가 발생했습니다.");
-        }
-      } catch (error) {
-        alert(error.message);
+      const res = await requestAsync(defaultValues.id, data);
+
+      if (!res) {
         window.location.reload();
         return;
       }
+      console.log(res);
+
+      navigate("/accountbook/calendar");
     }
   };
 
@@ -147,7 +148,11 @@ export default function WriteForm({ request, defaultValues }) {
           />
         </InputGroup>
         <Button type="submit" disabled={isSubmitting}>
-          저장
+          {isSubmitting ? (
+            <Spinner src={SpinnerImg} alt="로딩중..." />
+          ) : (
+            <p>저장</p>
+          )}
         </Button>
       </Form>
     </>

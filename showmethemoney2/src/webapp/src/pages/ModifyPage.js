@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import WriteForm from "../components/WriteForm";
 import SpinnerImg from "../images/Spinner_button.gif";
 import styled, { keyframes } from "styled-components";
+import useAsync from "../hooks/useAsync";
 
 export default function ModifyPage() {
   const navigate = useNavigate();
@@ -14,21 +15,22 @@ export default function ModifyPage() {
   const { id } = location.state;
   const [defaultValues, setDefaultValues] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [, getTransactionAsync] = useAsync(getTransaction);
+  const [isSubmitting, deleteTransactionAsync] = useAsync(deleteTransaction);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const fetchedData = await getTransaction(id);
-        setDefaultValues({
-          ...fetchedData,
-        });
-        setIsLoading(false);
-      } catch (error) {
-        alert("데이터를 불러오는 중 에러가 발생했습니다.");
+      const fetchedData = await getTransactionAsync(id);
+      if (!fetchedData) {
+        navigate(-1);
+        return;
       }
+
+      setIsLoading(false);
+      setDefaultValues(fetchedData);
     };
     fetchData();
-  }, [id]);
+  }, []);
 
   const handleBinClick = () => {
     if (deleteRef.current) {
@@ -43,18 +45,13 @@ export default function ModifyPage() {
   };
 
   const handleDeleteClick = async () => {
-    try {
-      const res = await deleteTransaction(id);
-      if (res.ok) {
-        navigate(-1);
-      } else {
-        throw new Error("오류가 발생했습니다.");
-      }
-    } catch (error) {
-      alert(error.message);
+    const res = await deleteTransactionAsync(id);
+
+    if (!res) {
       window.location.reload();
       return;
     }
+    navigate(-1);
   };
 
   return isLoading ? (
@@ -67,7 +64,9 @@ export default function ModifyPage() {
       <DeleteBtn onClick={handleBinClick}></DeleteBtn>
       <DeleteMessage ref={deleteRef}>
         삭제하시겠습니까?
-        <button onClick={handleDeleteClick}>확인</button>
+        <button onClick={handleDeleteClick} disabled={isSubmitting}>
+          확인
+        </button>
         <button onClick={handleCancleClick}>취소</button>
       </DeleteMessage>
       <WriteForm request={putTransaction} defaultValues={defaultValues} />

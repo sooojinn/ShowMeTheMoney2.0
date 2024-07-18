@@ -9,6 +9,7 @@ import styled, { css, keyframes } from "styled-components";
 import NaverLogin from "../components/NaverLogin.js";
 import GoogleLogin from "../components/GoogleLogin.js";
 import { Button } from "../components/Button.style.js";
+import useAsync from "../hooks/useAsync.js";
 
 export default function JoinPage() {
   const {
@@ -22,6 +23,7 @@ export default function JoinPage() {
   } = useForm({ mode: "onChange" });
 
   const [postSuccess, setPostSuccess] = useState(false);
+  const [, postJoinFormAsync] = useAsync(postJoinForm);
 
   useEffect(() => {
     if (
@@ -38,18 +40,14 @@ export default function JoinPage() {
   }, [watch("password"), watch("passwordCheck")]);
 
   const onSubmit = async (data) => {
-    try {
-      const status = await postJoinForm(data);
-      if (status === 200) {
-        setPostSuccess(true);
-      } else {
-        throw new Error("에러가 발생했습니다.");
-      }
-    } catch (error) {
-      alert(error.message);
+    const res = await postJoinFormAsync(data);
+
+    if (!res) {
       window.location.reload();
       return;
     }
+
+    setPostSuccess(true);
   };
 
   return (

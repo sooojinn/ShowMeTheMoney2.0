@@ -18,9 +18,11 @@ import {
   SocialLoginBtns,
   SocialLoginInfo,
 } from "./JoinPage.js";
+import useAsync from "../hooks/useAsync.js";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [, postLoginFormAsync] = useAsync(postLoginForm);
   const {
     register,
     handleSubmit,
@@ -28,20 +30,13 @@ export default function LoginPage() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    try {
-      const status = await postLoginForm(data);
-      if (status === 200) {
-        navigate("/accountbook/calendar");
-      } else if (status === 401) {
-        throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
-      } else {
-        throw new Error("로그인에 실패했습니다.");
-      }
-    } catch (error) {
-      alert(error.message);
+    const res = await postLoginFormAsync(data);
+
+    if (!res) {
       window.location.reload();
       return;
     }
+    navigate("/accountbook/calendar");
   };
   return (
     <Form>

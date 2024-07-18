@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { postBudget, putBudget } from "../api.js";
 import styled from "styled-components";
+import useAsync from "../hooks/useAsync.js";
 
 export default function BudgetForm({ year, month, budget }) {
   const budgetWithComma = (budget) =>
@@ -11,6 +12,8 @@ export default function BudgetForm({ year, month, budget }) {
   const initialBudget = budgetWithComma(budget);
   const [newBudget, setNewBudget] = useState(initialBudget);
   const isBudget = typeof budget === "number";
+  const request = isBudget ? putBudget : postBudget;
+  const [isSubmitting, requestAsync] = useAsync(request);
 
   const handleChange = (e) => {
     let validMoneyValue = e.target.value.replace(/[^0-9]/g, "");
@@ -37,18 +40,11 @@ export default function BudgetForm({ year, month, budget }) {
       budget: budget,
     };
 
-    try {
-      const res = isBudget ? await putBudget(data) : await postBudget(data);
-      if (res.ok) {
-        window.location.reload();
-      } else {
-        throw new Error("에러가 발생했습니다.");
-      }
-    } catch (error) {
-      alert(error.message);
-      window.location.reload();
-      return;
-    }
+    const res = await requestAsync(data);
+
+    if (!res) return;
+
+    window.location.reload();
   };
   return (
     <Form onSubmit={handleSubmit}>
@@ -60,7 +56,10 @@ export default function BudgetForm({ year, month, budget }) {
           onFocus={removeComma}
           onBlur={addComma}
         />
-        원<Button type="submit">저장</Button>
+        원
+        <Button type="submit" disabled={isSubmitting}>
+          저장
+        </Button>
       </div>
     </Form>
   );

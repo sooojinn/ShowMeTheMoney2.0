@@ -2,26 +2,22 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { postLogout } from "../api";
+import useAsync from "../hooks/useAsync";
 
 export default function LogoutButton() {
   const navigate = useNavigate();
+  const [isLoading, postLogoutAsync] = useAsync(postLogout);
 
   const handleLogout = async () => {
-    try {
-      const res = await postLogout();
-      if (res.ok) {
-        navigate("/login");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("로그아웃에 실패했습니다.");
-    }
+    const res = await postLogoutAsync();
+    if (!res) return;
+    navigate("/login");
   };
 
-  return <LogoutBtn onClick={handleLogout}></LogoutBtn>;
+  return <LogoutBtn disabled={isLoading} onClick={handleLogout}></LogoutBtn>;
 }
 
-const LogoutBtn = styled.div`
+const LogoutBtn = styled.button`
   width: 30px;
   height: 30px;
   background-image: url("https://cdn-icons-png.flaticon.com/512/992/992680.png");
@@ -33,6 +29,9 @@ const LogoutBtn = styled.div`
   top: 20px;
   right: 20px;
   cursor: pointer;
+
+  border: none;
+  background-color: transparent;
 
   &:hover {
     background-color: #e6e6e6;
